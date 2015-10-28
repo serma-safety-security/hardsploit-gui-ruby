@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CommandBase</class>
+ <widget class="QWidget" name="CommandBase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>525</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>525</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>525</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Hardsploit - Command base</string>
+  </property>
+  <widget class="QPushButton" name="btn_validate">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>370</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_cancel">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>370</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>501</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Characteristics</string>
+    </attribute>
+    <widget class="QLabel" name="lbl_chip">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>[CHIP]</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lie_name">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>130</y>
+       <width>211</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="maxLength">
+      <number>25</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_description">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>160</y>
+       <width>331</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Description:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_name">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>100</y>
+       <width>341</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Name (25 chars max):</string>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="txe_description">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>190</y>
+       <width>341</width>
+       <height>111</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_cmd">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>[CMD]</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_bus">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>361</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>[BUS]</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Bytes</string>
+    </attribute>
+    <widget class="QTableWidget" name="tbl_bytes">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>481</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+      </font>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>110</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>36</number>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Order</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Byte (Hexa)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Repetition</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Description</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QPushButton" name="btn_addRow">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>290</y>
+       <width>31</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_clone">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>290</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clone</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_remove">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>290</y>
+       <width>31</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lie_text2bytes">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>290</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="placeholderText">
+      <string>Text to command bytes</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btn_cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>CommandBase</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>356</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>380</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tbl_bytes</sender>
+   <signal>cellClicked(int,int)</signal>
+   <receiver>CommandBase</receiver>
+   <slot>activAction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>CommandBase</receiver>
+   <slot>removeRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>342</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>370</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_addRow</sender>
+   <signal>clicked()</signal>
+   <receiver>CommandBase</receiver>
+   <slot>addRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>334</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>168</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_clone</sender>
+   <signal>clicked()</signal>
+   <receiver>CommandBase</receiver>
+   <slot>cloneRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>30</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>txe_description</sender>
+   <signal>textChanged()</signal>
+   <receiver>CommandBase</receiver>
+   <slot>checkTxeContent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tbl_bytes</sender>
+   <signal>itemChanged(QTableWidgetItem*)</signal>
+   <receiver>CommandBase</receiver>
+   <slot>checkCellContent(QTableWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>480</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>activAction()</slot>
+  <slot>removeRow()</slot>
+  <slot>addRow()</slot>
+  <slot>cloneRow()</slot>
+  <slot>checkTxeContent()</slot>
+  <slot>checkCellContent(QTableWidgetItem*)</slot>
+ </slots>
+</ui>

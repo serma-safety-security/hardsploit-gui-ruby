@@ -1,2 +1,1 @@
-# hardsploit-gui
-GUI OF HARDSPLOIT
+# GO TO WIKI
