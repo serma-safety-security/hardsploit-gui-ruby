@@ -258,6 +258,7 @@
     <addaction name="actionFPGA_Firmware_update"/>
     <addaction name="actionVersions"/>
     <addaction name="actionLog_file_path"/>
+    <addaction name="actionDatabase_file_path"/>
    </widget>
    <addaction name="menuHelp"/>
   </widget>
@@ -280,6 +281,11 @@
   <action name="actionLog_file_path">
    <property name="text">
     <string>Log file path</string>
+   </property>
+  </action>
+  <action name="actionDatabase_file_path">
+   <property name="text">
+    <string>Database file path</string>
    </property>
   </action>
  </widget>
@@ -445,6 +451,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDatabase_file_path</sender>
+   <signal>triggered()</signal>
+   <receiver>ChipManagement</receiver>
+   <slot>getDbPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>264</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openChipWizard()</slot>
@@ -455,5 +477,6 @@
   <slot>updateUcFirmware()</slot>
   <slot>getVersions()</slot>
   <slot>getLogPath()</slot>
+  <slot>getDbPath()</slot>
  </slots>
 </ui>

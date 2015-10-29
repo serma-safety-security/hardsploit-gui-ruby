@@ -1,5 +1,5 @@
 #===================================================
-#  Hardsploit API - By Opale Security
+#  Hardsploit GUI - By Opale Security
 #  www.opale-security.com || www.hardsploit.io
 #  License: GNU General Public License v3
 #  License URI: http://www.gnu.org/licenses/gpl.txt
@@ -10,6 +10,7 @@ class Ui_ChipManagement
     attr_reader :actionVersions
     attr_reader :actionFPGA_Firmware_update
     attr_reader :actionLog_file_path
+    attr_reader :actionDatabase_file_path
     attr_reader :centralwidget
     attr_reader :cbx_manufacturer
     attr_reader :cbx_action
@@ -40,6 +41,8 @@ class Ui_ChipManagement
     @actionFPGA_Firmware_update.objectName = "actionFPGA_Firmware_update"
     @actionLog_file_path = Qt::Action.new(chipManagement)
     @actionLog_file_path.objectName = "actionLog_file_path"
+    @actionDatabase_file_path = Qt::Action.new(chipManagement)
+    @actionDatabase_file_path.objectName = "actionDatabase_file_path"
     @centralwidget = Qt::Widget.new(chipManagement)
     @centralwidget.objectName = "centralwidget"
     @cbx_manufacturer = Qt::ComboBox.new(@centralwidget)
@@ -92,6 +95,7 @@ class Ui_ChipManagement
     @menuHelp.addAction(@actionFPGA_Firmware_update)
     @menuHelp.addAction(@actionVersions)
     @menuHelp.addAction(@actionLog_file_path)
+    @menuHelp.addAction(@actionDatabase_file_path)
 
     retranslateUi(chipManagement)
     Qt::Object.connect(@btn_create, SIGNAL('clicked()'), chipManagement, SLOT('openChipWizard()'))
@@ -104,6 +108,7 @@ class Ui_ChipManagement
     Qt::Object.connect(@actionFPGA_Firmware_update, SIGNAL('triggered()'), chipManagement, SLOT('updateUcFirmware()'))
     Qt::Object.connect(@actionVersions, SIGNAL('triggered()'), chipManagement, SLOT('getVersions()'))
     Qt::Object.connect(@actionLog_file_path, SIGNAL('triggered()'), chipManagement, SLOT('getLogPath()'))
+    Qt::Object.connect(@actionDatabase_file_path, SIGNAL('triggered()'), chipManagement, SLOT('getDbPath()'))
 
     Qt::MetaObject.connectSlotsByName(chipManagement)
     end # setupUi
@@ -118,6 +123,7 @@ class Ui_ChipManagement
     @actionVersions.text = Qt::Application.translate("ChipManagement", "Versions", nil, Qt::Application::UnicodeUTF8)
     @actionFPGA_Firmware_update.text = Qt::Application.translate("ChipManagement", "Firmware update", nil, Qt::Application::UnicodeUTF8)
     @actionLog_file_path.text = Qt::Application.translate("ChipManagement", "Log file path", nil, Qt::Application::UnicodeUTF8)
+    @actionDatabase_file_path.text = Qt::Application.translate("ChipManagement", "Database file path", nil, Qt::Application::UnicodeUTF8)
     @cbx_manufacturer.insertItems(0, [Qt::Application.translate("ChipManagement", "Manufacturer...", nil, Qt::Application::UnicodeUTF8)])
     @cbx_action.insertItems(0, [Qt::Application.translate("ChipManagement", "Action...", nil, Qt::Application::UnicodeUTF8),
         Qt::Application.translate("ChipManagement", "Wiring", nil, Qt::Application::UnicodeUTF8),

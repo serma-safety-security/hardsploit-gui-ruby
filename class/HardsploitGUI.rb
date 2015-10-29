@@ -7,7 +7,7 @@
 
 require_relative '../HardsploitAPI/HardsploitAPI'
 class HardsploitGUI < Qt::MainWindow
-  VERSION = "1.0.16"
+  VERSION = "1.0.17"
   slots 'openChipWizard()'
   slots 'verifAction()'
   slots 'activAction()'
@@ -16,6 +16,7 @@ class HardsploitGUI < Qt::MainWindow
   slots 'updateUcFirmware()'
   slots 'getVersions()'
   slots 'getLogPath()'
+  slots 'getDbPath()'
 
   def initialize(api)
     super()
@@ -237,7 +238,7 @@ class HardsploitGUI < Qt::MainWindow
   end
 
   def updateUcFirmware
-    system("dfu-util -D 0483:df11 -a 0 -s 0x08000000 -R --download #{File.expand_path(File.dirname(__FILE__))}'/../Firmware/uC/HARDSPLOIT_FIRMWARE_UC.bin'")
+    system("dfu-util -D 0483:df11 -a 0 -s 0x08000000 -R --download #{File.expand_path(File.dirname(__FILE__))}'/../Firmware/UC/HARDSPLOIT_FIRMWARE_UC.bin'")
   end
 
   def getVersions
@@ -251,6 +252,10 @@ class HardsploitGUI < Qt::MainWindow
   def getLogPath
     Qt::MessageBox.new(Qt::MessageBox::Information, "Log path", "#{$logFilePath}").exec
   end
+	
+	def getDbPath
+		Qt::MessageBox.new(Qt::MessageBox::Information, "Database path", "#{$dbFilePath}").exec
+	end
 
   def checkConnection(api)
     case api.connect

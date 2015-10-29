@@ -33,6 +33,7 @@ class Hardsploit_GUI
     $currentFirmware = nil
     $usbConnected = nil
     $logFilePath = File.expand_path(File.dirname(__FILE__)) + "/logs/error.log"
+    $dbFilePath = File.expand_path(File.dirname(__FILE__)) + "/db/hs.db"
 
     # Launch GUI
     Qt::Application.new(ARGV) do
