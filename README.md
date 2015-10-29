@@ -16,3 +16,7 @@
 ### [GO TO FORUM](http://forum.hardsploit.io)
 
     FOR SUPPORT / HELP
+
+### [GO TO BUG TRACKER] (http://issues.hardsploit.io)
+
+        FOR BUGS OR IMPROVEMENTS
