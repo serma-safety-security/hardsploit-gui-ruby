@@ -25,6 +25,7 @@ class CommandBase < Qt::Widget
     @cmdName = cmdName
     @busId = busId
     @parent = parent
+		@api = api
 
     inputRestrict(@cb.lie_name, 2)
 
@@ -67,7 +68,7 @@ class CommandBase < Qt::Widget
         # Byte table size
         @cb.tbl_bytes.setRowCount(3 + busParam[:size].to_i)
         # Size 1
-        @cb.tbl_bytes.setItem(0, 1, Qt::TableWidgetItem.new(api.lowByte(busParam[:size].to_i).to_s))
+        @cb.tbl_bytes.setItem(0, 1, Qt::TableWidgetItem.new(api.lowByte(busParam[:size].to_i).to_s(16).upcase))
         @cb.tbl_bytes.setItem(0, 2, Qt::TableWidgetItem.new("0"))
         @cb.tbl_bytes.setItem(0, 3, Qt::TableWidgetItem.new("Payload size - low"))
         # Index
@@ -75,7 +76,7 @@ class CommandBase < Qt::Widget
         item.setData(0, Qt::Variant.new(1))
         @cb.tbl_bytes.setItem(0, 0, item)
         # Size 2
-        @cb.tbl_bytes.setItem(1, 1, Qt::TableWidgetItem.new(api.highByte(busParam[:size].to_i).to_s))
+        @cb.tbl_bytes.setItem(1, 1, Qt::TableWidgetItem.new(api.highByte(busParam[:size].to_i).to_s(16).upcase))
         @cb.tbl_bytes.setItem(1, 2, Qt::TableWidgetItem.new("0"))
         @cb.tbl_bytes.setItem(1, 3, Qt::TableWidgetItem.new("Payload size - high"))
         # Index
@@ -100,11 +101,12 @@ class CommandBase < Qt::Widget
           @cb.tbl_bytes.setItem(i, 0, item)
         end
         @cb.btn_addRow.setEnabled(false)
+        @cb.btn_clone.setEnabled(false)
       else
         # Byte table size
         @cb.tbl_bytes.setRowCount(3)
         # Size 1
-        @cb.tbl_bytes.setItem(0, 1, Qt::TableWidgetItem.new(api.lowByte(busParam[:size].to_i).to_s))
+        @cb.tbl_bytes.setItem(0, 1, Qt::TableWidgetItem.new(api.lowByte(busParam[:size].to_i).to_s(16).upcase))
         @cb.tbl_bytes.setItem(0, 2, Qt::TableWidgetItem.new("0"))
         @cb.tbl_bytes.setItem(0, 3, Qt::TableWidgetItem.new("Payload size - low"))
         # Index
@@ -112,7 +114,7 @@ class CommandBase < Qt::Widget
         item.setData(0, Qt::Variant.new(1))
         @cb.tbl_bytes.setItem(0, 0, item)
         # Size 2
-        @cb.tbl_bytes.setItem(1, 1, Qt::TableWidgetItem.new(api.highByte(busParam[:size].to_i).to_s))
+        @cb.tbl_bytes.setItem(1, 1, Qt::TableWidgetItem.new(api.highByte(busParam[:size].to_i).to_s(16).upcase))
         @cb.tbl_bytes.setItem(1, 2, Qt::TableWidgetItem.new("0"))
         @cb.tbl_bytes.setItem(1, 3, Qt::TableWidgetItem.new("Payload size - high"))
         # Index
@@ -213,10 +215,11 @@ class CommandBase < Qt::Widget
         else
           commandType = @cb.tbl_bytes.item(i + 2, 1).text
         end
-
-        count = count + (lowByte.to_i + highByte.to_i)
+				p lowByte.to_i(16)
+				p highByte.to_i(16)
+        count = count + (@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16)))
         if commandType.to_i(16) % 2 == 0 #WRITE
-          i = (i + ((lowByte.to_i + highByte.to_i) + 3))
+          i = (i + ((@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16))) + 3))
         else #READ
           i = (i + 3)
         end

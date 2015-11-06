@@ -126,7 +126,7 @@ def signalHelpingWiring(*args)
 			USB_TRAME_SIZE = 8191
 	end
 	module VERSION
-		API   = "1.0.5"
+		API   = "1.0.6"
 	end
 	module USB_STATE
 		public

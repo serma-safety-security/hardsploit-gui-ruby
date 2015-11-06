@@ -68,7 +68,7 @@ public
 	# * +hByte+:: high byte
 	# Return 16 bits integer concatenate with low and high bytes
 	def BytesToInt(*args)
-		parametters = checkParametters(["lByte","lByte"],args)
+		parametters = checkParametters(["lByte","hByte"],args)
 		lByte = parametters[:lByte]
 		hByte = parametters[:hByte]
 		return (lByte + (hByte<<8))
@@ -117,15 +117,21 @@ protected
 				return received_data
 			end
 		end
-		 	# @return [Fixnum] Sum of the two arguments
+
+		# Send USB packet
+		# * +packet+:: array with bytes
+		# Return USB_STATE or array with response (improve soon with exception)
 		def sendPacket(packet_send)
 			if packet_send.size <= 8191 then
+
+				packet_send[0] = lowByte(packet_send.size)
+				packet_send[1] = highByte(packet_send.size)
+
 				#if a multiple of packet size add a value to explicit the end of trame
 				if packet_send.size % 64 ==0 then
 					packet_send.push 0
 				end
-				packet_send[0] = lowByte(packet_send.size)
-				packet_send[1] = highByte(packet_send.size)
+
 				number_of_data_send = 0
 				time = Benchmark.realtime  do
 					number_of_data_send =  @dev.bulk_transfer(:endpoint=>OUT_ENDPOINT, :dataOut=>packet_send.pack('c*'),:timeout=>3000)

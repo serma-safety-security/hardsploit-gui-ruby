@@ -7,7 +7,7 @@
 
 require_relative '../HardsploitAPI/HardsploitAPI'
 class HardsploitGUI < Qt::MainWindow
-  VERSION = "1.0.17"
+  VERSION = "1.0.18"
   slots 'openChipWizard()'
   slots 'verifAction()'
   slots 'activAction()'

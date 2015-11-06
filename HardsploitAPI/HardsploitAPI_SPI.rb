@@ -80,7 +80,7 @@ end
 			raise TypeError, "Stop address can't be negative and not more than size max-1 because start at 0"
 		end
 
-		if (stopAddress <= startAddress) then
+		if (stopAddress < startAddress) then
 			raise TypeError, "Stop address need to be greater than start address"
 		end
 
@@ -113,6 +113,7 @@ end
 					puts "TIMEOUT_RECEIVE\n"
 				else
 					#Remove header, result of read command and numberOfByte Address too
+					puts "receive real size #{temp.size}"
 					consoleData temp.drop(numberOfByteAddress+1)
 			end
 		end
@@ -130,6 +131,7 @@ end
 					puts "TIMEOUT_RECEIVE\n"
 				else
 					#Remove header, result of read command and numberOfByte Address too
+					puts "receive real size #{temp.size}"
 					consoleData temp.drop(numberOfByteAddress+1)
 			end
 		end
@@ -166,6 +168,8 @@ protected
 
 		#put N dummy byte to read size data
 		packet.push *Array.new(size, 0)
+
+	puts  " Send real size #{packet.size}"
 		if packet.size > 4000 then
 			raise TypeError, "Too many byte to send in spi mode not more than 4000 is needed"
 		end

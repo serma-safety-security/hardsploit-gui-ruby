@@ -62,9 +62,9 @@ class CommandWizard < Qt::Widget
     inputRestrict(@cw.lie_totalSizeI2C, 0)
     inputRestrict(@cw.lie_latency, 0)
     inputRestrict(@cw.lie_cmdReadSPI, 0)
+		inputRestrict(@cw.lie_sizeI2C, 0)
     inputRestrict(@cw.lie_addrR, 2)
     inputRestrict(@cw.lie_addrW, 2)
-    inputRestrict(@cw.lie_sizeI2C, 2)
     changeCmdBus
     feedCmdArray
 
@@ -537,9 +537,9 @@ class CommandWizard < Qt::Widget
             lowByte = checkSize[i]
             highByte = checkSize[i + 1]
             commandType = checkSize[i + 2]
-            count = count + (lowByte.to_i + highByte.to_i)
+            count = count + (@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16)))
             if commandType.to_i(16) % 2 == 0 #WRITE
-              i = (i + ((lowByte.to_i + highByte.to_i) + 3))
+              i = (i + ((@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16))) + 3))
             else #READ
               i = (i + 3)
             end
@@ -676,7 +676,7 @@ class CommandWizard < Qt::Widget
     else
       return
     end
-    
+ 
     # Upload parallel firmware
     uploadFPGAFirmware(0, @api)
     time = Time.new
