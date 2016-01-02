@@ -13,7 +13,7 @@ public
 	# Params:
 	# +signal+:: Name of signal you want visual help (set the led)
 def signalHelpingWiring(*args)
-		parametters = checkParametters(["signal"],args)
+		parametters = HardsploitAPI.checkParametters(["signal"],args)
 		signal = parametters[:signal]
 
 		wires = Hash.new
@@ -126,7 +126,7 @@ def signalHelpingWiring(*args)
 			USB_TRAME_SIZE = 8191
 	end
 	module VERSION
-		API   = "1.0.6"
+		API   = "1.1.0"
 	end
 	module USB_STATE
 		public

@@ -13,6 +13,8 @@ require_relative 'HardsploitAPI_FIRMWARE'
 require_relative 'HardsploitAPI_NO_MUX_PARALLELE_MEMORY'
 require_relative 'HardsploitAPI_I2C'
 require_relative 'HardsploitAPI_SPI'
+require_relative 'HardsploitAPI_TEST_INTERACT'
+require_relative 'SWD/HardsploitAPI_SWD'
 
 require 'thread'
 
@@ -31,7 +33,7 @@ public
 	  # * +callbackError+:: callback not used for the moment and transform into progressCallback soon
 		# * +callbackSpeedOfTransfert+:: callback to get back +information about speed+
 	def initialize(*args)
-		 parametters = checkParametters(["callbackData","callbackInfo","callbackError","callbackSpeedOfTransfert"],args)
+		parametters = HardsploitAPI.checkParametters(["callbackData","callbackInfo","callbackError","callbackSpeedOfTransfert"],args)
 		@callbackData = parametters[:callbackData]
 		@callbackInfo = parametters[:callbackInfo]
 		@callbackError = parametters[:callbackError]
@@ -45,25 +47,25 @@ public
 	# Set custom value to wiring led
   # * +value+:: 64 bits (8x8 Bytes) values to represent led (PortH PortG PortF PortE PortD PortC PortB PortA)
 	def setWiringLeds(*args)
-		parametters = checkParametters(["value"],args)
+		parametters = HardsploitAPI.checkParametters(["value"],args)
 		val = parametters[:value]
 
 		packet = Array.new
 		packet.push 0  #low byte of lenght of trame refresh automaticly before send by usb
 		packet.push 0  #high byte of lenght of trame refresh automaticly before send by usb
-		packet.push lowByte(USB_COMMAND::FPGA_COMMAND)
-		packet.push highByte(USB_COMMAND::FPGA_COMMAND)
+		packet.push HardsploitAPI.lowByte(USB_COMMAND::FPGA_COMMAND)
+		packet.push HardsploitAPI.highByte(USB_COMMAND::FPGA_COMMAND)
 
 		packet.push 0x23 #Command SPI write wiring led
 
-		packet.push  reverseBit((val & 0x00000000000000FF) >> 0)
-		packet.push  reverseBit((val & 0x000000000000FF00) >> 8 )
-		packet.push  reverseBit((val & 0x0000000000FF0000) >> 16 )
-		packet.push  reverseBit((val & 0x00000000FF000000) >> 24 )
-		packet.push  reverseBit((val & 0x000000FF00000000) >> 32 )
-		packet.push  reverseBit((val & 0x0000FF0000000000) >> 40 )
-		packet.push  reverseBit((val & 0x00FF000000000000) >> 48 )
-		packet.push  reverseBit((val & 0xFF00000000000000) >> 56 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x00000000000000FF) >> 0)
+		packet.push  HardsploitAPI.reverseBit((val & 0x000000000000FF00) >> 8 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x0000000000FF0000) >> 16 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x00000000FF000000) >> 24 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x000000FF00000000) >> 32 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x0000FF0000000000) >> 40 )
+		packet.push  HardsploitAPI.reverseBit((val & 0x00FF000000000000) >> 48 )
+		packet.push  HardsploitAPI.reverseBit((val & 0xFF00000000000000) >> 56 )
 
 		return  self.sendPacket(packet)
 	end
@@ -73,23 +75,26 @@ public
 		packet = Array.new
 		packet.push 0  #low byte of lenght of trame refresh automaticly before send by usb
 		packet.push 0  #high byte of lenght of trame refresh automaticly before send by usb
-		packet.push lowByte(USB_COMMAND::GET_VERSION_NUMBER)
-		packet.push highByte(USB_COMMAND::GET_VERSION_NUMBER)
+		packet.push HardsploitAPI.lowByte(USB_COMMAND::GET_VERSION_NUMBER)
+		packet.push HardsploitAPI.highByte(USB_COMMAND::GET_VERSION_NUMBER)
 
 		#remove header
 		version_number = sendAndReceiveDATA(packet,1000).drop(4)
+		if version_number.size < 20 then #if size more thant 20 char error when reading version number
+				return version_number.pack('U*')
+		else
+			return "BAD VERSION NUMBER"
+		end
 
-		return version_number.pack('U*')
 	end
 
 
 
-protected
-	def reverseBit(byte)
+	def self.reverseBit(byte)
 		return byte.to_s(2).rjust(8, "0").reverse.to_i(2)
 	end
 
-	def checkParametters(arr_parametters,*args)
+	def self.checkParametters(arr_parametters,*args)
 		params = Hash.new
 		if args[0][0].class == Hash then
 			hash_args = args[0][0]

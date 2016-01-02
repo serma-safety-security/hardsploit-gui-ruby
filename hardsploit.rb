@@ -6,18 +6,22 @@
 #===================================================
 
 require 'Qt4'
-require_relative 'gui/mainChipManagement'
-require_relative 'gui/chipWizard'
-require_relative 'gui/wireWizard'
-require_relative 'gui/commandWizard'
-require_relative 'gui/commandBase'
-require_relative 'gui/exportManager'
+require_relative 'gui/gui_chip_management'
 require_relative 'class/HardsploitGUI'
-require_relative 'class/WireWizard'
-require_relative 'class/ChipWizard'
-require_relative 'class/CommandWizard'
-require_relative 'class/CommandBase'
-require_relative 'class/ExportManager'
+require_relative 'class/Console'
+require_relative 'class/Wire_helper'
+require_relative 'class/Chip_editor'
+require_relative 'class/Generic_commands'
+require_relative 'class/Firmware'
+require_relative 'class/PARALLEL/Parallel_settings'
+require_relative 'class/PARALLEL/Parallel_import'
+require_relative 'class/PARALLEL/Parallel_export'
+require_relative 'class/SPI/Spi_settings'
+require_relative 'class/SPI/Spi_import'
+require_relative 'class/SPI/Spi_export'
+require_relative 'class/I2C/I2c_settings'
+require_relative 'class/I2C/I2c_import'
+require_relative 'class/I2C/I2c_export'
 require_relative 'db/associations'
 require_relative 'HardsploitAPI/HardsploitAPI'
 require_relative 'Firmware/UC/VersionUC'
@@ -102,6 +106,8 @@ end
       reg = Qt::RegExp.new("^[a-zA-Z_@-]+( [a-zA-Z_@-]+)*$")
     when 2
       reg = Qt::RegExp.new("^[a-zA-Z0-9_@-]+( [a-zA-Z0-9_@-]+)*$")
+    when 3
+      reg = Qt::RegExp.new("^[A-Fa-f0-9]{2}")
     end
     regVal = Qt::RegExpValidator.new(reg, self)
     lineEdit.setValidator(regVal)

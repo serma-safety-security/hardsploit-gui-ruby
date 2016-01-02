@@ -5,15 +5,17 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-class WireHelper < Qt::Widget
-  slots 'resetLeds()'
-  slots 'rotateScene()'
+require_relative '../HardsploitAPI/HardsploitAPI'
+require_relative '../gui/gui_wire_helper'
+
+class Wire_helper < Qt::Widget
+  slots 'rotate_scene()'
 
   def initialize(chip, api)
     super()
-    @wireHelper = Ui_WireWizard.new
+    @wire_helper_gui = Ui_Wire_helper.new
     centerWindow(self)
-    @wireHelper.setupUi(self)
+    @wire_helper_gui.setupUi(self)
     @chip = chip
     @api = api
 
@@ -22,34 +24,34 @@ class WireHelper < Qt::Widget
 
     # Draw the chip
     scene = Qt::GraphicsScene.new
-    @wireHelper.lbl_yourChip.setText("Your chip (#{chip.chip_reference}):")
+    @wire_helper_gui.lbl_chip.setText("Your chip (#{chip.chip_reference}):")
 
     # Get the pin total number
     # UniqPin parameters: (scene, pinNum, pinChip, xSig, ySig, xNum, yNum, xRect, yRect, wRect, hRect, rotation)
-    nbrTotalPin = Pin.where(pin_chip: @chip.chip_id).count
+    total_pin_nbr = Pin.where(pin_chip: @chip.chip_id).count
     # If it's a square
     if Package.find_by(package_id: chip.chip_package).package_shape == 0
-      pinBySide = nbrTotalPin / 4
-      cHeight = 14*(pinBySide + 4)  # Chip's height (+4 because we add a space equal to one pin for each corner)
+      pin_by_side = total_pin_nbr / 4
+      cHeight = 14*(pin_by_side + 4)  # Chip's height (+4 because we add a space equal to one pin for each corner)
       scene.addRect(Qt::RectF.new(0, 0, cHeight, cHeight))
       y = 32
       y2 = cHeight - 38
       x = 32
       x2 = cHeight - 38
-      (1..nbrTotalPin).each do |i|
+      (1..total_pin_nbr).each do |i|
         # Face 1
-        if i <= pinBySide
+        if i <= pin_by_side
           ySig = y
           yNum = y
           UniqPin.new(scene, i, @chip.chip_id, -70, ySig - 12, 0, yNum - 12, 0, y, -20, 6, false, api)
           y = y + 14 # Space between each pin
-        elsif i > pinBySide && i <= nbrTotalPin / 2
+        elsif i > pin_by_side && i <= total_pin_nbr / 2
         # Face 2
           xSig2 = x
           xNum2 = x
           UniqPin.new(scene, i, @chip.chip_id, xSig2 - 12, cHeight + 55, xNum2 - 12, cHeight, x, cHeight, 6, 20, true, api)
           x = x + 14
-        elsif i > nbrTotalPin / 2 && i <= (nbrTotalPin-(pinBySide))
+        elsif i > total_pin_nbr / 2 && i <= (total_pin_nbr - (pin_by_side))
         # Face 3
           xSig = cHeight + 24
           ySig = y2
@@ -82,15 +84,15 @@ class WireHelper < Qt::Widget
       end
     # If it's a rectangle
     else
-      pinBySide = nbrTotalPin / 2
-      cHeight = 14 * (pinBySide + 2) # +2 because we add a space equal to one pin for each corner
+      pin_by_side = total_pin_nbr / 2
+      cHeight = 14 * (pin_by_side + 2) # +2 because we add a space equal to one pin for each corner
       scene.addRect(Qt::RectF.new(0, 0, cHeight, cHeight))
       # Add the pins + text
       y = 18
       y2 = cHeight - 24
-      (1..nbrTotalPin).each do |i|
+      (1..total_pin_nbr).each do |i|
         # Face 1
-        if i <= nbrTotalPin/2
+        if i <= total_pin_nbr / 2
           ySig = y
           yNum = y
           UniqPin.new(scene, i, @chip.chip_id, -70, ySig - 12, 0, yNum - 12, 0, y, -20, 6, false, api)
@@ -114,10 +116,9 @@ class WireHelper < Qt::Widget
       end
     end
     # Draw!
-    @wireHelper.gView.setScene(scene)
-    Qt::Object.connect(@wireHelper.btn_cancel, SIGNAL('clicked()'), self, SLOT('close()'))
+    @wire_helper_gui.gView.setScene(scene)
   rescue Exception => msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, "Critical error", "Error occured while drawing the chip. Consult the logs for more details").exec
+    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while drawing the chip. Consult the logs for more details').exec
     logger = Logger.new($logFilePath)
     logger.error msg
   end
@@ -126,8 +127,8 @@ class WireHelper < Qt::Widget
     @api.setWiringLeds(0xFF00FF00FF00FF00)
   end
 
-  def rotateScene
-    @wireHelper.gView.rotate(90)
+  def rotate_scene
+    @wire_helper_gui.gView.rotate(90)
   end
 end
 
@@ -150,31 +151,31 @@ class CustomItem < Qt::GraphicsTextItem
 
   def mouseDoubleClickEvent(event)
     begin
-      pin = self.instance_variable_get("@UPin")
+      pin = self.instance_variable_get('@UPin')
       pin.setColor
-      pin.instance_variable_get("@api").signalHelpingWiring(pin.instance_variable_get("@signalId"))
-      pin.instance_variable_get("@signalTxt").clearFocus
-      pin.instance_variable_get("@nbrTxt").clearFocus
+      pin.instance_variable_get('@api').signalHelpingWiring(pin.instance_variable_get('@signalId'))
+      pin.instance_variable_get('@signalTxt').clearFocus
+      pin.instance_variable_get('@nbrTxt').clearFocus
     rescue
-      pin.instance_variable_get("@api").setWiringLeds(0x0000000000000000)
-      pin.instance_variable_get("@signalTxt").clearFocus
-      pin.instance_variable_get("@nbrTxt").clearFocus
-      Qt::MessageBox.new(Qt::MessageBox::Critical, "Signal not found", "This signal isn't handled by the board").exec
+      pin.instance_variable_get('@api').setWiringLeds(0x0000000000000000)
+      pin.instance_variable_get('@signalTxt').clearFocus
+      pin.instance_variable_get('@nbrTxt').clearFocus
+      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Signal not found', 'This signal is not handled by the board').exec
     end
   end
 
   def mousePressEvent(event)
     begin
-      pin = self.instance_variable_get("@UPin")
+      pin = self.instance_variable_get('@UPin')
       pin.setColor
-      pin.instance_variable_get("@api").signalHelpingWiring(pin.instance_variable_get("@signalId"))
-      pin.instance_variable_get("@signalTxt").clearFocus
-      pin.instance_variable_get("@nbrTxt").clearFocus
+      pin.instance_variable_get('@api').signalHelpingWiring(pin.instance_variable_get('@signalId'))
+      pin.instance_variable_get('@signalTxt').clearFocus
+      pin.instance_variable_get('@nbrTxt').clearFocus
     rescue
-      pin.instance_variable_get("@api").setWiringLeds(0x0000000000000000)
-      pin.instance_variable_get("@signalTxt").clearFocus
-      pin.instance_variable_get("@nbrTxt").clearFocus
-      Qt::MessageBox.new(Qt::MessageBox::Critical, "Signal not found", "This signal isn't handled by the board").exec
+      pin.instance_variable_get('@api').setWiringLeds(0x0000000000000000)
+      pin.instance_variable_get('@signalTxt').clearFocus
+      pin.instance_variable_get('@nbrTxt').clearFocus
+      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Signal not found', 'This signal is not handled by the board').exec
     end
   end
 end

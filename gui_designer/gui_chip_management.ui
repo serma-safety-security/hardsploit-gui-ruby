@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Chip_management</class>
+ <widget class="QMainWindow" name="Chip_management">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>710</width>
+    <height>589</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>710</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Hardsploit - Chip management</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../.designer/images/logoOpale_ico.ico</normaloff>../../../../.designer/images/logoOpale_ico.ico</iconset>
+  </property>
+  <widget class="QWidget" name="cl_main">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="0">
+     <layout class="QHBoxLayout" name="hl_main">
+      <item>
+       <widget class="QTreeWidget" name="tw_chip">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <column>
+         <property name="text">
+          <string>Current chip</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="vl_body">
+        <item>
+         <layout class="QHBoxLayout" name="hl_filters">
+          <item>
+           <widget class="QLabel" name="img_search">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lie_search"/>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cbx_manufacturer">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>Manufacturer...</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cbx_type">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>Type...</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="vl_array">
+          <item>
+           <widget class="QTableWidget" name="tbl_chip">
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Reference</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Type</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Manufacturer</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>BUS</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl_options">
+          <item>
+           <widget class="QLabel" name="lbl_info">
+            <property name="text">
+             <string>Double click a chip reference to load it</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_add">
+            <property name="text">
+             <string>Create component</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item row="6" column="0">
+     <widget class="QTableWidget" name="tbl_console">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Date / Time</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Message</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="check_console">
+        <property name="text">
+         <string>Console:</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>710</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <widget class="QMenu" name="menuUpload_firmware">
+     <property name="title">
+      <string>Firmware...</string>
+     </property>
+     <addaction name="actionDisplay_firmware"/>
+     <addaction name="actionParallel"/>
+     <addaction name="actionI2C"/>
+     <addaction name="actionSPI"/>
+     <addaction name="separator"/>
+     <addaction name="actionUC"/>
+    </widget>
+    <widget class="QMenu" name="menuComponent">
+     <property name="title">
+      <string>Component...</string>
+     </property>
+     <addaction name="actionAdd"/>
+     <addaction name="actionEdit"/>
+     <addaction name="actionDelete"/>
+     <addaction name="actionExport_current"/>
+     <addaction name="actionWire"/>
+    </widget>
+    <addaction name="menuUpload_firmware"/>
+    <addaction name="menuComponent"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <widget class="QMenu" name="menuPath">
+     <property name="title">
+      <string>Path...</string>
+     </property>
+     <addaction name="actionDatabase_file"/>
+     <addaction name="actionError_log_file"/>
+    </widget>
+    <addaction name="actionHardsploit_website"/>
+    <addaction name="actionVersions"/>
+    <addaction name="menuPath"/>
+   </widget>
+   <widget class="QMenu" name="menuSWD">
+    <property name="title">
+     <string>SWD</string>
+    </property>
+    <addaction name="actionSWD_detect"/>
+    <addaction name="actionSWD_export"/>
+    <addaction name="actionSWD_import"/>
+    <addaction name="actionSWD_erase"/>
+   </widget>
+   <addaction name="menuMenu"/>
+   <addaction name="menuSWD"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionVersions">
+   <property name="text">
+    <string>Versions</string>
+   </property>
+  </action>
+  <action name="actionDatabase_file">
+   <property name="text">
+    <string>Database file</string>
+   </property>
+  </action>
+  <action name="actionError_log_file">
+   <property name="text">
+    <string>Error log file</string>
+   </property>
+  </action>
+  <action name="actionUC">
+   <property name="text">
+    <string>Update uC</string>
+   </property>
+  </action>
+  <action name="actionParallel">
+   <property name="text">
+    <string>Set parallel</string>
+   </property>
+  </action>
+  <action name="actionI2C">
+   <property name="text">
+    <string>Set I²C</string>
+   </property>
+  </action>
+  <action name="actionSPI">
+   <property name="text">
+    <string>Set SPI</string>
+   </property>
+  </action>
+  <action name="actionHardsploit_website">
+   <property name="text">
+    <string>Hardsploit website</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add new</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionExport_current">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionDisplay_firmware">
+   <property name="text">
+    <string>Display current firmware</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionWire">
+   <property name="text">
+    <string>Wire</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSWD_detect">
+   <property name="text">
+    <string>Detect</string>
+   </property>
+  </action>
+  <action name="actionSWD_export">
+   <property name="text">
+    <string>Export (Dump)</string>
+   </property>
+  </action>
+  <action name="actionSWD_import">
+   <property name="text">
+    <string>Import (Write)</string>
+   </property>
+  </action>
+  <action name="actionSWD_erase">
+   <property name="text">
+    <string>Erase</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>tbl_chip</sender>
+   <signal>cellDoubleClicked(int,int)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>load_tree(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>681</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>682</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lie_search</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>feed_chip_array()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>385</x>
+     <y>39</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>467</x>
+     <y>26</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbx_manufacturer</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>feed_chip_array()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>37</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>589</x>
+     <y>26</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbx_type</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>feed_chip_array()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>690</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>704</x>
+     <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionError_log_file</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>get_log_path()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHardsploit_website</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>get_hardsploit_website()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionI2C</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>set_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionParallel</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>set_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSPI</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>set_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUC</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>update_uc_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVersions</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>get_hardsploit_versions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDatabase_file</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>get_db_path()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_console</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>console_view()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>43</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_add</sender>
+   <signal>clicked()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>add_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>697</x>
+     <y>419</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tw_chip</sender>
+   <signal>itemDoubleClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>load_chip_action(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>403</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDisplay_firmware</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>display_current_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAdd</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>add_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDelete</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>delete_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEdit</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>edit_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWire</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>wire_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>tbl_console</receiver>
+   <slot>clearContents()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>120</x>
+     <y>490</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSWD_detect</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>swd_detect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSWD_export</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>swd_export()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSWD_import</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>swd_import()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSWD_erase</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>swd_erase()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>load_tree(int,int)</slot>
+  <slot>feed_chip_array()</slot>
+  <slot>get_db_path()</slot>
+  <slot>get_log_path()</slot>
+  <slot>get_hardsploit_versions()</slot>
+  <slot>update_uc_firmware()</slot>
+  <slot>get_hardsploit_website()</slot>
+  <slot>console_view()</slot>
+  <slot>add_chip()</slot>
+  <slot>load_chip_action(QTreeWidgetItem*,int)</slot>
+  <slot>set_firmware()</slot>
+  <slot>display_current_firmware()</slot>
+  <slot>delete_chip()</slot>
+  <slot>edit_chip()</slot>
+  <slot>wire_chip()</slot>
+  <slot>swd_detect()</slot>
+  <slot>swd_import()</slot>
+  <slot>swd_export()</slot>
+  <slot>swd_erase()</slot>
+ </slots>
+</ui>

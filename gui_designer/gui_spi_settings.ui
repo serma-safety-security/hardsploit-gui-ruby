@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Spi_settings</class>
+ <widget class="QWidget" name="Spi_settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>531</width>
+    <height>154</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Hardsploit - Bus settings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="hl">
+     <item>
+      <widget class="QLabel" name="lbl_chip">
+       <property name="text">
+        <string>[CHIP]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_param">
+       <property name="text">
+        <string>PARAMETERS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="hs">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="hl2">
+     <item>
+      <layout class="QFormLayout" name="fl">
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_frequency">
+         <property name="text">
+          <string>Frequency (Mhz):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="cbx_frequency">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>25.00</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>18.75</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15.00</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>12.50</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>10.71</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>9.38</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>7.50</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>5.00</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3.95</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3.00</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2.03</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1.00</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0.50</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0.29</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_cmd_read">
+         <property name="text">
+          <string>SPI command read:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lie_cmd_read">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>3</string>
+         </property>
+         <property name="maxLength">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_page_size">
+         <property name="text">
+          <string>Page size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lie_page_size">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="fl2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_total_size">
+         <property name="text">
+          <string>Total size (8 bits word):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lie_total_size">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maxLength">
+          <number>20</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_mode">
+         <property name="text">
+          <string>Mode:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="cbx_mode">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>3</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_cancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_save">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btn_save</sender>
+   <signal>clicked()</signal>
+   <receiver>Spi_settings</receiver>
+   <slot>save_settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>520</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>2</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Spi_settings</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>415</x>
+     <y>128</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>345</x>
+     <y>3</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>save_settings()</slot>
+ </slots>
+</ui>

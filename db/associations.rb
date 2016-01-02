@@ -122,13 +122,4 @@ class Byte < ActiveRecord::Base
 	belongs_to	:cmd,
 		class_name:		"Cmd",
 		foreign_key:	"byte_cmd"
-	belongs_to	:type,
-		class_name:		"Type",
-		foreign_key:	"byte_type"
-	
-end
-
-class Type < ActiveRecord::Base
-	self.table_name = "HS_BYTE_TYPE"
-	has_many :byte
 end

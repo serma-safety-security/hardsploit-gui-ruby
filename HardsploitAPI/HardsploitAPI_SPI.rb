@@ -15,7 +15,7 @@ public
 # * +payload+:: Byte array want to send
 # * Return SPI data received
 def spi_Interact(*args)
-	parametters = checkParametters(["mode","speed","payload"],args)
+	parametters = HardsploitAPI.checkParametters(["mode","speed","payload"],args)
 	mode = parametters[:mode]
 	speed = parametters[:speed]
 	payload = parametters[:payload]
@@ -34,8 +34,8 @@ def spi_Interact(*args)
 	packet = Array.new
 	packet.push 0  #low byte of lenght of trame refresh automaticly before send by usb
 	packet.push 0  #high byte of lenght of trame refresh automaticly before send by usb
-	packet.push lowByte(USB_COMMAND::FPGA_COMMAND)
-	packet.push highByte(USB_COMMAND::FPGA_COMMAND)
+	packet.push HardsploitAPI.lowByte(USB_COMMAND::FPGA_COMMAND)
+	packet.push HardsploitAPI.highByte(USB_COMMAND::FPGA_COMMAND)
 
 	packet.push 0x50 #Command RAW COMMUNICATION TO FPGA FIFO
 
@@ -65,7 +65,7 @@ end
 # * +stopAddress+:: Stop address (included)
 # * +sizeMax+:: Size max of memory (important to calculate automaticly the number of byte to set address)
 	def spi_Generic_Dump (*args)
-		parametters = checkParametters(["mode","speed","readSpiCommand","startAddress","stopAddress","sizeMax"],args)
+		parametters = HardsploitAPI.checkParametters(["mode","speed","readSpiCommand","startAddress","stopAddress","sizeMax"],args)
 		mode = parametters[:mode]
 		speed = parametters[:speed]
 		readSpiCommand = parametters[:readSpiCommand]

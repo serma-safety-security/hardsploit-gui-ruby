@@ -14,7 +14,7 @@ public
 	# * +checkFirmware+:: boolean if check is needed (recommended false, in case issue true to check)
 	# Return true if firmware write == firmware read (slow because read the firmware for check)
 	def uploadFirmware(*args)
-			parametters = checkParametters(["pathFirmware","checkFirmware"],args)
+			parametters = HardsploitAPI.checkParametters(["pathFirmware","checkFirmware"],args)
 			pathFirmware = parametters[:pathFirmware]
 			checkFirmware = parametters[:checkFirmware]
 
@@ -33,18 +33,18 @@ public
 
 		def startFPGA
 			packet = Array.new
-			packet.push lowByte(4)
-			packet.push highByte(4)
-			packet.push lowByte(USB_COMMAND::START_FPGA)
-			packet.push highByte(USB_COMMAND::START_FPGA)
+			packet.push HardsploitAPI.lowByte(4)
+			packet.push HardsploitAPI.highByte(4)
+			packet.push HardsploitAPI.lowByte(USB_COMMAND::START_FPGA)
+			packet.push HardsploitAPI.highByte(USB_COMMAND::START_FPGA)
 			self.sendPacket(packet)
 		end
 		def stopFPGA
 			packet = Array.new
-			packet.push lowByte(4)
-			packet.push highByte(4)
-			packet.push lowByte(USB_COMMAND::STOP_FPGA)
-			packet.push highByte(USB_COMMAND::STOP_FPGA)
+			packet.push HardsploitAPI.lowByte(4)
+			packet.push HardsploitAPI.highByte(4)
+			packet.push HardsploitAPI.lowByte(USB_COMMAND::STOP_FPGA)
+			packet.push HardsploitAPI.highByte(USB_COMMAND::STOP_FPGA)
 			self.sendPacket(packet)
 		end
 
@@ -52,10 +52,10 @@ public
 protected
 		def eraseFirmware
 			usbPacket = Array.new
-			usbPacket.push lowByte(4) #length of trame
-			usbPacket.push highByte(4)
-			usbPacket.push lowByte(USB_COMMAND::ERASE_FIRMWARE)
-			usbPacket.push highByte(USB_COMMAND::ERASE_FIRMWARE)
+			usbPacket.push HardsploitAPI.lowByte(4) #length of trame
+			usbPacket.push HardsploitAPI.highByte(4)
+			usbPacket.push HardsploitAPI.lowByte(USB_COMMAND::ERASE_FIRMWARE)
+			usbPacket.push HardsploitAPI.highByte(USB_COMMAND::ERASE_FIRMWARE)
 
 			consoleInfo "Start to erase Firmware\n"
 			t1 = Time.now
@@ -72,7 +72,7 @@ protected
 					p "TIMEOUT_RECEIVE"
 					return HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
 				else
-					t2 = Time.now
+					t2 = Time.now 
 					delta = t2 - t1
 					consoleSpeed "Firmware erased in #{delta.round(4)} sec\n\n"
 			end
@@ -119,17 +119,17 @@ protected
 				usbPacket= Array.new
 				usbPacket.push 0  #lenght of trame modify by sendUSBPacket
 				usbPacket.push 0
-				usbPacket.push lowByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
-				usbPacket.push highByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
-				usbPacket.push  lowByte((ipacket)*31)  # low byte Nb of the first page
-				usbPacket.push  highByte((ipacket)*31)  # high byte Nb of the first page
+				usbPacket.push HardsploitAPI.lowByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
+				usbPacket.push HardsploitAPI.highByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
+				usbPacket.push  HardsploitAPI.lowByte((ipacket)*31)  # low byte Nb of the first page
+				usbPacket.push  HardsploitAPI.highByte((ipacket)*31)  # high byte Nb of the first page
 				usbPacket.push 31 #Nb of pages sent
 
 				start = (ipacket)*31*256
 				stop  =  (ipacket+1)*31*256 -1 #array start at index = 0
 
 				for iFile in start..stop
-					usbPacket.push self.reverseBit(file[iFile])
+					usbPacket.push HardsploitAPI.reverseBit(file[iFile])
 					#usbPacket.push file[iFile]
 				 end
 
@@ -152,15 +152,15 @@ protected
 			usbPacket= Array.new
 			usbPacket.push 0  #lenght of trame modify by sendUSBPacket
 			usbPacket.push 0
-			usbPacket.push lowByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
-			usbPacket.push highByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
+			usbPacket.push HardsploitAPI.lowByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
+			usbPacket.push HardsploitAPI.highByte(USB_COMMAND::WRITE_PAGE_FIRMWARE)
 
 			if nbFullPacket == 0 then
-				usbPacket.push  lowByte((nbFullPacket)*31)  # low byte Nb of the first page
-				usbPacket.push  highByte((nbFullPacket)*31)  # high byte Nb of the first page
+				usbPacket.push  HardsploitAPI.lowByte((nbFullPacket)*31)  # low byte Nb of the first page
+				usbPacket.push  HardsploitAPI.highByte((nbFullPacket)*31)  # high byte Nb of the first page
 			else
-				usbPacket.push  lowByte((nbFullPacket)*31 + 1 )  # low byte Nb of the first page
-				usbPacket.push  highByte((nbFullPacket)*31+ 1 )   # high byte Nb of the first page
+				usbPacket.push  HardsploitAPI.lowByte((nbFullPacket)*31 + 1 )  # low byte Nb of the first page
+				usbPacket.push  HardsploitAPI.highByte((nbFullPacket)*31+ 1 )   # high byte Nb of the first page
 			end
 
 			usbPacket.push  nbLastPagePacket # nb of page < 31
@@ -170,7 +170,7 @@ protected
 
 			for iFile in start..stop
 				#inverted LSB MSB
-				usbPacket.push self.reverseBit(file[iFile])
+				usbPacket.push HardsploitAPI.reverseBit(file[iFile])
 			end
 
 			case self.sendPacket(usbPacket)
@@ -222,10 +222,10 @@ protected
 				usbPacket= Array.new
 				usbPacket.push 7
 				usbPacket.push 0
-				usbPacket.push  lowByte(USB_COMMAND::READ_PAGE_FIRMWARE)
-				usbPacket.push  highByte(USB_COMMAND::READ_PAGE_FIRMWARE)
-				usbPacket.push  lowByte((ipacket)*31)  # low byte Nb of the first page
-				usbPacket.push  highByte((ipacket)*31)  # high byte Nb of the first page
+				usbPacket.push  HardsploitAPI.lowByte(USB_COMMAND::READ_PAGE_FIRMWARE)
+				usbPacket.push  HardsploitAPI.highByte(USB_COMMAND::READ_PAGE_FIRMWARE)
+				usbPacket.push  HardsploitAPI.lowByte((ipacket)*31)  # low byte Nb of the first page
+				usbPacket.push  HardsploitAPI.highByte((ipacket)*31)  # high byte Nb of the first page
 				usbPacket.push  31 # nb of page max 31 per packet
 
 				received_data  = sendAndReceiveDATA(usbPacket,3000)
@@ -265,16 +265,16 @@ protected
 				usbPacket= Array.new
 				usbPacket.push 7
 				usbPacket.push 0
-				usbPacket.push lowByte(USB_COMMAND::READ_PAGE_FIRMWARE)
-				usbPacket.push highByte(USB_COMMAND::READ_PAGE_FIRMWARE)
+				usbPacket.push HardsploitAPI.lowByte(USB_COMMAND::READ_PAGE_FIRMWARE)
+				usbPacket.push HardsploitAPI.highByte(USB_COMMAND::READ_PAGE_FIRMWARE)
 
 				#Increase nb of page to add the last byte
 				if nbFullPacket == 0 then
-					usbPacket.push  lowByte((nbFullPacket)*31)  # low byte Nb of the first page
-					usbPacket.push  highByte((nbFullPacket)*31)  # high byte Nb of the first page
+					usbPacket.push  HardsploitAPI.lowByte((nbFullPacket)*31)  # low byte Nb of the first page
+					usbPacket.push  HardsploitAPI.highByte((nbFullPacket)*31)  # high byte Nb of the first page
 				else
-					usbPacket.push  lowByte((nbFullPacket)*31 + 1 )  # low byte Nb of the first page
-					usbPacket.push  highByte((nbFullPacket)*31+ 1 )   # high byte Nb of the first page
+					usbPacket.push  HardsploitAPI.lowByte((nbFullPacket)*31 + 1 )  # low byte Nb of the first page
+					usbPacket.push  HardsploitAPI.highByte((nbFullPacket)*31+ 1 )   # high byte Nb of the first page
 				end
 
 				usbPacket.push  nbLastPagePacket

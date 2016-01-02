@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Chip_editor</class>
+ <widget class="QWidget" name="Chip_editor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>414</width>
+    <height>594</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Hardsploit - Chip editor</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QTableWidget" name="tbl_pins">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Pin Number</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Bus</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Signal</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="lbl_advice">
+     <property name="text">
+      <string>To complete this form, please report to the component datasheet.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="hl">
+     <item>
+      <spacer name="hs">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_cancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_add">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="vl">
+     <item>
+      <layout class="QFormLayout" name="fl">
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_ref">
+         <property name="text">
+          <string>Name / Reference:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="lbl_package">
+         <property name="text">
+          <string>Package:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="hl1">
+         <item>
+          <widget class="QComboBox" name="cbx_package">
+           <item>
+            <property name="text">
+             <string>Select...</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_pack_remove">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>X</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="lbl_pack_new">
+         <property name="text">
+          <string>Not in the list ? Create a new one</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="lbl_name">
+         <property name="text">
+          <string>Package name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QLineEdit" name="lie_pack_name">
+         <property name="maxLength">
+          <number>30</number>
+         </property>
+         <property name="placeholderText">
+          <string>30 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="lbl_pack_pin">
+         <property name="text">
+          <string>Package pin number:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QLineEdit" name="lie_pack_pin">
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
+         <property name="placeholderText">
+          <string>4-144</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="lbl_pack_shape">
+         <property name="text">
+          <string>Package shape:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lie_reference">
+         <property name="maxLength">
+          <number>30</number>
+         </property>
+         <property name="placeholderText">
+          <string>30 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="hl2">
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string/>
+           </property>
+           <widget class="QRadioButton" name="rbn_3v">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>0</y>
+              <width>70</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>3,3V</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QRadioButton" name="rbn_5v">
+            <property name="geometry">
+             <rect>
+              <x>90</x>
+              <y>0</y>
+              <width>109</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>5V</string>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_voltage">
+         <property name="text">
+          <string>Voltage:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <layout class="QHBoxLayout" name="hl3">
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string/>
+           </property>
+           <widget class="QRadioButton" name="rbn_square">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>0</y>
+              <width>81</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Square</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QRadioButton" name="rbn_rectangular">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>0</y>
+              <width>109</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Rectangular</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="lbl_manu">
+         <property name="text">
+          <string>Manufacturer:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="lie_manu_name">
+         <property name="maxLength">
+          <number>30</number>
+         </property>
+         <property name="placeholderText">
+          <string>Other...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_type">
+         <property name="text">
+          <string>Type:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="hl5">
+         <item>
+          <widget class="QComboBox" name="cbx_type">
+           <item>
+            <property name="text">
+             <string>Select...</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_type_remove">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>X</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="lie_type_name">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>30</number>
+         </property>
+         <property name="placeholderText">
+          <string>Other...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_description">
+         <property name="text">
+          <string>Description:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lie_description">
+         <property name="maxLength">
+          <number>200</number>
+         </property>
+         <property name="placeholderText">
+          <string>200 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="hl4">
+         <item>
+          <widget class="QComboBox" name="cbx_manufacturer">
+           <item>
+            <property name="text">
+             <string>Select...</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_manu_remove">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>X</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>lie_pack_pin</sender>
+   <signal>editingFinished()</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>fill_pin_table()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>300</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>409</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_manu_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>delete_cbx_element()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>392</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>410</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_type_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>delete_cbx_element()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>394</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>410</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_pack_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>delete_cbx_element()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>397</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>409</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbx_package</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>select_package()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>8</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbx_type</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>select_type()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbx_manufacturer</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>select_manufacturer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>Chip_editor</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>609</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>575</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>fill_pin_table()</slot>
+  <slot>select_package()</slot>
+  <slot>select_manufacturer()</slot>
+  <slot>filter_cbx()</slot>
+  <slot>delete_cbx_element()</slot>
+  <slot>select_type()</slot>
+ </slots>
+</ui>

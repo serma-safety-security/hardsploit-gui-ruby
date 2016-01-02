@@ -12,7 +12,7 @@ public
 	# * +speed+:: I2C::KHZ_100  , 	I2C::KHZ_400 ,	I2C::KHZ_1000
   # * +payload+:: payload to send
 	def i2c_Interact(*args)
-		parametters = checkParametters(["speed","payload"],args)
+		parametters = HardsploitAPI.checkParametters(["speed","payload"],args)
 		speed = parametters[:speed]
 		payload = parametters[:payload]
 
@@ -27,8 +27,8 @@ public
 		packet = Array.new
 		packet.push 0  #low byte of lenght of trame refresh automaticly before send by usb
 		packet.push 0  #high byte of lenght of trame refresh automaticly before send by usb
-		packet.push lowByte(USB_COMMAND::FPGA_COMMAND)
-		packet.push highByte(USB_COMMAND::FPGA_COMMAND)
+		packet.push HardsploitAPI.lowByte(USB_COMMAND::FPGA_COMMAND)
+		packet.push HardsploitAPI.highByte(USB_COMMAND::FPGA_COMMAND)
 
 		packet.push 0x50 #Command RAW COMMUNICATION TO FPGA FIFO
 
@@ -53,7 +53,7 @@ public
 	# * +speed+:: I2C::KHZ_100  , 	I2C::KHZ_400 ,	I2C::KHZ_1000
   # * Return  An array 256 value for each addresse if 0 not present if 1 present
 	def i2c_Scan(*args)
-		parametters = checkParametters(["speed"],args)
+		parametters = HardsploitAPI.checkParametters(["speed"],args)
 		speed = parametters[:speed]
 
 		if (speed < 0)  and (speed >3) then
@@ -66,8 +66,8 @@ public
 
 		#we want scan just read address it is a partial scan (fastest)
 		for i in (1..255).step(2) do
-			array_i2c_scan.push lowByte(1)  #Count Low  Byte
-			array_i2c_scan.push highByte(1)   #Count High Byte
+			array_i2c_scan.push HardsploitAPI.lowByte(1)  #Count Low  Byte
+			array_i2c_scan.push HardsploitAPI.highByte(1)   #Count High Byte
 			array_i2c_scan.push i
 		end
 
@@ -96,7 +96,7 @@ public
 	# * +stopAddress+:: Stop address (included)
 	# * +sizeMax+:: Size max of memory (important to calculate automaticly the number of byte to set address)
 	def i2c_Generic_Dump (*args)
-		parametters = checkParametters(["speed","i2cBaseAddress","startAddress","stopAddress","sizeMax"],args)
+		parametters = HardsploitAPI.checkParametters(["speed","i2cBaseAddress","startAddress","stopAddress","sizeMax"],args)
 		speed = parametters[:speed]
 		i2cBaseAddress = parametters[:i2cBaseAddress]
 		startAddress = parametters[:startAddress]
@@ -184,8 +184,8 @@ private
 	def generate_i2c_read_command ( i2cBaseAddress, numberOfByteAddress,startAddress,size)
 		packet = Array.new
 		#Push write command for start address
-		packet.push lowByte(numberOfByteAddress)  #size of write command
-		packet.push highByte(numberOfByteAddress) #size of write command
+		packet.push HardsploitAPI.lowByte(numberOfByteAddress)  #size of write command
+		packet.push HardsploitAPI.highByte(numberOfByteAddress) #size of write command
 
 		packet.push i2cBaseAddress #push Write address
 
@@ -209,8 +209,8 @@ private
 		end
 
 		#Push read command to read size data
-		packet.push lowByte(size)  #size of read command
-		packet.push highByte(size) #size of read command
+		packet.push HardsploitAPI.lowByte(size)  #size of read command
+		packet.push HardsploitAPI.highByte(size) #size of read command
 		packet.push i2cBaseAddress+1  #push read address
 
 		return packet

@@ -9,7 +9,7 @@
 ### [GO TO SHOP](https://www.shop-hardsploit.com)
     TO BUY
 
-### [GO TO WIKI](http://wiki.hardsploit.io)
+### [GO TO WIKI](https://github.com/OPALESECURITY/hardsploit-api/wiki)
 
     TO UNDERSTAND HOW USE IT
 
@@ -17,6 +17,6 @@
 
     FOR SUPPORT / HELP
 
-### [GO TO BUG TRACKER](http://issues.hardsploit.io)
+### [GO TO BUG TRACKER](https://github.com/OPALESECURITY/hardsploit-api/issues)
 
     FOR BUGS OR IMPROVEMENTS
