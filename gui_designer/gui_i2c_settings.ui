@@ -109,31 +109,62 @@
          </item>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="lbl_full_size">
          <property name="text">
           <string>Total size:</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="lie_total_size">
          <property name="placeholderText">
           <string>in octet, to a maximum of 4Go</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="7" column="0">
         <widget class="QLabel" name="lbl_bus_scan">
          <property name="text">
           <string>Bus scan:</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="7" column="1">
         <widget class="QPushButton" name="btn_bus_scan">
          <property name="text">
           <string>Launch</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lie_page_size">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>in octet</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_page_size">
+         <property name="text">
+          <string>Page size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="lbl_write_page_latency">
+         <property name="text">
+          <string>Write page latency:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="lie_write_page_latency">
+         <property name="placeholderText">
+          <string>in miliseconds</string>
          </property>
         </widget>
        </item>

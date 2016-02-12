@@ -57,6 +57,147 @@ def spi_Interact(*args)
 	end
 end
 
+
+# Spi generic Import
+# * +mode+:: SPI mode 0,1,2,3
+# * +speed+:: Range 1-255  SPI clock =  150Mhz / (2*speed) tested from 3 to 255 (25Mhz to about 0.3Khz)
+# * +writeSpiCommand+:: The write command
+# * +startAddress+:: Start address (included)
+# * +pageSize+:: Size of page
+# * +memorySize+:: Size max of memory in byte (important, to calculate automatically the number of byte to set address)
+# * +saveFile+:: File contain data
+# * +writePageLatency+:: Time to wait after each pages written
+# * +enableWriteSpiCommand+:: Enable write commad
+# * +clearSpiCommand+:: Bulk erase command
+# * +clearChipTime+:: Time to erase entire the memory (bulk erase) in case of flash memory, 240 seconds for a 512Mb spansion memory and  13 seconds for a 16Mb Micron memory, see the datasheet
+# * +isFLASH+:: True if it is a Flash memory (add clear content)
+	def spi_Generic_Import (*args)
+		parametters = HardsploitAPI.checkParametters(["mode","speed","startAddress","pageSize","memorySize","dataFile","writeSpiCommand","writePageLatency","enableWriteSpiCommand","clearSpiCommand","clearChipTime","isFLASH"],args)
+		mode = parametters[:mode]
+		speed = parametters[:speed]
+		startAddress = parametters[:startAddress]
+		pageSize = parametters[:pageSize]
+		memorySize = parametters[:memorySize]
+		dataFile = parametters[:dataFile]
+		writePageLatency = parametters[:writePageLatency]
+
+		#most of the time 0x02
+		writeSpiCommand = parametters[:writeSpiCommand]
+		writeSpiCommand
+		#most of the time 0x06
+		enableWriteSpiCommand = parametters[:enableWriteSpiCommand]
+
+		#most of the time 0x60  chip eraseTime
+		clearSpiCommand = parametters[:clearWriteSpiCommand]
+
+		# in second
+		clearChipTime = parametters[:clearChipTime]
+
+		#if flash memory
+		isFLASH = parametters[:isEEPROM]
+
+		#Start time
+		startTime = Time.now
+		begin
+			file =	File.open(dataFile, 'rb')
+			sizeFile = file.size
+		rescue Exception => e
+			raise Error::FileIssue, e.message
+		end
+
+		if (mode < 0)  and (mode >3) then
+			raise TypeError, 'Mode must be between 0 and 3'
+		end
+		if (speed <= 2)  and (speed >256) then
+			raise TypeError, 'Speed must be between 3 and 255'
+		end
+
+		if ((startAddress < 0)  or (startAddress > memorySize-1)) then
+			raise Error::WrongStartAddress
+		end
+
+		if ((pageSize <= 0) and (pageSize >2048)) then
+			raise TypeError, "pageSize need to be greater than 0 and less than 2048"
+		end
+
+		numberOfByteAddress = (((Math.log(memorySize-1,2)).floor + 1) / 8.0).ceil
+		if numberOfByteAddress > 4 then
+			raise TypeError, "Size max must be less than 2^32 about 4Gb"
+		end
+
+		if numberOfByteAddress <= 0 then
+			raise TypeError, "There is an issue with calculating of number of byte needed"
+		end
+
+		#if flash memory we need to erase it before and wait enought
+		#time (erase cycle time in datasheet) or polling status register
+		if isFLASH then
+		  spi_Interact(mode:mode,speed:speed,payload:[clearSpiCommand])
+			sleep(clearChipTime)
+		end
+
+		startTime = Time.now
+		packet_size = pageSize
+		number_complet_packet = (sizeFile / packet_size).floor
+		size_last_packet =  sizeFile % packet_size
+
+		#SEND the first complete trame
+		for i in 0..number_complet_packet-1 do
+			#Enable write latch
+			spi_Interact(mode:mode,speed:speed,payload:[enableWriteSpiCommand])
+			packet = generate_spi_write_command numberOfByteAddress,writeSpiCommand,i*packet_size+startAddress,file.read(packet_size).unpack("C*")
+		  temp = spi_Interact(mode,speed,packet)
+			case temp
+				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
+					puts "PACKET_IS_TOO_LARGE max: #{HardsploitAPI::USB::USB_TRAME_SIZE}"
+				when HardsploitAPI::USB_STATE::ERROR_SEND
+					puts "ERROR_SEND\n"
+				when HardsploitAPI::USB_STATE::BUSY
+					puts "BUSY"
+				when HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
+					puts "TIMEOUT_RECEIVE\n"
+				else
+					#Remove header, result of read command and numberOfByte Address too
+					#consoleData temp.drop(numberOfByteAddress+1)
+					if packet.size != packet.size then
+						raise HardsploitAPI::SpiError
+					end
+			end
+
+			consoleProgress(percent:100*(i+1)/(number_complet_packet+ (size_last_packet.zero? ? 0 : 1)),startTime:startTime,endTime:Time.new)
+			#if too many error when write increase because we need to wait to write a full page
+			sleep(writePageLatency)
+		end
+
+		if(size_last_packet > 0 )then
+			#Enable write latch
+			spi_Interact(mode:mode,speed:speed,payload:[enableWriteSpiCommand])
+			packet = generate_spi_write_command numberOfByteAddress,writeSpiCommand,number_complet_packet*packet_size+startAddress,file.read(size_last_packet).unpack("C*")
+			temp = spi_Interact(mode,speed,packet)
+			case temp
+				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
+					puts "PACKET_IS_TOO_LARGE max: #{HardsploitAPI::USB::USB_TRAME_SIZE}"
+				when HardsploitAPI::USB_STATE::ERROR_SEND
+					puts "ERROR_SEND\n"
+				when HardsploitAPI::USB_STATE::BUSY
+					puts "BUSY"
+				when HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
+					puts "TIMEOUT_RECEIVE\n"
+				else
+					#Remove header, result of write command and numberOfByte Address too
+					#consoleData temp.drop(numberOfByteAddress+1)
+					if packet.size != packet.size then
+						raise HardsploitAPI::SpiError
+					end
+			end
+			#Send 100% in case of last packet
+			consoleProgress(percent:100,startTime:startTime,endTime:Time.now)
+		end
+		delta = Time.now - startTime
+		consoleSpeed "Write in #{delta.round(4)} sec"
+end
+
+
 # Spi generic dump
 # * +mode+:: SPI mode 0,1,2,3
 # * +speed+:: Range 1-255  SPI clock =  150Mhz / (2*speed) tested from 3 to 255 (25Mhz to about 0.3Khz)
@@ -72,6 +213,14 @@ end
 		startAddress = parametters[:startAddress]
 		stopAddress = parametters[:stopAddress]
 		sizeMax = parametters[:sizeMax]
+
+
+		if (mode < 0)  and (mode >3) then
+			raise TypeError, 'Mode must be between 0 and 3'
+		end
+		if (speed <= 2)  and (speed >256) then
+			raise TypeError, 'Speed must be between 3 and 255'
+		end
 
 		if ((startAddress < 0)  or (startAddress > sizeMax-1)) then
 			raise TypeError, "Start address can't be negative and not more than size max - 1"
@@ -93,6 +242,8 @@ end
 			raise TypeError, "There is an issue with calculating of number of byte needed"
 		end
 
+		#Start time
+		startTime = Time.now
 		packet_size = 4000 - numberOfByteAddress - 1
 		number_complet_packet = ( (stopAddress-startAddress+1) / packet_size).floor
 		size_last_packet =  (stopAddress-startAddress+1) % packet_size
@@ -100,7 +251,6 @@ end
 		#SEND the first complete trame
 		for i in 0..number_complet_packet-1 do
 			packet = generate_spi_read_command numberOfByteAddress,readSpiCommand,i*packet_size+startAddress,packet_size
-
 			temp = spi_Interact(mode,speed,packet)
 			case temp
 				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
@@ -113,11 +263,13 @@ end
 					puts "TIMEOUT_RECEIVE\n"
 				else
 					#Remove header, result of read command and numberOfByte Address too
-					puts "receive real size #{temp.size}"
+					#puts "receive real size #{temp.size}"
 					consoleData temp.drop(numberOfByteAddress+1)
 			end
+			consoleProgress(percent:100*(i+1)/(number_complet_packet+ (size_last_packet.zero? ? 0 : 1)),startTime:startTime,endTime:Time.new)
 		end
 
+	if(size_last_packet > 0 )then
 			packet = generate_spi_read_command numberOfByteAddress,readSpiCommand,number_complet_packet*packet_size+startAddress,size_last_packet
 			temp = spi_Interact(mode,speed,packet)
 			case temp
@@ -131,10 +283,14 @@ end
 					puts "TIMEOUT_RECEIVE\n"
 				else
 					#Remove header, result of read command and numberOfByte Address too
-					puts "receive real size #{temp.size}"
+					#puts "receive real size #{temp.size}"
 					consoleData temp.drop(numberOfByteAddress+1)
-			end
+					consoleProgress(percent:100,startTime:startTime,endTime:Time.now)
+				end
 		end
+		delta = Time.now - startTime
+		consoleSpeed "Write in #{delta.round(4)} sec"
+end
 
 protected
 	def generate_spi_read_command ( numberOfByteAddress,readSpiCommand,startAddress,size)
@@ -168,8 +324,42 @@ protected
 
 		#put N dummy byte to read size data
 		packet.push *Array.new(size, 0)
+		if packet.size > 4000 then
+			raise TypeError, "Too many byte to send in spi mode not more than 4000 is needed"
+		end
 
-	puts  " Send real size #{packet.size}"
+		return packet
+	end
+
+	def generate_spi_write_command ( numberOfByteAddress,writeSpiCommand,startAddress,data)
+		packet = Array.new
+			#Push write command
+		packet.push writeSpiCommand
+
+		case  numberOfByteAddress
+			when 1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+
+			when 2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+
+			when 3
+				packet.push  ((startAddress & 0x00FF0000) >> 16 ) #AddStart2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+
+			when 4
+				packet.push  ((startAddress & 0xFF000000) >> 24 ) #AddStart3
+				packet.push  ((startAddress & 0x00FF0000) >> 16 ) #AddStart2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+			else
+				raise TypeError, "Issue in generate_spi_write_command function when parse number of byte address"
+		end
+
+		#Push data to write
+		packet.push *data
 		if packet.size > 4000 then
 			raise TypeError, "Too many byte to send in spi mode not more than 4000 is needed"
 		end

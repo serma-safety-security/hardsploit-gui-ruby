@@ -7,7 +7,7 @@
 
 require_relative '../HardsploitAPI/HardsploitAPI'
 class HardsploitGUI < Qt::MainWindow
-  VERSION = "2.0"
+  VERSION = "2.1"
   slots 'load_tree(int, int)'
   slots 'load_chip_action(QTreeWidgetItem*, int)'
   slots 'feed_chip_array()'
@@ -155,9 +155,10 @@ class HardsploitGUI < Qt::MainWindow
       settings_lvl = Qt::TreeWidgetItem.new
       settings_lvl.setText(0, "Settings")
       parent_node.addChild(settings_lvl)
-      import_lvl = Qt::TreeWidgetItem.new
-      import_lvl.setText(0, "Import")
-      parent_node.addChild(import_lvl)
+      # Not implemented yet
+      #import_lvl = Qt::TreeWidgetItem.new
+      #import_lvl.setText(0, "Import")
+      #parent_node.addChild(import_lvl)
       export_lvl = Qt::TreeWidgetItem.new
       export_lvl.setText(0, "Export")
       parent_node.addChild(export_lvl)

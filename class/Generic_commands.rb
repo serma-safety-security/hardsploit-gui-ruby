@@ -79,9 +79,9 @@ class Generic_commands < Qt::Widget
         '0.50' => 150,
         '0.29' => 255
       }
-      @generic_command_gui.cbx_action.insertItem(3, 'Concatenate')
     when 'I2C'
       @chip_settings = I2C.find_by(i2c_chip: @chip.chip_id)
+      @generic_command_gui.cbx_action.insertItem(3, 'Concatenate')
     end
   end
 
@@ -175,39 +175,34 @@ class Generic_commands < Qt::Widget
     bytesCmd1 = Byte.where(byte_cmd: Cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.selectedItems[0].text).cmd_id)
     bytesCmd2 = Byte.where(byte_cmd: Cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.selectedItems[1].text).cmd_id)
     if check_concatenation_size(bytesCmd1, bytesCmd2)
-      return 0
+      # Save cmd
+      cmd = Cmd.new
+      cmd.cmd_name = 'New concatenation'
+      cmd.cmd_desc = "Concatenation of #{@generic_command_gui.tbl_cmd.selectedItems[0].text} and #{@generic_command_gui.tbl_cmd.selectedItems[1].text} commands"
+      cmd.cmd_bus = @bus_id
+      cmd.cmd_chip = @chip.chip_id
+      cmd.save
+      # Save cmd bytes
+      bytesCmd1.each do |b1|
+        byte = Byte.new
+        byte.byte_index = b1.byte_index
+        byte.byte_value = b1.byte_value
+        byte.byte_description = b1.byte_description
+        byte.byte_iteration = b1.byte_iteration
+        byte.byte_cmd = Cmd.ids.last
+        byte.save
+      end
+      bytesCmd2.each do |b2|
+        byte2 = Byte.new
+        byte2.byte_index = Byte.last.byte_index + 1
+        byte2.byte_value = b2.byte_value
+        byte2.byte_description = b2.byte_description
+        byte2.byte_iteration = b2.byte_iteration
+        byte2.byte_cmd = Cmd.ids.last
+        byte2.save
+      end
+      feed_cmd_array
     end
-    # Save cmd
-    cmd = Cmd.new
-    cmd.cmd_name = 'New concatenation'
-    cmd.cmd_desc = "Concatenation of #{@generic_command_gui.tbl_cmd.selectedItems[0].text} and #{@generic_command_gui.tbl_cmd.selectedItems[1].text} commands"
-    cmd.cmd_bus = @bus_id
-    cmd.cmd_chip = @chip.chip_id
-    cmd.save
-    # Save cmd bytes
-    bytesCmd1.each do |b1|
-      byte = Byte.new
-      byte.byte_index = b1.byte_index
-      byte.byte_value = b1.byte_value
-      checkSize.push(b1.byte_value)
-      byte.byte_description = b1.byte_description
-      byte.byte_iteration = b1.byte_iteration
-      byte.byte_cmd = Cmd.ids.last
-      byte.byte_type = 1
-      byte.save
-    end
-    bytesCmd2.each do |b2|
-      byte2 = Byte.new
-      byte2.byte_index = Byte.last.byte_index + 1
-      byte2.byte_value = b2.byte_value
-      checkSize.push(b2.byte_value)
-      byte2.byte_description = b2.byte_description
-      byte2.byte_iteration = b2.byte_iteration
-      byte2.byte_cmd = Cmd.ids.last
-      byte2.byte_type = 1
-      byte2.save
-    end
-    feed_cmd_array
   rescue Exception => msg
     logger = Logger.new($logFilePath)
     logger.error msg
@@ -215,7 +210,7 @@ class Generic_commands < Qt::Widget
   end
 
   def check_concatenation_size(bytesCmd1, bytesCmd2)
-    checkSize = Array.new
+    checkSize = []
     bytesCmd1.each do |b1|
       checkSize.push(b1.byte_value)
     end
@@ -228,9 +223,9 @@ class Generic_commands < Qt::Widget
       lowByte = checkSize[i]
       highByte = checkSize[i + 1]
       commandType = checkSize[i + 2]
-      count = count + (@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16)))
+      count += (lowByte.to_i(16) + (highByte.to_i(16)<<8))
       if commandType.to_i(16) % 2 == 0 #WRITE
-        i = (i + ((@api.BytesToInt(lowByte.to_i(16), highByte.to_i(16))) + 3))
+        i += ((lowByte.to_i(16) + (highByte.to_i(16)<<8)) + 3)
       else #READ
         i = (i + 3)
       end

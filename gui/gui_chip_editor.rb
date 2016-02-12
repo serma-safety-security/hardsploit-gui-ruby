@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_chip_editor.ui'
 **
-** Created: mar. déc. 22 16:54:43 2015
+** Created: mer. févr. 10 14:26:34 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -18,38 +18,37 @@ class Ui_Chip_editor
     attr_reader :vl
     attr_reader :fl
     attr_reader :lbl_ref
-    attr_reader :lbl_package
-    attr_reader :hl1
-    attr_reader :cbx_package
-    attr_reader :btn_pack_remove
-    attr_reader :lbl_pack_new
-    attr_reader :lbl_name
-    attr_reader :lie_pack_name
-    attr_reader :lbl_pack_pin
-    attr_reader :lie_pack_pin
-    attr_reader :lbl_pack_shape
     attr_reader :lie_reference
+    attr_reader :lbl_description
+    attr_reader :lie_description
+    attr_reader :lbl_voltage
     attr_reader :hl2
     attr_reader :groupBox
     attr_reader :rbn_3v
     attr_reader :rbn_5v
-    attr_reader :lbl_voltage
-    attr_reader :hl3
-    attr_reader :groupBox_2
-    attr_reader :rbn_square
-    attr_reader :rbn_rectangular
     attr_reader :lbl_manu
+    attr_reader :hl4
+    attr_reader :cbx_manufacturer
+    attr_reader :btn_manu_remove
     attr_reader :lie_manu_name
     attr_reader :lbl_type
     attr_reader :hl5
     attr_reader :cbx_type
     attr_reader :btn_type_remove
     attr_reader :lie_type_name
-    attr_reader :lbl_description
-    attr_reader :lie_description
-    attr_reader :hl4
-    attr_reader :cbx_manufacturer
-    attr_reader :btn_manu_remove
+    attr_reader :lbl_package
+    attr_reader :hl1
+    attr_reader :cbx_package
+    attr_reader :btn_pack_remove
+    attr_reader :lbl_name
+    attr_reader :lie_pack_name
+    attr_reader :lbl_pack_pin
+    attr_reader :lie_pack_pin
+    attr_reader :lbl_pack_shape
+    attr_reader :hl3
+    attr_reader :groupBox_2
+    attr_reader :rbn_square
+    attr_reader :rbn_rectangular
 
     def setupUi(chip_editor)
     if chip_editor.objectName.nil?
@@ -98,64 +97,27 @@ class Ui_Chip_editor
 
     @fl.setWidget(0, Qt::FormLayout::LabelRole, @lbl_ref)
 
-    @lbl_package = Qt::Label.new(chip_editor)
-    @lbl_package.objectName = "lbl_package"
-
-    @fl.setWidget(7, Qt::FormLayout::LabelRole, @lbl_package)
-
-    @hl1 = Qt::HBoxLayout.new()
-    @hl1.objectName = "hl1"
-    @cbx_package = Qt::ComboBox.new(chip_editor)
-    @cbx_package.objectName = "cbx_package"
-
-    @hl1.addWidget(@cbx_package)
-
-    @btn_pack_remove = Qt::PushButton.new(chip_editor)
-    @btn_pack_remove.objectName = "btn_pack_remove"
-    @btn_pack_remove.maximumSize = Qt::Size.new(30, 16777215)
-
-    @hl1.addWidget(@btn_pack_remove)
-
-
-    @fl.setLayout(7, Qt::FormLayout::FieldRole, @hl1)
-
-    @lbl_pack_new = Qt::Label.new(chip_editor)
-    @lbl_pack_new.objectName = "lbl_pack_new"
-
-    @fl.setWidget(10, Qt::FormLayout::LabelRole, @lbl_pack_new)
-
-    @lbl_name = Qt::Label.new(chip_editor)
-    @lbl_name.objectName = "lbl_name"
-
-    @fl.setWidget(11, Qt::FormLayout::LabelRole, @lbl_name)
-
-    @lie_pack_name = Qt::LineEdit.new(chip_editor)
-    @lie_pack_name.objectName = "lie_pack_name"
-    @lie_pack_name.maxLength = 30
-
-    @fl.setWidget(11, Qt::FormLayout::FieldRole, @lie_pack_name)
-
-    @lbl_pack_pin = Qt::Label.new(chip_editor)
-    @lbl_pack_pin.objectName = "lbl_pack_pin"
-
-    @fl.setWidget(12, Qt::FormLayout::LabelRole, @lbl_pack_pin)
-
-    @lie_pack_pin = Qt::LineEdit.new(chip_editor)
-    @lie_pack_pin.objectName = "lie_pack_pin"
-    @lie_pack_pin.maxLength = 3
-
-    @fl.setWidget(12, Qt::FormLayout::FieldRole, @lie_pack_pin)
-
-    @lbl_pack_shape = Qt::Label.new(chip_editor)
-    @lbl_pack_shape.objectName = "lbl_pack_shape"
-
-    @fl.setWidget(13, Qt::FormLayout::LabelRole, @lbl_pack_shape)
-
     @lie_reference = Qt::LineEdit.new(chip_editor)
     @lie_reference.objectName = "lie_reference"
     @lie_reference.maxLength = 30
 
     @fl.setWidget(0, Qt::FormLayout::FieldRole, @lie_reference)
+
+    @lbl_description = Qt::Label.new(chip_editor)
+    @lbl_description.objectName = "lbl_description"
+
+    @fl.setWidget(1, Qt::FormLayout::LabelRole, @lbl_description)
+
+    @lie_description = Qt::LineEdit.new(chip_editor)
+    @lie_description.objectName = "lie_description"
+    @lie_description.maxLength = 200
+
+    @fl.setWidget(1, Qt::FormLayout::FieldRole, @lie_description)
+
+    @lbl_voltage = Qt::Label.new(chip_editor)
+    @lbl_voltage.objectName = "lbl_voltage"
+
+    @fl.setWidget(2, Qt::FormLayout::LabelRole, @lbl_voltage)
 
     @hl2 = Qt::HBoxLayout.new()
     @hl2.objectName = "hl2"
@@ -176,35 +138,26 @@ class Ui_Chip_editor
 
     @fl.setLayout(2, Qt::FormLayout::FieldRole, @hl2)
 
-    @lbl_voltage = Qt::Label.new(chip_editor)
-    @lbl_voltage.objectName = "lbl_voltage"
-
-    @fl.setWidget(2, Qt::FormLayout::LabelRole, @lbl_voltage)
-
-    @hl3 = Qt::HBoxLayout.new()
-    @hl3.objectName = "hl3"
-    @groupBox_2 = Qt::GroupBox.new(chip_editor)
-    @groupBox_2.objectName = "groupBox_2"
-    @rbn_square = Qt::RadioButton.new(@groupBox_2)
-    @rbn_square.objectName = "rbn_square"
-    @rbn_square.geometry = Qt::Rect.new(10, 0, 81, 20)
-    @rbn_square.checked = true
-    @rbn_square.autoExclusive = true
-    @rbn_rectangular = Qt::RadioButton.new(@groupBox_2)
-    @rbn_rectangular.objectName = "rbn_rectangular"
-    @rbn_rectangular.geometry = Qt::Rect.new(110, 0, 109, 20)
-    @rbn_rectangular.checked = false
-    @rbn_rectangular.autoExclusive = true
-
-    @hl3.addWidget(@groupBox_2)
-
-
-    @fl.setLayout(13, Qt::FormLayout::FieldRole, @hl3)
-
     @lbl_manu = Qt::Label.new(chip_editor)
     @lbl_manu.objectName = "lbl_manu"
 
     @fl.setWidget(3, Qt::FormLayout::LabelRole, @lbl_manu)
+
+    @hl4 = Qt::HBoxLayout.new()
+    @hl4.objectName = "hl4"
+    @cbx_manufacturer = Qt::ComboBox.new(chip_editor)
+    @cbx_manufacturer.objectName = "cbx_manufacturer"
+
+    @hl4.addWidget(@cbx_manufacturer)
+
+    @btn_manu_remove = Qt::PushButton.new(chip_editor)
+    @btn_manu_remove.objectName = "btn_manu_remove"
+    @btn_manu_remove.maximumSize = Qt::Size.new(30, 16777215)
+
+    @hl4.addWidget(@btn_manu_remove)
+
+
+    @fl.setLayout(3, Qt::FormLayout::FieldRole, @hl4)
 
     @lie_manu_name = Qt::LineEdit.new(chip_editor)
     @lie_manu_name.objectName = "lie_manu_name"
@@ -239,32 +192,73 @@ class Ui_Chip_editor
 
     @fl.setWidget(6, Qt::FormLayout::FieldRole, @lie_type_name)
 
-    @lbl_description = Qt::Label.new(chip_editor)
-    @lbl_description.objectName = "lbl_description"
+    @lbl_package = Qt::Label.new(chip_editor)
+    @lbl_package.objectName = "lbl_package"
 
-    @fl.setWidget(1, Qt::FormLayout::LabelRole, @lbl_description)
+    @fl.setWidget(7, Qt::FormLayout::LabelRole, @lbl_package)
 
-    @lie_description = Qt::LineEdit.new(chip_editor)
-    @lie_description.objectName = "lie_description"
-    @lie_description.maxLength = 200
+    @hl1 = Qt::HBoxLayout.new()
+    @hl1.objectName = "hl1"
+    @cbx_package = Qt::ComboBox.new(chip_editor)
+    @cbx_package.objectName = "cbx_package"
 
-    @fl.setWidget(1, Qt::FormLayout::FieldRole, @lie_description)
+    @hl1.addWidget(@cbx_package)
 
-    @hl4 = Qt::HBoxLayout.new()
-    @hl4.objectName = "hl4"
-    @cbx_manufacturer = Qt::ComboBox.new(chip_editor)
-    @cbx_manufacturer.objectName = "cbx_manufacturer"
+    @btn_pack_remove = Qt::PushButton.new(chip_editor)
+    @btn_pack_remove.objectName = "btn_pack_remove"
+    @btn_pack_remove.maximumSize = Qt::Size.new(30, 16777215)
 
-    @hl4.addWidget(@cbx_manufacturer)
-
-    @btn_manu_remove = Qt::PushButton.new(chip_editor)
-    @btn_manu_remove.objectName = "btn_manu_remove"
-    @btn_manu_remove.maximumSize = Qt::Size.new(30, 16777215)
-
-    @hl4.addWidget(@btn_manu_remove)
+    @hl1.addWidget(@btn_pack_remove)
 
 
-    @fl.setLayout(3, Qt::FormLayout::FieldRole, @hl4)
+    @fl.setLayout(7, Qt::FormLayout::FieldRole, @hl1)
+
+    @lbl_name = Qt::Label.new(chip_editor)
+    @lbl_name.objectName = "lbl_name"
+
+    @fl.setWidget(8, Qt::FormLayout::LabelRole, @lbl_name)
+
+    @lie_pack_name = Qt::LineEdit.new(chip_editor)
+    @lie_pack_name.objectName = "lie_pack_name"
+    @lie_pack_name.maxLength = 30
+
+    @fl.setWidget(8, Qt::FormLayout::FieldRole, @lie_pack_name)
+
+    @lbl_pack_pin = Qt::Label.new(chip_editor)
+    @lbl_pack_pin.objectName = "lbl_pack_pin"
+
+    @fl.setWidget(9, Qt::FormLayout::LabelRole, @lbl_pack_pin)
+
+    @lie_pack_pin = Qt::LineEdit.new(chip_editor)
+    @lie_pack_pin.objectName = "lie_pack_pin"
+    @lie_pack_pin.maxLength = 3
+
+    @fl.setWidget(9, Qt::FormLayout::FieldRole, @lie_pack_pin)
+
+    @lbl_pack_shape = Qt::Label.new(chip_editor)
+    @lbl_pack_shape.objectName = "lbl_pack_shape"
+
+    @fl.setWidget(10, Qt::FormLayout::LabelRole, @lbl_pack_shape)
+
+    @hl3 = Qt::HBoxLayout.new()
+    @hl3.objectName = "hl3"
+    @groupBox_2 = Qt::GroupBox.new(chip_editor)
+    @groupBox_2.objectName = "groupBox_2"
+    @rbn_square = Qt::RadioButton.new(@groupBox_2)
+    @rbn_square.objectName = "rbn_square"
+    @rbn_square.geometry = Qt::Rect.new(10, 0, 81, 20)
+    @rbn_square.checked = true
+    @rbn_square.autoExclusive = true
+    @rbn_rectangular = Qt::RadioButton.new(@groupBox_2)
+    @rbn_rectangular.objectName = "rbn_rectangular"
+    @rbn_rectangular.geometry = Qt::Rect.new(110, 0, 109, 20)
+    @rbn_rectangular.checked = false
+    @rbn_rectangular.autoExclusive = true
+
+    @hl3.addWidget(@groupBox_2)
+
+
+    @fl.setLayout(10, Qt::FormLayout::FieldRole, @hl3)
 
 
     @vl.addLayout(@fl)
@@ -311,35 +305,34 @@ class Ui_Chip_editor
     @btn_cancel.text = Qt::Application.translate("Chip_editor", "Cancel", nil, Qt::Application::UnicodeUTF8)
     @btn_add.text = Qt::Application.translate("Chip_editor", "Add", nil, Qt::Application::UnicodeUTF8)
     @lbl_ref.text = Qt::Application.translate("Chip_editor", "Name / Reference:", nil, Qt::Application::UnicodeUTF8)
-    @lbl_package.text = Qt::Application.translate("Chip_editor", "Package:", nil, Qt::Application::UnicodeUTF8)
-    @cbx_package.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
-    @btn_pack_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
-    @lbl_pack_new.text = Qt::Application.translate("Chip_editor", "Not in the list ? Create a new one", nil, Qt::Application::UnicodeUTF8)
-    @lbl_name.text = Qt::Application.translate("Chip_editor", "Package name:", nil, Qt::Application::UnicodeUTF8)
-    @lie_pack_name.placeholderText = Qt::Application.translate("Chip_editor", "30 chars max", nil, Qt::Application::UnicodeUTF8)
-    @lbl_pack_pin.text = Qt::Application.translate("Chip_editor", "Package pin number:", nil, Qt::Application::UnicodeUTF8)
-    @lie_pack_pin.inputMask = ''
-    @lie_pack_pin.placeholderText = Qt::Application.translate("Chip_editor", "4-144", nil, Qt::Application::UnicodeUTF8)
-    @lbl_pack_shape.text = Qt::Application.translate("Chip_editor", "Package shape:", nil, Qt::Application::UnicodeUTF8)
     @lie_reference.placeholderText = Qt::Application.translate("Chip_editor", "30 chars max", nil, Qt::Application::UnicodeUTF8)
+    @lbl_description.text = Qt::Application.translate("Chip_editor", "Description:", nil, Qt::Application::UnicodeUTF8)
+    @lie_description.placeholderText = Qt::Application.translate("Chip_editor", "200 chars max", nil, Qt::Application::UnicodeUTF8)
+    @lbl_voltage.text = Qt::Application.translate("Chip_editor", "Voltage:", nil, Qt::Application::UnicodeUTF8)
     @groupBox.title = ''
     @rbn_3v.text = Qt::Application.translate("Chip_editor", "3,3V", nil, Qt::Application::UnicodeUTF8)
     @rbn_5v.text = Qt::Application.translate("Chip_editor", "5V", nil, Qt::Application::UnicodeUTF8)
-    @lbl_voltage.text = Qt::Application.translate("Chip_editor", "Voltage:", nil, Qt::Application::UnicodeUTF8)
-    @groupBox_2.title = ''
-    @rbn_square.text = Qt::Application.translate("Chip_editor", "Square", nil, Qt::Application::UnicodeUTF8)
-    @rbn_rectangular.text = Qt::Application.translate("Chip_editor", "Rectangular", nil, Qt::Application::UnicodeUTF8)
     @lbl_manu.text = Qt::Application.translate("Chip_editor", "Manufacturer:", nil, Qt::Application::UnicodeUTF8)
+    @cbx_manufacturer.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
+    @btn_manu_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
     @lie_manu_name.placeholderText = Qt::Application.translate("Chip_editor", "Other...", nil, Qt::Application::UnicodeUTF8)
     @lbl_type.text = Qt::Application.translate("Chip_editor", "Type:", nil, Qt::Application::UnicodeUTF8)
     @cbx_type.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
     @btn_type_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
     @lie_type_name.text = ''
     @lie_type_name.placeholderText = Qt::Application.translate("Chip_editor", "Other...", nil, Qt::Application::UnicodeUTF8)
-    @lbl_description.text = Qt::Application.translate("Chip_editor", "Description:", nil, Qt::Application::UnicodeUTF8)
-    @lie_description.placeholderText = Qt::Application.translate("Chip_editor", "200 chars max", nil, Qt::Application::UnicodeUTF8)
-    @cbx_manufacturer.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
-    @btn_manu_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
+    @lbl_package.text = Qt::Application.translate("Chip_editor", "Package:", nil, Qt::Application::UnicodeUTF8)
+    @cbx_package.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
+    @btn_pack_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
+    @lbl_name.text = Qt::Application.translate("Chip_editor", "Package name:", nil, Qt::Application::UnicodeUTF8)
+    @lie_pack_name.placeholderText = Qt::Application.translate("Chip_editor", "30 chars max", nil, Qt::Application::UnicodeUTF8)
+    @lbl_pack_pin.text = Qt::Application.translate("Chip_editor", "Package pin number:", nil, Qt::Application::UnicodeUTF8)
+    @lie_pack_pin.inputMask = ''
+    @lie_pack_pin.placeholderText = Qt::Application.translate("Chip_editor", "4-144", nil, Qt::Application::UnicodeUTF8)
+    @lbl_pack_shape.text = Qt::Application.translate("Chip_editor", "Package shape:", nil, Qt::Application::UnicodeUTF8)
+    @groupBox_2.title = ''
+    @rbn_square.text = Qt::Application.translate("Chip_editor", "Square", nil, Qt::Application::UnicodeUTF8)
+    @rbn_rectangular.text = Qt::Application.translate("Chip_editor", "Rectangular", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 
     def retranslate_ui(chip_editor)

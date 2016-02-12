@@ -54,15 +54,16 @@ class I2c_export < Qt::Widget
       return 0 if control_export_settings('partial').zero?
     end
     Firmware.new(@api, 'I2C')
-    time = Time.new
+    $pgb = Progress_bar.new("I²C: Exporting...")
+    $pgb.show
     if sender.objectName == 'btn_full_export'
       @api.i2c_Generic_Dump(@chip_settings.i2c_frequency, @chip_settings.i2c_address_w.to_i(16), 0, @chip_settings.i2c_total_size - 1, @chip_settings.i2c_total_size)
       close_file
-      control_export_result('full', @chip_settings.i2c_total_size - 1, time)
+      control_export_result('full', @chip_settings.i2c_total_size - 1)
     else
       @api.i2c_Generic_Dump(@chip_settings.i2c_frequency, @chip_settings.i2c_address_w.to_i(16), @i2c_export_gui.lie_start.text.to_i, @i2c_export_gui.lie_stop.text.to_i, @chip_settings.i2c_total_size)
       close_file
-      control_export_result('partial', @i2c_export_gui.lie_stop.text.to_i, time)
+      control_export_result('partial', @i2c_export_gui.lie_stop.text.to_i)
     end
     @i2c_export_gui.btn_export.setEnabled(false)
     @i2c_export_gui.btn_full_export.setEnabled(false)
@@ -72,20 +73,16 @@ class I2c_export < Qt::Widget
     Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while full export operation. Consult the logs for more details').exec
   end
 
-  def control_export_result(type, stop, time)
-    time = Time.new - time
+  def control_export_result(type, stop)
     if type == 'partial'
       toCompare = ((stop - @i2c_export_gui.lie_start.text.to_i) + 1)
     else
       toCompare = @chip_settings.i2c_total_size
     end
     file_size = File.size(@filepath)
-    if toCompare == file_size
-      Qt::MessageBox.new(Qt::MessageBox::Information, 'Information', "Dump finished at #{((file_size / time)).round(2)}Bytes/s (#{(file_size)} Bytes in  #{time.round(4)} s)").exec
-    else
+    if toCompare != file_size
       Qt::MessageBox.new(Qt::MessageBox::Critical, 'Error', 'Dump error: Size does not match').exec
     end
-    p "DUMP #{((file_size / time)).round(2)}Bytes/s (#{(file_size)}Bytes in  #{time.round(4)} s)"
   end
 
   def control_export_settings(type)

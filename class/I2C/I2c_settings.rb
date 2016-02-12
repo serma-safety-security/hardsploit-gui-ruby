@@ -18,6 +18,8 @@ class I2c_settings < Qt::Widget
     @i2c_settings_gui.setupUi(self)
     @i2c_settings_gui.lbl_chip.setText(chip.chip_reference)
     inputRestrict(@i2c_settings_gui.lie_total_size, 0)
+    inputRestrict(@i2c_settings_gui.lie_page_size, 0)
+    inputRestrict(@i2c_settings_gui.lie_write_page_latency, 0)
     inputRestrict(@i2c_settings_gui.lie_address_r, 3)
     inputRestrict(@i2c_settings_gui.lie_address_w, 3)
     @i2c_settings_gui.tbl_bus_scan.resizeColumnsToContents
@@ -40,9 +42,11 @@ class I2c_settings < Qt::Widget
 
   def feed_settings_form
     unless @chip_settings.nil?
-      @i2c_settings_gui.cbx_frequency.setCurrentIndex(@i2c_settings_gui.cbx_frequency.findText(@chip_settings.i2c_frequency.to_s))
-      @i2c_settings_gui.lie_address_r.setText(@chip_settings.i2c_address_r)
       @i2c_settings_gui.lie_address_w.setText(@chip_settings.i2c_address_w)
+      @i2c_settings_gui.lie_address_r.setText(@chip_settings.i2c_address_r)
+      @i2c_settings_gui.cbx_frequency.setCurrentIndex(@i2c_settings_gui.cbx_frequency.findText(@chip_settings.i2c_frequency.to_s))
+      @i2c_settings_gui.lie_write_page_latency.setText(@chip_settings.i2c_write_page_latency.to_s)
+      @i2c_settings_gui.lie_page_size.setText(@chip_settings.i2c_page_size.to_s)
       @i2c_settings_gui.lie_total_size.setText(@chip_settings.i2c_total_size.to_s)
     end
   rescue Exception => msg
@@ -53,9 +57,11 @@ class I2c_settings < Qt::Widget
 
   def create
     @chip_settings = I2C.create(
-      i2c_frequency: @i2c_settings_gui.cbx_frequency.currentText,
-      i2c_address_r: @i2c_settings_gui.lie_address_r.text,
       i2c_address_w: @i2c_settings_gui.lie_address_w.text,
+      i2c_address_r: @i2c_settings_gui.lie_address_r.text,
+      i2c_frequency: @i2c_settings_gui.cbx_frequency.currentText,
+      i2c_write_page_latency: @i2c_settings_gui.lie_write_page_latency.text,
+      i2c_page_size: @i2c_settings_gui.lie_page_size.text,
       i2c_total_size: @i2c_settings_gui.lie_total_size.text,
       i2c_chip: @chip.chip_id
     )
@@ -67,14 +73,20 @@ class I2c_settings < Qt::Widget
   end
 
   def update
-    if @chip_settings.i2c_frequency != @i2c_settings_gui.cbx_frequency.currentText.to_i
-      @chip_settings.update(i2c_frequency: @i2c_settings_gui.cbx_frequency.currentText.to_i)
+    if @chip_settings.i2c_address_w != @i2c_settings_gui.lie_address_w.text
+      @chip_settings.update(i2c_address_w: @i2c_settings_gui.lie_address_w.text)
     end
     if @chip_settings.i2c_address_r != @i2c_settings_gui.lie_address_r.text
       @chip_settings.update(i2c_address_r: @i2c_settings_gui.lie_address_r.text)
     end
-    if @chip_settings.i2c_address_w != @i2c_settings_gui.lie_address_w.text
-      @chip_settings.update(i2c_address_w: @i2c_settings_gui.lie_address_w.text)
+    if @chip_settings.i2c_frequency != @i2c_settings_gui.cbx_frequency.currentText.to_i
+      @chip_settings.update(i2c_frequency: @i2c_settings_gui.cbx_frequency.currentText.to_i)
+    end
+    if @chip_settings.i2c_write_page_latency != @i2c_settings_gui.lie_write_page_latency.text
+      @chip_settings.update(i2c_write_page_latency: @i2c_settings_gui.lie_write_page_latency.text)
+    end
+    if @chip_settings.i2c_page_size != @i2c_settings_gui.lie_page_size.text
+      @chip_settings.update(i2c_page_size: @i2c_settings_gui.lie_page_size.text)
     end
     if @chip_settings.i2c_total_size != @i2c_settings_gui.lie_total_size.text
       @chip_settings.update(i2c_total_size: @i2c_settings_gui.lie_total_size.text)

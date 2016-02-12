@@ -18,7 +18,7 @@ attr_accessor :stm32
 
 		resetSWD()
 		#  Cortex M4 0x410FC241
-		#  Cortex M3 411FC231
+		#  Cortex M3 0x411FC231
 	end
 
 	def obtainCodes

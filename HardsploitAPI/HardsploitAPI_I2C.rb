@@ -122,7 +122,7 @@ public
 		if numberOfByteAddress <= 0 then
 			raise TypeError, "There is an issue with calculating of number of byte needed"
 		end
-
+		startTime = Time.now
 		packet_size = 2000 - numberOfByteAddress - 1
 		number_complet_packet = ( (stopAddress-startAddress+1) / packet_size).floor
 		size_last_packet =  (stopAddress-startAddress+1) % packet_size
@@ -130,7 +130,6 @@ public
 		#SEND the first complete trame
 		for i in 0..number_complet_packet-1 do
 			packet = generate_i2c_read_command i2cBaseAddress,numberOfByteAddress+startAddress,i*packet_size,packet_size
-
 			temp = i2c_Interact(speed,packet)
 			case temp
 				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
@@ -145,8 +144,11 @@ public
 					#Remove header, result of read command and numberOfByte Address too
 					consoleData ( process_dump_i2c_result( temp ) )
 			end
+
+			consoleProgress(percent:100*(i+1)/(number_complet_packet+ (size_last_packet.zero? ? 0 : 1)),startTime:startTime,endTime:Time.new)
 		end
 
+	if(size_last_packet > 0 )then
 		packet = generate_i2c_read_command i2cBaseAddress,numberOfByteAddress,number_complet_packet*packet_size+startAddress,size_last_packet
 		temp = i2c_Interact(speed,packet)
 		case temp
@@ -161,10 +163,117 @@ public
 			else
 				#Remove header, result of read command and numberOfByte Address too
 				consoleData ( process_dump_i2c_result ( temp ) )
+		 end
+		 consoleProgress(percent:100,startTime:startTime,endTime:Time.new)
+	end
+
+	delta = Time.now - startTime
+	consoleSpeed "Write in #{delta.round(4)} sec"
+end
+
+#For the moment only with EEPROM (not need to erase or activate write)
+	def i2c_Generic_Import (*args)
+		parametters = HardsploitAPI.checkParametters(["speed","i2cBaseAddress","startAddress","pageSize","memorySize","dataFile","writePageLatency"],args)
+		speed = parametters[:speed]
+		i2cBaseAddress = parametters[:i2cBaseAddress]
+		startAddress = parametters[:startAddress]
+		pageSize = parametters[:pageSize]
+		memorySize = parametters[:memorySize]
+		dataFile = parametters[:dataFile]
+		writePageLatency = parametters[:writePageLatency]
+
+		startTime = Time.now
+		begin
+			file =	File.open(dataFile, 'rb')
+			sizeFile = file.size
+		rescue Exception => e
+			raise Error::FileIssue, e.message
 		end
+
+		if ((startAddress < 0)  or (startAddress > memorySize-1)) then
+			raise Error::WrongStartAddress
+		end
+
+		if ((pageSize <= 0) and (pageSize >1024)) then
+			raise TypeError, "pageSize need to be greater than 0 and less than 1024"
+		end
+
+		numberOfByteAddress = (((Math.log(memorySize-1,2)).floor + 1) / 8.0).ceil
+		if numberOfByteAddress > 4 then
+			raise TypeError, "Size max must be less than 2^32 about 4Gb"
+		end
+
+		if numberOfByteAddress <= 0 then
+			raise TypeError, "There is an issue with calculating of number of byte needed"
+		end
+
+		packet_size = pageSize
+		number_complet_packet = (sizeFile / packet_size).floor
+		size_last_packet =  sizeFile % packet_size
+
+		#SEND the first complete trame
+		for i in 0..number_complet_packet-1 do
+			packet = generate_i2c_write_command i2cBaseAddress,numberOfByteAddress,i*packet_size,file.read(packet_size).unpack("C*")
+			temp = i2c_Interact(speed,packet)
+			case temp
+				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
+					puts "PACKET_IS_TOO_LARGE max: #{HardsploitAPI::USB::USB_TRAME_SIZE}"
+				when HardsploitAPI::USB_STATE::ERROR_SEND
+					puts "ERROR_SEND\n"
+				when HardsploitAPI::USB_STATE::BUSY
+					puts "BUSY"
+				when HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
+					puts "TIMEOUT_RECEIVE\n"
+				else
+					#Remove header, result of read command and numberOfByte Address too
+					process_import_i2c_result( temp )
+			end
+
+			consoleProgress(percent:100*(i+1)/(number_complet_packet+ (size_last_packet.zero? ? 0 : 1)),startTime:startTime,endTime:Time.new)
+
+			#if too many error when write increase because we need to wait to write a full page
+			sleep(writePageLatency)
+		end
+
+		if(size_last_packet > 0 )then
+			packet = generate_i2c_write_command(i2cBaseAddress,numberOfByteAddress,number_complet_packet*packet_size+startAddress,file.read(size_last_packet).unpack("C*"))
+			temp = i2c_Interact(speed,packet)
+			case temp
+				when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
+					puts "PACKET_IS_TOO_LARGE max: #{HardsploitAPI::USB::USB_TRAME_SIZE}"
+				when HardsploitAPI::USB_STATE::ERROR_SEND
+					puts "ERROR_SEND\n"
+				when HardsploitAPI::USB_STATE::BUSY
+					puts "BUSY"
+				when HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
+					puts "TIMEOUT_RECEIVE\n"
+				else
+					#Remove header, result of read command and numberOfByte Address too
+					process_import_i2c_result ( temp )
+			end
+				consoleProgress(percent:100,startTime:startTime,endTime:Time.new)
+		end
+
+		delta = Time.now - startTime
+		consoleSpeed "Write in #{delta.round(4)} sec"
 	end
 
 private
+
+def process_import_i2c_result (packet)
+	result = Array.new
+	for i in (0..packet.size-1).step(2) do
+		case packet[i]
+		when 0  #Write ACK
+			#Do nothing,don't save write ack
+		else
+			raise TypeError, "Error in I2C transaction (NACK), write failed "
+		end
+	end
+	return result
+end
+
+
 	def process_dump_i2c_result (packet)
 		result = Array.new
 		for i in (0..packet.size-1).step(2) do
@@ -175,10 +284,42 @@ private
 			when 0  #Write ACK
 				#Do nothing,don't save write ack
 			else
-				raise TypeError, "Error in I2C transaction, I2C dump seems to be wrong"
+				raise TypeError, "Error in I2C transaction, I2C export seems to be wrong"
 			end
 		end
 		return result
+	end
+
+	def generate_i2c_write_command ( i2cBaseAddress, numberOfByteAddress,startAddress,data)
+		packet = Array.new
+		#Push write command
+		packet.push HardsploitAPI.lowByte(numberOfByteAddress+data.size)  #size of write command
+		packet.push HardsploitAPI.highByte(numberOfByteAddress+data.size) #size of write command
+
+		packet.push i2cBaseAddress #push Write address
+
+		case  numberOfByteAddress
+			when 1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+			when 2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart
+			when 3
+				packet.push  ((startAddress & 0x00FF0000) >> 16 ) #AddStart2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+			when 4
+				packet.push  ((startAddress & 0xFF000000) >> 24 ) #AddStart3
+				packet.push  ((startAddress & 0x00FF0000) >> 16 ) #AddStart2
+				packet.push  ((startAddress & 0x0000FF00) >> 8 )  #AddStart1
+				packet.push  ((startAddress & 0x000000FF) >> 0)   #AddStart0
+			else
+				raise TypeError, "Issue in generate_i2c_write_command function when parse number of byte address"
+		end
+
+		#Push data to write
+		packet.push *data
+		return packet
 	end
 
 	def generate_i2c_read_command ( i2cBaseAddress, numberOfByteAddress,startAddress,size)
@@ -215,4 +356,5 @@ private
 
 		return packet
 	end
+
 end

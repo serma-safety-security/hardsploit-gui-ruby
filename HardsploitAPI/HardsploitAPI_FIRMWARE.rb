@@ -72,7 +72,7 @@ protected
 					p "TIMEOUT_RECEIVE"
 					return HardsploitAPI::USB_STATE::TIMEOUT_RECEIVE
 				else
-					t2 = Time.now 
+					t2 = Time.now
 					delta = t2 - t1
 					consoleSpeed "Firmware erased in #{delta.round(4)} sec\n\n"
 			end
@@ -244,7 +244,7 @@ protected
 						received_data = received_data.drop(7)
 
 						#reverse byte
-						received_data = received_data.collect {|x| self.reverseBit(x) }
+						received_data = received_data.collect {|x| HardsploitAPI.reverseBit(x) }
 
 					    readFirmware.push *received_data
 
@@ -293,7 +293,7 @@ protected
 						received_data = received_data.drop(7)
 
 						#reverse byte
-						received_data = received_data.collect {|x| self.reverseBit(x) }
+						received_data = received_data.collect {|x| HardsploitAPI.reverseBit(x) }
 				    readFirmware.push *received_data
 
 				    consoleSpeed "READ AT 100%\n"

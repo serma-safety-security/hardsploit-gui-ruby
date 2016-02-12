@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>154</height>
+    <width>528</width>
+    <height>237</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,14 +49,14 @@
     <layout class="QHBoxLayout" name="hl2">
      <item>
       <layout class="QFormLayout" name="fl">
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="lbl_frequency">
          <property name="text">
           <string>Frequency (Mhz):</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QComboBox" name="cbx_frequency">
          <property name="maximumSize">
           <size>
@@ -136,14 +136,14 @@
          </item>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="lbl_cmd_read">
          <property name="text">
-          <string>SPI command read:</string>
+          <string>Read command:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QLineEdit" name="lie_cmd_read">
          <property name="maximumSize">
           <size>
@@ -152,51 +152,47 @@
           </size>
          </property>
          <property name="text">
-          <string>3</string>
+          <string/>
          </property>
          <property name="maxLength">
           <number>5</number>
          </property>
+         <property name="placeholderText">
+          <string>in decimals</string>
+         </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="lbl_page_size">
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_cmd_erase">
          <property name="text">
-          <string>Page size:</string>
+          <string>Erase command:</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lie_page_size">
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QFormLayout" name="fl2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="lbl_total_size">
-         <property name="text">
-          <string>Total size (8 bits word):</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lie_total_size">
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lie_cmd_erase">
          <property name="maxLength">
-          <number>20</number>
+          <number>5</number>
+         </property>
+         <property name="placeholderText">
+          <string>in decimals</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="lbl_cmd_write">
+         <property name="text">
+          <string>Enable write command:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="lie_cmd_write_enable">
+         <property name="maxLength">
+          <number>5</number>
+         </property>
+         <property name="placeholderText">
+          <string>in decimals</string>
          </property>
         </widget>
        </item>
@@ -235,6 +231,135 @@
            <string>3</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Write command:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="lie_cmd_write">
+         <property name="placeholderText">
+          <string>in decimals</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="fl2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_total_size">
+         <property name="text">
+          <string>Total size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lie_total_size">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maxLength">
+          <number>20</number>
+         </property>
+         <property name="placeholderText">
+          <string>8 bits word</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_page_size">
+         <property name="text">
+          <string>Page size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lie_page_size">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="maxLength">
+          <number>10</number>
+         </property>
+         <property name="placeholderText">
+          <string>in octet</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Write page latency:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lie_write_page_latency">
+         <property name="maxLength">
+          <number>10</number>
+         </property>
+         <property name="placeholderText">
+          <string>in miliseconds</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Clear chip time:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="lie_erase_time">
+         <property name="maxLength">
+          <number>10</number>
+         </property>
+         <property name="placeholderText">
+          <string>in seconds</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Flash memory:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QRadioButton" name="rbn_yes">
+         <property name="text">
+          <string>Yes</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QRadioButton" name="rbn_no">
+         <property name="text">
+          <string>No</string>
+         </property>
         </widget>
        </item>
       </layout>

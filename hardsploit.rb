@@ -9,6 +9,7 @@ require 'Qt4'
 require_relative 'gui/gui_chip_management'
 require_relative 'class/HardsploitGUI'
 require_relative 'class/Console'
+require_relative 'class/Progress_bar'
 require_relative 'class/Wire_helper'
 require_relative 'class/Chip_editor'
 require_relative 'class/Generic_commands'
@@ -32,7 +33,7 @@ include VersionUC::VERSION_UC
 class Hardsploit_GUI
   def initialize
     # Launch API
-    hardAPI = HardsploitAPI.new(method(:callbackData),method(:callbackInfo),method(:callbackError),method(:callbackSpeedOfTransfert))
+    hardAPI = HardsploitAPI.new(method(:callbackData),method(:callbackInfo),method(:callbackProgress),method(:callbackSpeedOfTransfert))
     $file = nil
     $currentFirmware = nil
     $usbConnected = nil
@@ -41,6 +42,7 @@ class Hardsploit_GUI
 
     # Launch GUI
     Qt::Application.new(ARGV) do
+      $app = self
       w = HardsploitGUI.new(hardAPI)
       centerWindow(w)
       w.show
@@ -55,8 +57,15 @@ class Hardsploit_GUI
     print receiveData  + "\n"
   end
 
-  def callbackError(receiveData)
-    print receiveData  + "\n"
+  def callbackProgress(percent:,startTime:,endTime:)
+    $pgb.update_value(percent) unless $pgb.nil?
+    $app.processEvents
+    if percent == 100
+      duration = (endTime-startTime).round(2)
+      $pgb.display_time("Total duration: #{duration} second(s)")
+    end
+  	#puts "Progress : #{percent}%  Start@ #{startTime}  Stop@ #{endTime}"
+  	#puts "Elasped time #{(endTime-startTime).round(4)} sec"
   end
 
   def callbackSpeedOfTransfert(receiveData)

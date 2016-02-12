@@ -75,7 +75,6 @@ public
 	end
 
 
-protected
 		# Send data and wait to receive response
 		# * +packet_send+:: array of byte
 		# * +timeout+:: timeout to read response (ms)

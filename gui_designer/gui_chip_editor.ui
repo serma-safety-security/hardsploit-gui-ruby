@@ -103,90 +103,6 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="lbl_package">
-         <property name="text">
-          <string>Package:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <layout class="QHBoxLayout" name="hl1">
-         <item>
-          <widget class="QComboBox" name="cbx_package">
-           <item>
-            <property name="text">
-             <string>Select...</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_pack_remove">
-           <property name="maximumSize">
-            <size>
-             <width>30</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>X</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="lbl_pack_new">
-         <property name="text">
-          <string>Not in the list ? Create a new one</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="0">
-        <widget class="QLabel" name="lbl_name">
-         <property name="text">
-          <string>Package name:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="11" column="1">
-        <widget class="QLineEdit" name="lie_pack_name">
-         <property name="maxLength">
-          <number>30</number>
-         </property>
-         <property name="placeholderText">
-          <string>30 chars max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="lbl_pack_pin">
-         <property name="text">
-          <string>Package pin number:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <widget class="QLineEdit" name="lie_pack_pin">
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="maxLength">
-          <number>3</number>
-         </property>
-         <property name="placeholderText">
-          <string>4-144</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="lbl_pack_shape">
-         <property name="text">
-          <string>Package shape:</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="lie_reference">
          <property name="maxLength">
@@ -194,6 +110,30 @@
          </property>
          <property name="placeholderText">
           <string>30 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_description">
+         <property name="text">
+          <string>Description:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lie_description">
+         <property name="maxLength">
+          <number>200</number>
+         </property>
+         <property name="placeholderText">
+          <string>200 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_voltage">
+         <property name="text">
+          <string>Voltage:</string>
          </property>
         </widget>
        </item>
@@ -243,68 +183,38 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="lbl_voltage">
-         <property name="text">
-          <string>Voltage:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <layout class="QHBoxLayout" name="hl3">
-         <item>
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="title">
-            <string/>
-           </property>
-           <widget class="QRadioButton" name="rbn_square">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>0</y>
-              <width>81</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Square</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-           </widget>
-           <widget class="QRadioButton" name="rbn_rectangular">
-            <property name="geometry">
-             <rect>
-              <x>110</x>
-              <y>0</y>
-              <width>109</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Rectangular</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="lbl_manu">
          <property name="text">
           <string>Manufacturer:</string>
          </property>
         </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="hl4">
+         <item>
+          <widget class="QComboBox" name="cbx_manufacturer">
+           <item>
+            <property name="text">
+             <string>Select...</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_manu_remove">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>X</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="4" column="1">
         <widget class="QLineEdit" name="lie_manu_name">
@@ -362,27 +272,17 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="lbl_description">
+       <item row="7" column="0">
+        <widget class="QLabel" name="lbl_package">
          <property name="text">
-          <string>Description:</string>
+          <string>Package:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="lie_description">
-         <property name="maxLength">
-          <number>200</number>
-         </property>
-         <property name="placeholderText">
-          <string>200 chars max</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <layout class="QHBoxLayout" name="hl4">
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="hl1">
          <item>
-          <widget class="QComboBox" name="cbx_manufacturer">
+          <widget class="QComboBox" name="cbx_package">
            <item>
             <property name="text">
              <string>Select...</string>
@@ -391,7 +291,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_manu_remove">
+          <widget class="QPushButton" name="btn_pack_remove">
            <property name="maximumSize">
             <size>
              <width>30</width>
@@ -401,6 +301,99 @@
            <property name="text">
             <string>X</string>
            </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="lbl_name">
+         <property name="text">
+          <string>Package name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="lie_pack_name">
+         <property name="maxLength">
+          <number>30</number>
+         </property>
+         <property name="placeholderText">
+          <string>30 chars max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="lbl_pack_pin">
+         <property name="text">
+          <string>Package pin number:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLineEdit" name="lie_pack_pin">
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
+         <property name="placeholderText">
+          <string>4-144</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="lbl_pack_shape">
+         <property name="text">
+          <string>Package shape:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <layout class="QHBoxLayout" name="hl3">
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string/>
+           </property>
+           <widget class="QRadioButton" name="rbn_square">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>0</y>
+              <width>81</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Square</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QRadioButton" name="rbn_rectangular">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>0</y>
+              <width>109</width>
+              <height>20</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Rectangular</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
           </widget>
          </item>
         </layout>

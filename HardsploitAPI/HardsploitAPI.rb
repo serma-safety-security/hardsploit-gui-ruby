@@ -15,6 +15,7 @@ require_relative 'HardsploitAPI_I2C'
 require_relative 'HardsploitAPI_SPI'
 require_relative 'HardsploitAPI_TEST_INTERACT'
 require_relative 'SWD/HardsploitAPI_SWD'
+require_relative 'HardsploitAPI_ERROR'
 
 require 'thread'
 
@@ -33,10 +34,10 @@ public
 	  # * +callbackError+:: callback not used for the moment and transform into progressCallback soon
 		# * +callbackSpeedOfTransfert+:: callback to get back +information about speed+
 	def initialize(*args)
-		parametters = HardsploitAPI.checkParametters(["callbackData","callbackInfo","callbackError","callbackSpeedOfTransfert"],args)
+		parametters = HardsploitAPI.checkParametters(["callbackData","callbackInfo","callbackProgress","callbackSpeedOfTransfert"],args)
 		@callbackData = parametters[:callbackData]
 		@callbackInfo = parametters[:callbackInfo]
-		@callbackError = parametters[:callbackError]
+		@callbackProgress = parametters[:callbackProgress]
 		@callbackSpeedOfTransfert = parametters[:callbackSpeedOfTransfert]
 
 		@packet_send = Array.new
@@ -88,8 +89,6 @@ public
 
 	end
 
-
-
 	def self.reverseBit(byte)
 		return byte.to_s(2).rjust(8, "0").reverse.to_i(2)
 	end
@@ -117,8 +116,8 @@ public
 		return params
 	end
 
-	def consoleError(value)
-		@callbackError.call(value)
+	def consoleProgress(percent:,startTime:,endTime:)
+		@callbackProgress.call(percent:percent,startTime:startTime,endTime:endTime)
 	end
 	def consoleData(value)
 		@callbackData.call(value)
