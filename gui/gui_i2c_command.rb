@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_i2c_command.ui'
 **
-** Created: mar. déc. 22 13:09:06 2015
+** Created: jeu. mai 26 15:30:17 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -25,6 +25,7 @@ class Ui_I2c_command
     if i2c_command.objectName.nil?
         i2c_command.objectName = "i2c_command"
     end
+    i2c_command.windowModality = Qt::ApplicationModal
     i2c_command.resize(287, 103)
     @gridLayout = Qt::GridLayout.new(i2c_command)
     @gridLayout.objectName = "gridLayout"

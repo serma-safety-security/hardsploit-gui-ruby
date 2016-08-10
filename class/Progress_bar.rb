@@ -14,6 +14,7 @@ class Progress_bar < Qt::Widget
     centerWindow(self)
     @pgb_ui.setupUi(self)
     self.update_status(status)
+    @pgb_ui.lbl_close.setEnabled(false)
     self.display_time("Total duration:")
   end
 

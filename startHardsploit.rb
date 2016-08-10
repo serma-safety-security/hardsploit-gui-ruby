@@ -6,5 +6,5 @@
 #===================================================
 
 #!/usr/bin/ruby
-require_relative 'hardsploit.rb'
-Hardsploit_GUI.new
+require_relative 'Hardsploit_gui.rb'
+Hardsploit_gui.new

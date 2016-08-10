@@ -5,23 +5,21 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../HardsploitAPI/HardsploitAPI'
 require_relative '../../gui/gui_generic_import'
+require_relative '../../HardsploitAPI/Modules/SPI/HardsploitAPI_SPI'
 
 class Spi_import < Qt::Widget
   slots 'import()'
   slots 'select_import_file()'
 
-  def initialize(api, chip)
+  def initialize(chip)
     super()
-    @spi_import_gui = Ui_Generic_import.new
+    @view = Ui_Generic_import.new
     centerWindow(self)
-    @spi_import_gui.setupUi(self)
-    @spi_import_gui.lbl_chip.setText(chip.chip_reference)
-    inputRestrict(@spi_import_gui.lie_start, 0)
-    @api = api
+    @view.setupUi(self)
+    @view.lbl_chip.setText(chip.reference)
+    inputRestrict(@view.lie_start, 0)
     @chip = chip
-    @chip_settings = Spi.find_by(spi_chip: chip.chip_id)
     @speeds = {
       '25.00' => 3,
       '18.75' => 4,
@@ -41,71 +39,119 @@ class Spi_import < Qt::Widget
   end
 
   def select_import_file
-    @filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/', tr('Bin file (*.bin)'))
-    @spi_import_gui.btn_import.setEnabled(true) unless @filepath.nil?
+    @filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/', tr('*.*'))
+    unless @filepath.nil?
+      @view.btn_import.setEnabled(true)
+      @view.lbl_selected_file.setText("#{@filepath.split("/").last}")
+    end
   rescue Exception => msg
-      logger = Logger.new($logFilePath)
-      logger.error msg
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while openning the export file. Consult the logs for more details').exec
+    ErrorMsg.new.unknown(msg)
   end
 
   def import
     return 0 if control_import_settings.zero?
-    start = @spi_import_gui.lie_start.text.to_i
-    Firmware.new(@api, 'SPI')
+    spi = HardsploitAPI_SPI.new(
+      speed: @speeds[@chip.spi_setting.frequency],
+      mode:  @chip.spi_setting.mode
+    )
+    Firmware.new('SPI')
     $pgb = Progress_bar.new("SPI: Importing...")
     $pgb.show
-    if @chip_settings.spi_is_flash.zero?
-      flash = false
-    else
-      flash = true
-    end
-    @api.spi_Generic_Import(@chip_settings.spi_mode, @speeds[@chip_settings.spi_frequency], start, @chip_settings.spi_page_size, @chip_settings.spi_total_size, @filepath, @chip_settings.spi_command_write, @chip_settings.spi_write_page_latency/1000.0, @chip_settings.spi_command_write_enable, @chip_settings.spi_command_erase, @chip_settings.spi_erase_time, flash)
+    @chip.spi_setting.is_flash.zero? ? flash = false : flash = true
+    spi.spi_Generic_Import(
+      startAddress:          @view.lie_start.text.to_i,
+      pageSize:              @chip.spi_setting.page_size,
+      memorySize:            @chip.spi_setting.total_size,
+      dataFile:              @filepath,
+      writeSpiCommand:       @chip.spi_setting.command_write,
+      writePageLatency:      @chip.spi_setting.write_page_latency / 1000.0,
+      enableWriteSpiCommand: @chip.spi_setting.command_write_enable,
+      clearSpiCommand:       @chip.spi_setting.command_erase,
+      clearChipTime:         @chip.spi_setting.erase_time,
+      isFLASH:               flash
+    )
+  rescue HardsploitAPI::ERROR::HARDSPLOIT_NOT_FOUND
+    ErrorMsg.new.hardsploit_not_found
+  rescue HardsploitAPI::ERROR::USB_ERROR
+    ErrorMsg.new.usb_error
   rescue Exception => msg
-      logger = Logger.new($logFilePath)
-      logger.error msg
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while partial import operation. Consult the logs for more details').exec
+    ErrorMsg.new.unknown(msg)
   end
 
   def control_import_settings
-    @chip_settings = Spi.find_by(spi_chip: @chip.chip_id)
-    if @chip_settings.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI settings', 'No settings saved for this chip').exec
+    if @chip.spi_setting.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI settings',
+        'No settings saved for this chip'
+      ).exec
       return 0
     end
-    if @chip_settings.spi_total_size.nil? || @chip_settings.spi_page_size.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI settings', 'Total size or page size missing').exec
+    if @chip.spi_setting.total_size.nil? || @chip.spi_setting.page_size.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI settings',
+        'Total size or page size missing'
+    ).exec
       return 0
     end
-    if @chip_settings.spi_command_read.nil? || @chip_settings.spi_frequency.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI settings', 'Read command or frequency missing').exec
+    if @chip.spi_setting.command_read.nil? || @chip.spi_setting.frequency.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI settings',
+        'Read command or frequency missing'
+      ).exec
       return 0
     end
-    if @chip_settings.spi_command_write.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI settings', 'Write command missing').exec
+    if @chip.spi_setting.command_write.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI settings',
+        'Write command missing'
+      ).exec
       return 0
     end
-    if @chip_settings.spi_write_page_latency.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI setting', 'SPI write page latency missing').exec
+    if @chip.spi_setting.write_page_latency.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI setting',
+        'SPI write page latency missing'
+      ).exec
       return 0
     end
-    if @chip_settings.spi_is_flash.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI setting', 'SPI flash nature missing').exec
+    if @chip.spi_setting.is_flash.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI setting',
+        'SPI flash nature missing'
+      ).exec
       return 0
     else
-      if @chip_settings.spi_is_flash == 1
-        if @chip_settings.spi_erase_time.nil? || @chip_settings.spi_command_erase.nil?
-          Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI setting', 'SPI erase time or command missing').exec
+      if @chip.spi_setting.is_flash == 1
+        if @chip.spi_setting.erase_time.nil? || @chip.spi_setting.command_erase.nil?
+          Qt::MessageBox.new(
+            Qt::MessageBox::Warning,
+            'Missing SPI setting',
+            'SPI erase time or command missing'
+          ).exec
           return 0
         end
       end
     end
-    if @chip_settings.spi_mode.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing SPI setting', 'Mode missing').exec
+    if @chip.spi_setting.mode.nil?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing SPI setting',
+        'Mode missing'
+      ).exec
       return 0
     end
-    if @spi_import_gui.lie_start.text.empty?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing start address', 'Please fill the Start address field').exec
+    if @view.lie_start.text.empty?
+      Qt::MessageBox.new(
+        Qt::MessageBox::Warning,
+        'Missing start address',
+        'Please fill the Start address field'
+      ).exec
       return 0
     end
     return 1

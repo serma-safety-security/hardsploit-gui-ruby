@@ -99,7 +99,7 @@
           <string/>
          </property>
          <property name="placeholderText">
-          <string>in nanosecondes</string>
+          <string>in nanosecondes (7 to 1965)</string>
          </property>
         </widget>
        </item>
@@ -126,6 +126,9 @@
           </property>
           <property name="text">
            <string>8 bits</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="rbn_16b">

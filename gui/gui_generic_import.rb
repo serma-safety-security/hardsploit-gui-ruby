@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_generic_import.ui'
 **
-** Created: mar. déc. 8 14:09:40 2015
+** Created: mar. juil. 19 13:51:01 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -19,6 +19,8 @@ class Ui_Generic_import
     attr_reader :lie_start
     attr_reader :btn_file
     attr_reader :lbl_file
+    attr_reader :lbl_selected
+    attr_reader :lbl_selected_file
     attr_reader :hl
     attr_reader :btn_import
 
@@ -26,7 +28,8 @@ class Ui_Generic_import
     if generic_import.objectName.nil?
         generic_import.objectName = "generic_import"
     end
-    generic_import.resize(265, 137)
+    generic_import.windowModality = Qt::ApplicationModal
+    generic_import.resize(317, 155)
     @gridLayout = Qt::GridLayout.new(generic_import)
     @gridLayout.objectName = "gridLayout"
     @vl = Qt::VBoxLayout.new()
@@ -73,6 +76,17 @@ class Ui_Generic_import
 
     @fl.setWidget(2, Qt::FormLayout::LabelRole, @lbl_file)
 
+    @lbl_selected = Qt::Label.new(generic_import)
+    @lbl_selected.objectName = "lbl_selected"
+
+    @fl.setWidget(3, Qt::FormLayout::LabelRole, @lbl_selected)
+
+    @lbl_selected_file = Qt::Label.new(generic_import)
+    @lbl_selected_file.objectName = "lbl_selected_file"
+    @lbl_selected_file.maximumSize = Qt::Size.new(250, 16777215)
+
+    @fl.setWidget(3, Qt::FormLayout::FieldRole, @lbl_selected_file)
+
 
     @vl.addLayout(@fl)
 
@@ -110,6 +124,8 @@ class Ui_Generic_import
     @lie_start.text = Qt::Application.translate("Generic_import", "0", nil, Qt::Application::UnicodeUTF8)
     @btn_file.text = Qt::Application.translate("Generic_import", "File...", nil, Qt::Application::UnicodeUTF8)
     @lbl_file.text = Qt::Application.translate("Generic_import", "File:", nil, Qt::Application::UnicodeUTF8)
+    @lbl_selected.text = Qt::Application.translate("Generic_import", "Selected file:", nil, Qt::Application::UnicodeUTF8)
+    @lbl_selected_file.text = Qt::Application.translate("Generic_import", "None", nil, Qt::Application::UnicodeUTF8)
     @btn_import.text = Qt::Application.translate("Generic_import", "Import", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 

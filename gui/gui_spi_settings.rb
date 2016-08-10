@@ -272,22 +272,22 @@ class Ui_Spi_settings
         Qt::Application.translate("Spi_settings", "0.29", nil, Qt::Application::UnicodeUTF8)])
     @lbl_cmd_read.text = Qt::Application.translate("Spi_settings", "Read command:", nil, Qt::Application::UnicodeUTF8)
     @lie_cmd_read.text = ''
-    @lie_cmd_read.placeholderText = Qt::Application.translate("Spi_settings", "in decimals", nil, Qt::Application::UnicodeUTF8)
+    @lie_cmd_read.placeholderText = Qt::Application.translate("Spi_settings", "in decimal", nil, Qt::Application::UnicodeUTF8)
     @lbl_cmd_erase.text = Qt::Application.translate("Spi_settings", "Erase command:", nil, Qt::Application::UnicodeUTF8)
-    @lie_cmd_erase.placeholderText = Qt::Application.translate("Spi_settings", "in decimals", nil, Qt::Application::UnicodeUTF8)
+    @lie_cmd_erase.placeholderText = Qt::Application.translate("Spi_settings", "in decimal", nil, Qt::Application::UnicodeUTF8)
     @lbl_cmd_write.text = Qt::Application.translate("Spi_settings", "Enable write command:", nil, Qt::Application::UnicodeUTF8)
-    @lie_cmd_write_enable.placeholderText = Qt::Application.translate("Spi_settings", "in decimals", nil, Qt::Application::UnicodeUTF8)
+    @lie_cmd_write_enable.placeholderText = Qt::Application.translate("Spi_settings", "in decimal", nil, Qt::Application::UnicodeUTF8)
     @lbl_mode.text = Qt::Application.translate("Spi_settings", "Mode:", nil, Qt::Application::UnicodeUTF8)
     @cbx_mode.insertItems(0, [Qt::Application.translate("Spi_settings", "0", nil, Qt::Application::UnicodeUTF8),
         Qt::Application.translate("Spi_settings", "1", nil, Qt::Application::UnicodeUTF8),
         Qt::Application.translate("Spi_settings", "2", nil, Qt::Application::UnicodeUTF8),
         Qt::Application.translate("Spi_settings", "3", nil, Qt::Application::UnicodeUTF8)])
     @label.text = Qt::Application.translate("Spi_settings", "Write command:", nil, Qt::Application::UnicodeUTF8)
-    @lie_cmd_write.placeholderText = Qt::Application.translate("Spi_settings", "in decimals", nil, Qt::Application::UnicodeUTF8)
+    @lie_cmd_write.placeholderText = Qt::Application.translate("Spi_settings", "in decimal", nil, Qt::Application::UnicodeUTF8)
     @lbl_total_size.text = Qt::Application.translate("Spi_settings", "Total size:", nil, Qt::Application::UnicodeUTF8)
     @lie_total_size.placeholderText = Qt::Application.translate("Spi_settings", "8 bits word", nil, Qt::Application::UnicodeUTF8)
     @lbl_page_size.text = Qt::Application.translate("Spi_settings", "Page size:", nil, Qt::Application::UnicodeUTF8)
-    @lie_page_size.placeholderText = Qt::Application.translate("Spi_settings", "in octet", nil, Qt::Application::UnicodeUTF8)
+    @lie_page_size.placeholderText = Qt::Application.translate("Spi_settings", "in byte", nil, Qt::Application::UnicodeUTF8)
     @label_2.text = Qt::Application.translate("Spi_settings", "Write page latency:", nil, Qt::Application::UnicodeUTF8)
     @lie_write_page_latency.placeholderText = Qt::Application.translate("Spi_settings", "in miliseconds", nil, Qt::Application::UnicodeUTF8)
     @label_3.text = Qt::Application.translate("Spi_settings", "Clear chip time:", nil, Qt::Application::UnicodeUTF8)

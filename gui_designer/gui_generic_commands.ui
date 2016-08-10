@@ -1,201 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Generic_commands</class>
- <widget class="QWidget" name="Generic_commands">
+ <widget class="QMainWindow" name="Generic_commands">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>384</height>
+    <width>542</width>
+    <height>383</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>532</width>
-    <height>384</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Hardsploit - Commands</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="vl">
-     <item>
-      <layout class="QHBoxLayout" name="hl">
-       <item>
-        <widget class="QLabel" name="lbl_search">
-         <property name="text">
-          <string>Search</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lie_search">
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="maxLength">
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="hs">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="lbl_current_chip">
-         <property name="text">
-          <string>Current chip:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="lbl_chip">
-         <property name="text">
-          <string>[CHIP]</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="vl2">
-       <item>
-        <widget class="QTableWidget" name="tbl_cmd">
-         <property name="font">
-          <font>
-           <family>Arial</family>
-          </font>
-         </property>
-         <property name="sortingEnabled">
-          <bool>true</bool>
-         </property>
-         <attribute name="horizontalHeaderVisible">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>110</number>
-         </attribute>
-         <attribute name="horizontalHeaderMinimumSectionSize">
-          <number>36</number>
-         </attribute>
-         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="verticalHeaderCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderDefaultSectionSize">
-          <number>30</number>
-         </attribute>
-         <attribute name="verticalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <column>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="vl">
+      <item>
+       <layout class="QHBoxLayout" name="hl">
+        <item>
+         <widget class="QLabel" name="lbl_search">
           <property name="text">
-           <string>Name</string>
+           <string>Search</string>
           </property>
-         </column>
-         <column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lie_search">
+          <property name="inputMask">
+           <string/>
+          </property>
+          <property name="maxLength">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="hs">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_current_chip">
           <property name="text">
-           <string>Description</string>
+           <string>Current chip:</string>
           </property>
-         </column>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="hl3">
-         <item>
-          <widget class="QCheckBox" name="check_result">
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_chip">
+          <property name="text">
+           <string>[CHIP]</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="vl2">
+        <item>
+         <widget class="QTableWidget" name="tbl_cmd">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+           </font>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>110</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>36</number>
+          </attribute>
+          <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>30</number>
+          </attribute>
+          <attribute name="verticalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <column>
            <property name="text">
-            <string>Show command result</string>
+            <string>Name</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="hs2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_new_cmd">
+          </column>
+          <column>
            <property name="text">
-            <string>New Command</string>
+            <string>Description</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cbx_action">
-           <item>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Right click on a command to open the menu</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl3">
+          <item>
+           <widget class="QCheckBox" name="check_result">
             <property name="text">
-             <string>Action...</string>
+             <string>Show command result</string>
             </property>
-           </item>
-           <item>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="hs2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_new_cmd">
             <property name="text">
-             <string>Execute</string>
+             <string>New Command</string>
             </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Edit</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Template</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Delete</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_next">
-           <property name="text">
-            <string>Next</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-  </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>542</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuCommandes">
+    <property name="title">
+     <string>Commandes...</string>
+    </property>
+    <addaction name="actionExecute"/>
+    <addaction name="actionEdit"/>
+    <addaction name="actionTemplate"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionConcatenate"/>
+   </widget>
+   <addaction name="menuCommandes"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExecute">
+   <property name="text">
+    <string>Execute</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionTemplate">
+   <property name="text">
+    <string>Template</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionConcatenate">
+   <property name="text">
+    <string>Concatenate</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -206,12 +223,12 @@
    <slot>feed_cmd_array()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>221</x>
-     <y>20</y>
+     <x>227</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
-     <x>234</x>
-     <y>5</y>
+     <x>284</x>
+     <y>40</y>
     </hint>
    </hints>
   </connection>
@@ -219,40 +236,107 @@
    <sender>btn_new_cmd</sender>
    <signal>clicked()</signal>
    <receiver>Generic_commands</receiver>
-   <slot>open_cmd_form()</slot>
+   <slot>create()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>371</y>
+     <x>491</x>
+     <y>348</y>
     </hint>
     <hint type="destinationlabel">
-     <x>526</x>
-     <y>45</y>
+     <x>336</x>
+     <y>362</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>btn_next</sender>
-   <signal>clicked()</signal>
+   <sender>actionExecute</sender>
+   <signal>triggered()</signal>
    <receiver>Generic_commands</receiver>
-   <slot>exec_action()</slot>
+   <slot>execute()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>519</x>
-     <y>371</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>524</x>
-     <y>81</y>
+     <x>270</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEdit</sender>
+   <signal>triggered()</signal>
+   <receiver>Generic_commands</receiver>
+   <slot>edit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDelete</sender>
+   <signal>triggered()</signal>
+   <receiver>Generic_commands</receiver>
+   <slot>delete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTemplate</sender>
+   <signal>triggered()</signal>
+   <receiver>Generic_commands</receiver>
+   <slot>template()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConcatenate</sender>
+   <signal>triggered()</signal>
+   <receiver>Generic_commands</receiver>
+   <slot>concatenate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>191</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>feed_cmd_array()</slot>
-  <slot>show_result(bool)</slot>
-  <slot>open_cmd_form()</slot>
   <slot>exec_action()</slot>
-  <slot>save_param()</slot>
+  <slot>execute()</slot>
+  <slot>template()</slot>
+  <slot>edit()</slot>
+  <slot>concatenate()</slot>
+  <slot>delete()</slot>
+  <slot>create()</slot>
  </slots>
 </ui>

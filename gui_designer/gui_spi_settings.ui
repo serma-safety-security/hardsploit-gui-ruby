@@ -158,7 +158,7 @@
           <number>5</number>
          </property>
          <property name="placeholderText">
-          <string>in decimals</string>
+          <string>in decimal</string>
          </property>
         </widget>
        </item>
@@ -175,7 +175,7 @@
           <number>5</number>
          </property>
          <property name="placeholderText">
-          <string>in decimals</string>
+          <string>in decimal</string>
          </property>
         </widget>
        </item>
@@ -192,7 +192,7 @@
           <number>5</number>
          </property>
          <property name="placeholderText">
-          <string>in decimals</string>
+          <string>in decimal</string>
          </property>
         </widget>
        </item>
@@ -243,7 +243,7 @@
        <item row="4" column="1">
         <widget class="QLineEdit" name="lie_cmd_write">
          <property name="placeholderText">
-          <string>in decimals</string>
+          <string>in decimal</string>
          </property>
         </widget>
        </item>
@@ -293,7 +293,7 @@
           <number>10</number>
          </property>
          <property name="placeholderText">
-          <string>in octet</string>
+          <string>in byte</string>
          </property>
         </widget>
        </item>

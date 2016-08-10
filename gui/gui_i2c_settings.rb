@@ -194,11 +194,11 @@ class Ui_I2c_settings
         Qt::Application.translate("I2c_settings", "400", nil, Qt::Application::UnicodeUTF8),
         Qt::Application.translate("I2c_settings", "1000", nil, Qt::Application::UnicodeUTF8)])
     @lbl_full_size.text = Qt::Application.translate("I2c_settings", "Total size:", nil, Qt::Application::UnicodeUTF8)
-    @lie_total_size.placeholderText = Qt::Application.translate("I2c_settings", "in octet, to a maximum of 4Go", nil, Qt::Application::UnicodeUTF8)
+    @lie_total_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte, to a maximum of 4Go", nil, Qt::Application::UnicodeUTF8)
     @lbl_bus_scan.text = Qt::Application.translate("I2c_settings", "Bus scan:", nil, Qt::Application::UnicodeUTF8)
     @btn_bus_scan.text = Qt::Application.translate("I2c_settings", "Launch", nil, Qt::Application::UnicodeUTF8)
     @lie_page_size.text = ''
-    @lie_page_size.placeholderText = Qt::Application.translate("I2c_settings", "in octet", nil, Qt::Application::UnicodeUTF8)
+    @lie_page_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte", nil, Qt::Application::UnicodeUTF8)
     @lbl_page_size.text = Qt::Application.translate("I2c_settings", "Page size:", nil, Qt::Application::UnicodeUTF8)
     @lbl_write_page_latency.text = Qt::Application.translate("I2c_settings", "Write page latency:", nil, Qt::Application::UnicodeUTF8)
     @lie_write_page_latency.placeholderText = Qt::Application.translate("I2c_settings", "in miliseconds", nil, Qt::Application::UnicodeUTF8)

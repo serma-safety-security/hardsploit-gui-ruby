@@ -5,114 +5,91 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../HardsploitAPI/HardsploitAPI'
 require_relative '../../gui/gui_generic_export'
-
+require_relative '../../HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
 class I2c_export < Qt::Widget
   slots 'export()'
   slots 'select_export_file()'
 
-  def initialize(api, chip)
+  def initialize(chip)
     super()
-    @i2c_export_gui = Ui_Generic_export.new
+    @view = Ui_Generic_export.new
     centerWindow(self)
-    @i2c_export_gui.setupUi(self)
-    @i2c_export_gui.lbl_chip.setText(chip.chip_reference)
-    inputRestrict(@i2c_export_gui.lie_start, 0)
-    inputRestrict(@i2c_export_gui.lie_stop, 0)
-    @api = api
-    @chip_settings = I2C.find_by(i2c_chip: chip.chip_id)
+    @view.setupUi(self)
+    @view.lbl_chip.setText(chip.reference)
+    inputRestrict(@view.lie_start, 0)
+    inputRestrict(@view.lie_stop, 0)
+    @chip = chip
   end
 
   def select_export_file
-    @filepath = Qt::FileDialog.getSaveFileName(self, tr('Select a file'), '/', tr('Bin file (*.bin)'))
+    @filepath = Qt::FileDialog.getSaveFileName(self, tr('Select a file'), '/', tr('*.*'))
     unless @filepath.nil?
-      $file = File.open("#{@filepath}", 'w')
-      @i2c_export_gui.btn_export.setEnabled(true)
-      @i2c_export_gui.btn_full_export.setEnabled(true)
+      @view.btn_export.setEnabled(true)
+      @view.btn_full_export.setEnabled(true)
+      @view.lbl_selected_file.setText("#{@filepath.split("/").last}")
     end
   rescue Exception => msg
-      logger = Logger.new($logFilePath)
-      logger.error msg
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while openning the export file. Consult the logs for more details').exec
-  end
-
-  def close_file
-    unless $file.nil?
-      $file.close
-    end
-  rescue Exception => msg
-      logger = Logger.new($logFilePath)
-      logger.error msg
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while closing the export file. Consult the logs for more details').exec
+    ErrorMsg.new.unknown(msg)
   end
 
   def export
+    $file = File.open("#{@filepath}", 'w') unless @filepath.nil?
     if sender.objectName == 'btn_full_export'
-      return 0 if control_export_settings('full').zero?
+      return false unless control_export_settings('full')
+      start   = 0
+      stop    = @chip.i2c_setting.total_size - 1
+      control = @chip.i2c_setting.total_size
     else
-      return 0 if control_export_settings('partial').zero?
+      return false unless control_export_settings('partial')
+      start   =  @view.lie_start.text.to_i
+      stop    =  @view.lie_stop.text.to_i
+      control = (stop - start) + 1
     end
-    Firmware.new(@api, 'I2C')
+    Firmware.new('I2C')
     $pgb = Progress_bar.new("I²C: Exporting...")
     $pgb.show
-    if sender.objectName == 'btn_full_export'
-      @api.i2c_Generic_Dump(@chip_settings.i2c_frequency, @chip_settings.i2c_address_w.to_i(16), 0, @chip_settings.i2c_total_size - 1, @chip_settings.i2c_total_size)
-      close_file
-      control_export_result('full', @chip_settings.i2c_total_size - 1)
-    else
-      @api.i2c_Generic_Dump(@chip_settings.i2c_frequency, @chip_settings.i2c_address_w.to_i(16), @i2c_export_gui.lie_start.text.to_i, @i2c_export_gui.lie_stop.text.to_i, @chip_settings.i2c_total_size)
-      close_file
-      control_export_result('partial', @i2c_export_gui.lie_stop.text.to_i)
-    end
-    @i2c_export_gui.btn_export.setEnabled(false)
-    @i2c_export_gui.btn_full_export.setEnabled(false)
-  rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while full export operation. Consult the logs for more details').exec
-  end
 
-  def control_export_result(type, stop)
-    if type == 'partial'
-      toCompare = ((stop - @i2c_export_gui.lie_start.text.to_i) + 1)
-    else
-      toCompare = @chip_settings.i2c_total_size
+    if [40, 100, 400, 1000].include?(@chip.i2c_setting.frequency)
+      speed = 0 if @chip.i2c_setting.frequency == 100
+      speed = 1 if @chip.i2c_setting.frequency == 400
+      speed = 2 if @chip.i2c_setting.frequency == 1000
+      speed = 3 if @chip.i2c_setting.frequency == 40
+      i2c = HardsploitAPI_I2C.new(speed: speed)
+      i2c.i2c_Generic_Dump(
+        i2cBaseAddress: @chip.i2c_setting.address_w.to_i(16),
+        startAddress:   start,
+        stopAddress:    stop,
+        sizeMax:        @chip.i2c_setting.total_size
+      )
     end
-    file_size = File.size(@filepath)
-    if toCompare != file_size
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Error', 'Dump error: Size does not match').exec
-    end
+    $file.close unless $file.nil?
+    ErrorMsg.new.filesize_error unless control == File.size(@filepath)
+  rescue HardsploitAPI::ERROR::HARDSPLOIT_NOT_FOUND
+    ErrorMsg.new.hardsploit_not_found
+  rescue HardsploitAPI::ERROR::USB_ERROR
+    ErrorMsg.new.usb_error
+  rescue Exception => msg
+    ErrorMsg.new.unknown(msg)
   end
 
   def control_export_settings(type)
-    if @chip_settings.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing I2C settings', 'No settings saved for this chip').exec
-      return 0
+    return ErrorMsg.new.settings_missing   if @chip.i2c_setting.nil?
+    return ErrorMsg.new.frequency_missing  if @chip.i2c_setting.frequency.nil?
+    return ErrorMsg.new.mode_missing       if @chip.i2c_setting.address_w.nil?
+    return ErrorMsg.new.full_size_error    if @chip.i2c_setting.total_size.nil?
+    return ErrorMsg.new.full_size_error    if @chip.i2c_setting.total_size.zero?
+    if type == 'partial'
+      return ErrorMsg.new.start_stop_missing if @view.lie_start.text.empty?
+      return ErrorMsg.new.start_stop_missing if @view.lie_stop.text.empty?
+      start = @view.lie_start.text.to_i
+      stop = @view.lie_stop.text.to_i
+      total_size = @chip.i2c_setting.total_size
+      return ErrorMsg.new.start_neq_stop    if start == stop
+      return ErrorMsg.new.start_inf_to_stop if start > stop
+      return ErrorMsg.new.inf_to_total_size if start > (total_size - 1)
+      return ErrorMsg.new.inf_to_total_size if stop > (total_size - 1)
     end
-    if @chip_settings.i2c_frequency.nil? || @chip_settings.i2c_address_w.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'Missing I2C settings', 'Write base address or frequency settings missing').exec
-      return 0
-    end
-    if type == 'full'
-      if @chip_settings.i2c_total_size.zero? || @chip_settings.i2c_total_size.nil?
-        Qt::MessageBox.new(Qt::MessageBox::Warning, 'Empty field', 'Full size setting missing or equal 0').exec
-        return 0
-      end
-    else
-      if @i2c_export_gui.lie_start.text.empty? || @i2c_export_gui.lie_stop.text.empty?
-        Qt::MessageBox.new(Qt::MessageBox::Warning, 'Empty field', 'Start and stop address must be filled').exec
-        return 0
-      end
-      if @i2c_export_gui.lie_start.text.to_i > @i2c_export_gui.lie_stop.text.to_i
-        Qt::MessageBox.new(Qt::MessageBox::Warning, 'Wrong value', 'Start address must be inforior to the stop address').exec
-        return 0
-      end
-      if @i2c_export_gui.lie_start.text.to_i > (@chip_settings.i2c_total_size - 1) || @i2c_export_gui.lie_stop.text.to_i > (@chip_settings.i2c_total_size - 1)
-        Qt::MessageBox.new(Qt::MessageBox::Warning, 'Wrong value', 'Start and stop address must be inforior to the chip total size').exec
-        return 0
-      end
-    end
-    return 1
+    return true
   end
 end

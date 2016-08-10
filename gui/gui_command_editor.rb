@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_command_editor.ui'
 **
-** Created: mer. déc. 9 14:17:48 2015
+** Created: ven. mai 20 11:11:13 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -38,6 +38,7 @@ class Ui_Command_editor
     if command_editor.objectName.nil?
         command_editor.objectName = "command_editor"
     end
+    command_editor.windowModality = Qt::ApplicationModal
     command_editor.resize(540, 440)
     @gridLayout = Qt::GridLayout.new(command_editor)
     @gridLayout.objectName = "gridLayout"

@@ -5,15 +5,12 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../HardsploitAPI/HardsploitAPI'
-
 class Command_table < Qt::Widget
 
-  def initialize(api, cmd_table, bus)
+  def initialize(cmd_table, bus)
     super()
     @cmd_table = cmd_table
     @bus = bus
-    @api = api
     cmd_table.insertColumn(0)
     cmd_table.setHorizontalHeaderItem(0, Qt::TableWidgetItem.new('Order'))
     cmd_table.insertColumn(1)
@@ -30,17 +27,17 @@ class Command_table < Qt::Widget
   def fill_byte_table(byte_list)
     byte_list.to_enum.with_index(0).each do |b, i|
       @cmd_table.insertRow(@cmd_table.rowCount)
-      @cmd_table.setItem(i, 1, Qt::TableWidgetItem.new(b.byte_value))
+      @cmd_table.setItem(i, 1, Qt::TableWidgetItem.new(b.value))
       if @bus == 'SPI'
         item =  Qt::TableWidgetItem.new
-        item.setData(0, Qt::Variant.new(b.byte_iteration))
+        item.setData(0, Qt::Variant.new(b.iteration))
         @cmd_table.setItem(i, 2, item)
-        @cmd_table.setItem(i, 3, Qt::TableWidgetItem.new(b.byte_description))
+        @cmd_table.setItem(i, 3, Qt::TableWidgetItem.new(b.description))
       else
-        @cmd_table.setItem(i, 2, Qt::TableWidgetItem.new(b.byte_description))
+        @cmd_table.setItem(i, 2, Qt::TableWidgetItem.new(b.description))
       end
       item =  Qt::TableWidgetItem.new
-      item.setData(0, Qt::Variant.new(b.byte_index))
+      item.setData(0, Qt::Variant.new(b.index))
       @cmd_table.setItem(i, 0, item)
     end
   end
@@ -62,7 +59,7 @@ class Command_table < Qt::Widget
   end
 
   def add_text_rows(txt)
-    if txt.ascii_only?
+      return ErrorMsg.new.ascii_only unless txt.ascii_only?
       txt.each_byte do |x|
         @cmd_table.insertRow(@cmd_table.rowCount)
         @cmd_table.setItem(@cmd_table.rowCount - 1, 1, Qt::TableWidgetItem.new(x.to_s(16)))
@@ -74,9 +71,6 @@ class Command_table < Qt::Widget
         item.setData(0, Qt::Variant.new(@cmd_table.rowCount))
         @cmd_table.setItem(@cmd_table.rowCount - 1, 0, item)
       end
-    else
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'String error', 'Only ASCII characters can be specified').exec
-    end
   end
 
   def clone_rows
@@ -102,7 +96,7 @@ class Command_table < Qt::Widget
         end
       else
         unless @cmd_table.item(row, 2).nil?
-          @cmd_table.setItem(@cmd_table.rowCount - 1, 2, Qt::TableWidgetItem.new(@cmd_table.item(row, 3).text))
+          @cmd_table.setItem(@cmd_table.rowCount - 1, 2, Qt::TableWidgetItem.new(@cmd_table.item(row, 2).text))
         end
       end
       unless @cmd_table.item(row, 0).nil?
@@ -129,14 +123,14 @@ class Command_table < Qt::Widget
     # Byte array size
     @cmd_table.setRowCount(3)
     # Size 1
-    @cmd_table.setItem(0, 1, Qt::TableWidgetItem.new(HardsploitAPI.lowByte(cmd_size).to_s(16).upcase))
+    @cmd_table.setItem(0, 1, Qt::TableWidgetItem.new(HardsploitAPI.lowByte(word: cmd_size).to_s(16).upcase))
     @cmd_table.setItem(0, 2, Qt::TableWidgetItem.new('Payload size - low'))
     # Index
     item =  Qt::TableWidgetItem.new
     item.setData(0, Qt::Variant.new(1))
     @cmd_table.setItem(0, 0, item)
     # Size 2
-    @cmd_table.setItem(1, 1, Qt::TableWidgetItem.new(HardsploitAPI.highByte(cmd_size).to_s(16).upcase))
+    @cmd_table.setItem(1, 1, Qt::TableWidgetItem.new(HardsploitAPI.highByte(word: cmd_size).to_s(16).upcase))
     @cmd_table.setItem(1, 2, Qt::TableWidgetItem.new('Payload size - high'))
     # Index
     item =  Qt::TableWidgetItem.new
@@ -156,7 +150,7 @@ class Command_table < Qt::Widget
     @cmd_table.setRowCount(3 + cmd_size)
     # Payload size low
     # -byte
-    itemLB1 = Qt::TableWidgetItem.new(HardsploitAPI.lowByte(cmd_size).to_s(16).upcase)
+    itemLB1 = Qt::TableWidgetItem.new(HardsploitAPI.lowByte(word: cmd_size).to_s(16).upcase)
     @cmd_table.setItem(0, 1, itemLB1)
     # -description
     itemLB3 = Qt::TableWidgetItem.new('Payload size - low')
@@ -167,7 +161,7 @@ class Command_table < Qt::Widget
     @cmd_table.setItem(0, 0, itemLB0)
     # Payload size high
     # -byte
-    itemHB1 = Qt::TableWidgetItem.new(HardsploitAPI.highByte(cmd_size).to_s(16).upcase)
+    itemHB1 = Qt::TableWidgetItem.new(HardsploitAPI.highByte(word: cmd_size).to_s(16).upcase)
     @cmd_table.setItem(1, 1, itemHB1)
     # -description
     itemHB3 = Qt::TableWidgetItem.new('Payload size - high')
@@ -193,7 +187,7 @@ class Command_table < Qt::Widget
       @cmd_table.setItem(i, 2, Qt::TableWidgetItem.new('Payload byte'))
       # Index
       item =  Qt::TableWidgetItem.new
-      item.setData(0, Qt::Variant.new((i + 1)))
+      item.setData(0, Qt::Variant.new(i.next))
       @cmd_table.setItem(i, 0, item)
     end
   end
@@ -205,11 +199,11 @@ class Command_table < Qt::Widget
   end
 
   def count_total_repetition
-	  repetitionValue = 0
+	  repetition_value = 0
 	  @cmd_table.rowCount.times do |i|
-			repetitionValue += @cmd_table.item(i, 2).text.to_i
+			repetition_value += @cmd_table.item(i, 2).text.to_i
 		end
-		return repetitionValue
+		return repetition_value
 	end
 
   def empty_data_exist?

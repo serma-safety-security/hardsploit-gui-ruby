@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_progress_bar.ui'
 **
-** Created: mar. févr. 9 17:07:34 2016
+** Created: mar. juil. 12 16:05:25 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -20,6 +20,7 @@ class Ui_Progress_bar
     if progress_bar.objectName.nil?
         progress_bar.objectName = "progress_bar"
     end
+    progress_bar.windowModality = Qt::ApplicationModal
     progress_bar.resize(358, 90)
     @gridLayout = Qt::GridLayout.new(progress_bar)
     @gridLayout.objectName = "gridLayout"

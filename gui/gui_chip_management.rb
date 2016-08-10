@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_chip_management.ui'
 **
-** Created: mer. déc. 16 13:41:26 2015
+** Created: lun. juil. 25 09:23:04 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -19,13 +19,14 @@ class Ui_Chip_management
     attr_reader :actionAdd
     attr_reader :actionEdit
     attr_reader :actionDelete
-    attr_reader :actionExport_current
     attr_reader :actionDisplay_firmware
     attr_reader :actionWire
-    attr_reader :actionSWD_detect
-    attr_reader :actionSWD_export
-    attr_reader :actionSWD_import
-    attr_reader :actionSWD_erase
+    attr_reader :actionSignal_Mapper
+    attr_reader :actionExport
+    attr_reader :actionImport_2
+    attr_reader :actionTemplate
+    attr_reader :actionSWD
+    attr_reader :actionUART
     attr_reader :cl_main
     attr_reader :gridLayout
     attr_reader :hl_main
@@ -53,7 +54,6 @@ class Ui_Chip_management
     attr_reader :menuComponent
     attr_reader :menuAbout
     attr_reader :menuPath
-    attr_reader :menuSWD
     attr_reader :statusbar
 
     def setupUi(chip_management)
@@ -87,20 +87,22 @@ class Ui_Chip_management
     @actionEdit.objectName = "actionEdit"
     @actionDelete = Qt::Action.new(chip_management)
     @actionDelete.objectName = "actionDelete"
-    @actionExport_current = Qt::Action.new(chip_management)
-    @actionExport_current.objectName = "actionExport_current"
     @actionDisplay_firmware = Qt::Action.new(chip_management)
     @actionDisplay_firmware.objectName = "actionDisplay_firmware"
     @actionWire = Qt::Action.new(chip_management)
     @actionWire.objectName = "actionWire"
-    @actionSWD_detect = Qt::Action.new(chip_management)
-    @actionSWD_detect.objectName = "actionSWD_detect"
-    @actionSWD_export = Qt::Action.new(chip_management)
-    @actionSWD_export.objectName = "actionSWD_export"
-    @actionSWD_import = Qt::Action.new(chip_management)
-    @actionSWD_import.objectName = "actionSWD_import"
-    @actionSWD_erase = Qt::Action.new(chip_management)
-    @actionSWD_erase.objectName = "actionSWD_erase"
+    @actionSignal_Mapper = Qt::Action.new(chip_management)
+    @actionSignal_Mapper.objectName = "actionSignal_Mapper"
+    @actionExport = Qt::Action.new(chip_management)
+    @actionExport.objectName = "actionExport"
+    @actionImport_2 = Qt::Action.new(chip_management)
+    @actionImport_2.objectName = "actionImport_2"
+    @actionTemplate = Qt::Action.new(chip_management)
+    @actionTemplate.objectName = "actionTemplate"
+    @actionSWD = Qt::Action.new(chip_management)
+    @actionSWD.objectName = "actionSWD"
+    @actionUART = Qt::Action.new(chip_management)
+    @actionUART.objectName = "actionUART"
     @cl_main = Qt::Widget.new(chip_management)
     @cl_main.objectName = "cl_main"
     @gridLayout = Qt::GridLayout.new(@cl_main)
@@ -109,7 +111,7 @@ class Ui_Chip_management
     @hl_main.objectName = "hl_main"
     @tw_chip = Qt::TreeWidget.new(@cl_main)
     @tw_chip.objectName = "tw_chip"
-    @tw_chip.minimumSize = Qt::Size.new(150, 0)
+    @tw_chip.minimumSize = Qt::Size.new(200, 0)
     @tw_chip.maximumSize = Qt::Size.new(150, 16777215)
 
     @hl_main.addWidget(@tw_chip)
@@ -221,38 +223,36 @@ class Ui_Chip_management
     @menuAbout.objectName = "menuAbout"
     @menuPath = Qt::Menu.new(@menuAbout)
     @menuPath.objectName = "menuPath"
-    @menuSWD = Qt::Menu.new(@menubar)
-    @menuSWD.objectName = "menuSWD"
     chip_management.setMenuBar(@menubar)
     @statusbar = Qt::StatusBar.new(chip_management)
     @statusbar.objectName = "statusbar"
     chip_management.statusBar = @statusbar
 
     @menubar.addAction(@menuMenu.menuAction())
-    @menubar.addAction(@menuSWD.menuAction())
     @menubar.addAction(@menuAbout.menuAction())
     @menuMenu.addAction(@menuUpload_firmware.menuAction())
     @menuMenu.addAction(@menuComponent.menuAction())
+    @menuMenu.addAction(@actionSignal_Mapper)
     @menuUpload_firmware.addAction(@actionDisplay_firmware)
     @menuUpload_firmware.addAction(@actionParallel)
     @menuUpload_firmware.addAction(@actionI2C)
     @menuUpload_firmware.addAction(@actionSPI)
+    @menuUpload_firmware.addAction(@actionSWD)
+    @menuUpload_firmware.addAction(@actionUART)
     @menuUpload_firmware.addSeparator()
     @menuUpload_firmware.addAction(@actionUC)
     @menuComponent.addAction(@actionAdd)
     @menuComponent.addAction(@actionEdit)
-    @menuComponent.addAction(@actionDelete)
-    @menuComponent.addAction(@actionExport_current)
     @menuComponent.addAction(@actionWire)
+    @menuComponent.addAction(@actionDelete)
+    @menuComponent.addAction(@actionTemplate)
+    @menuComponent.addAction(@actionImport_2)
+    @menuComponent.addAction(@actionExport)
     @menuAbout.addAction(@actionHardsploit_website)
     @menuAbout.addAction(@actionVersions)
     @menuAbout.addAction(@menuPath.menuAction())
     @menuPath.addAction(@actionDatabase_file)
     @menuPath.addAction(@actionError_log_file)
-    @menuSWD.addAction(@actionSWD_detect)
-    @menuSWD.addAction(@actionSWD_export)
-    @menuSWD.addAction(@actionSWD_import)
-    @menuSWD.addAction(@actionSWD_erase)
 
     retranslateUi(chip_management)
     Qt::Object.connect(@tbl_chip, SIGNAL('cellDoubleClicked(int,int)'), chip_management, SLOT('load_tree(int,int)'))
@@ -276,10 +276,12 @@ class Ui_Chip_management
     Qt::Object.connect(@actionEdit, SIGNAL('triggered()'), chip_management, SLOT('edit_chip()'))
     Qt::Object.connect(@actionWire, SIGNAL('triggered()'), chip_management, SLOT('wire_chip()'))
     Qt::Object.connect(@pushButton, SIGNAL('clicked()'), @tbl_console, SLOT('clearContents()'))
-    Qt::Object.connect(@actionSWD_detect, SIGNAL('triggered()'), chip_management, SLOT('swd_detect()'))
-    Qt::Object.connect(@actionSWD_export, SIGNAL('triggered()'), chip_management, SLOT('swd_export()'))
-    Qt::Object.connect(@actionSWD_import, SIGNAL('triggered()'), chip_management, SLOT('swd_import()'))
-    Qt::Object.connect(@actionSWD_erase, SIGNAL('triggered()'), chip_management, SLOT('swd_erase()'))
+    Qt::Object.connect(@actionSignal_Mapper, SIGNAL('triggered()'), chip_management, SLOT('open_signal_mapper()'))
+    Qt::Object.connect(@actionExport, SIGNAL('triggered()'), chip_management, SLOT('export()'))
+    Qt::Object.connect(@actionImport_2, SIGNAL('triggered()'), chip_management, SLOT('import()'))
+    Qt::Object.connect(@actionTemplate, SIGNAL('triggered()'), chip_management, SLOT('add_chip()'))
+    Qt::Object.connect(@actionSWD, SIGNAL('triggered()'), chip_management, SLOT('set_firmware()'))
+    Qt::Object.connect(@actionUART, SIGNAL('triggered()'), chip_management, SLOT('set_firmware()'))
 
     Qt::MetaObject.connectSlotsByName(chip_management)
     end # setupUi
@@ -298,21 +300,25 @@ class Ui_Chip_management
     @actionI2C.text = Qt::Application.translate("Chip_management", "Set I\302\262C", nil, Qt::Application::UnicodeUTF8)
     @actionSPI.text = Qt::Application.translate("Chip_management", "Set SPI", nil, Qt::Application::UnicodeUTF8)
     @actionHardsploit_website.text = Qt::Application.translate("Chip_management", "Hardsploit website", nil, Qt::Application::UnicodeUTF8)
-    @actionAdd.text = Qt::Application.translate("Chip_management", "Add new", nil, Qt::Application::UnicodeUTF8)
+    @actionAdd.text = Qt::Application.translate("Chip_management", "New", nil, Qt::Application::UnicodeUTF8)
     @actionAdd.shortcut = Qt::Application.translate("Chip_management", "Ctrl+A", nil, Qt::Application::UnicodeUTF8)
     @actionEdit.text = Qt::Application.translate("Chip_management", "Edit", nil, Qt::Application::UnicodeUTF8)
     @actionEdit.shortcut = Qt::Application.translate("Chip_management", "Ctrl+E", nil, Qt::Application::UnicodeUTF8)
     @actionDelete.text = Qt::Application.translate("Chip_management", "Delete", nil, Qt::Application::UnicodeUTF8)
     @actionDelete.shortcut = Qt::Application.translate("Chip_management", "Ctrl+D", nil, Qt::Application::UnicodeUTF8)
-    @actionExport_current.text = Qt::Application.translate("Chip_management", "Export", nil, Qt::Application::UnicodeUTF8)
     @actionDisplay_firmware.text = Qt::Application.translate("Chip_management", "Display current firmware", nil, Qt::Application::UnicodeUTF8)
     @actionDisplay_firmware.shortcut = Qt::Application.translate("Chip_management", "Ctrl+F", nil, Qt::Application::UnicodeUTF8)
     @actionWire.text = Qt::Application.translate("Chip_management", "Wire", nil, Qt::Application::UnicodeUTF8)
     @actionWire.shortcut = Qt::Application.translate("Chip_management", "Ctrl+W", nil, Qt::Application::UnicodeUTF8)
-    @actionSWD_detect.text = Qt::Application.translate("Chip_management", "Detect", nil, Qt::Application::UnicodeUTF8)
-    @actionSWD_export.text = Qt::Application.translate("Chip_management", "Export (Dump)", nil, Qt::Application::UnicodeUTF8)
-    @actionSWD_import.text = Qt::Application.translate("Chip_management", "Import (Write)", nil, Qt::Application::UnicodeUTF8)
-    @actionSWD_erase.text = Qt::Application.translate("Chip_management", "Erase", nil, Qt::Application::UnicodeUTF8)
+    @actionSignal_Mapper.text = Qt::Application.translate("Chip_management", "Signal Mapper", nil, Qt::Application::UnicodeUTF8)
+    @actionExport.text = Qt::Application.translate("Chip_management", "Export", nil, Qt::Application::UnicodeUTF8)
+    @actionExport.shortcut = Qt::Application.translate("Chip_management", "Ctrl+C", nil, Qt::Application::UnicodeUTF8)
+    @actionImport_2.text = Qt::Application.translate("Chip_management", "Import", nil, Qt::Application::UnicodeUTF8)
+    @actionImport_2.shortcut = Qt::Application.translate("Chip_management", "Ctrl+V", nil, Qt::Application::UnicodeUTF8)
+    @actionTemplate.text = Qt::Application.translate("Chip_management", "Template", nil, Qt::Application::UnicodeUTF8)
+    @actionTemplate.shortcut = Qt::Application.translate("Chip_management", "Ctrl+T", nil, Qt::Application::UnicodeUTF8)
+    @actionSWD.text = Qt::Application.translate("Chip_management", "Set SWD", nil, Qt::Application::UnicodeUTF8)
+    @actionUART.text = Qt::Application.translate("Chip_management", "Set UART", nil, Qt::Application::UnicodeUTF8)
     @tw_chip.headerItem.setText(0, Qt::Application.translate("Chip_management", "Current chip", nil, Qt::Application::UnicodeUTF8))
     @img_search.text = Qt::Application.translate("Chip_management", "Search", nil, Qt::Application::UnicodeUTF8)
     @cbx_manufacturer.insertItems(0, [Qt::Application.translate("Chip_management", "Manufacturer...", nil, Qt::Application::UnicodeUTF8)])
@@ -356,7 +362,6 @@ class Ui_Chip_management
     @menuComponent.title = Qt::Application.translate("Chip_management", "Component...", nil, Qt::Application::UnicodeUTF8)
     @menuAbout.title = Qt::Application.translate("Chip_management", "About", nil, Qt::Application::UnicodeUTF8)
     @menuPath.title = Qt::Application.translate("Chip_management", "Path...", nil, Qt::Application::UnicodeUTF8)
-    @menuSWD.title = Qt::Application.translate("Chip_management", "SWD", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 
     def retranslate_ui(chip_management)

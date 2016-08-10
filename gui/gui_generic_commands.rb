@@ -1,13 +1,19 @@
 =begin
 ** Form generated from reading ui file 'gui_generic_commands.ui'
 **
-** Created: jeu. déc. 3 15:41:54 2015
+** Created: jeu. mai 26 15:29:15 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 =end
 
 class Ui_Generic_commands
+    attr_reader :actionExecute
+    attr_reader :actionEdit
+    attr_reader :actionTemplate
+    attr_reader :actionDelete
+    attr_reader :actionConcatenate
+    attr_reader :centralwidget
     attr_reader :gridLayout
     attr_reader :vl
     attr_reader :hl
@@ -18,31 +24,45 @@ class Ui_Generic_commands
     attr_reader :lbl_chip
     attr_reader :vl2
     attr_reader :tbl_cmd
+    attr_reader :label
     attr_reader :hl3
     attr_reader :check_result
     attr_reader :hs2
     attr_reader :btn_new_cmd
-    attr_reader :cbx_action
-    attr_reader :btn_next
+    attr_reader :menubar
+    attr_reader :menuCommandes
+    attr_reader :statusbar
 
     def setupUi(generic_commands)
     if generic_commands.objectName.nil?
         generic_commands.objectName = "generic_commands"
     end
-    generic_commands.resize(532, 384)
-    generic_commands.minimumSize = Qt::Size.new(532, 384)
-    @gridLayout = Qt::GridLayout.new(generic_commands)
+    generic_commands.windowModality = Qt::ApplicationModal
+    generic_commands.resize(542, 383)
+    @actionExecute = Qt::Action.new(generic_commands)
+    @actionExecute.objectName = "actionExecute"
+    @actionEdit = Qt::Action.new(generic_commands)
+    @actionEdit.objectName = "actionEdit"
+    @actionTemplate = Qt::Action.new(generic_commands)
+    @actionTemplate.objectName = "actionTemplate"
+    @actionDelete = Qt::Action.new(generic_commands)
+    @actionDelete.objectName = "actionDelete"
+    @actionConcatenate = Qt::Action.new(generic_commands)
+    @actionConcatenate.objectName = "actionConcatenate"
+    @centralwidget = Qt::Widget.new(generic_commands)
+    @centralwidget.objectName = "centralwidget"
+    @gridLayout = Qt::GridLayout.new(@centralwidget)
     @gridLayout.objectName = "gridLayout"
     @vl = Qt::VBoxLayout.new()
     @vl.objectName = "vl"
     @hl = Qt::HBoxLayout.new()
     @hl.objectName = "hl"
-    @lbl_search = Qt::Label.new(generic_commands)
+    @lbl_search = Qt::Label.new(@centralwidget)
     @lbl_search.objectName = "lbl_search"
 
     @hl.addWidget(@lbl_search)
 
-    @lie_search = Qt::LineEdit.new(generic_commands)
+    @lie_search = Qt::LineEdit.new(@centralwidget)
     @lie_search.objectName = "lie_search"
     @lie_search.maxLength = 10
 
@@ -52,12 +72,12 @@ class Ui_Generic_commands
 
     @hl.addItem(@hs)
 
-    @lbl_current_chip = Qt::Label.new(generic_commands)
+    @lbl_current_chip = Qt::Label.new(@centralwidget)
     @lbl_current_chip.objectName = "lbl_current_chip"
 
     @hl.addWidget(@lbl_current_chip)
 
-    @lbl_chip = Qt::Label.new(generic_commands)
+    @lbl_chip = Qt::Label.new(@centralwidget)
     @lbl_chip.objectName = "lbl_chip"
 
     @hl.addWidget(@lbl_chip)
@@ -67,7 +87,7 @@ class Ui_Generic_commands
 
     @vl2 = Qt::VBoxLayout.new()
     @vl2.objectName = "vl2"
-    @tbl_cmd = Qt::TableWidget.new(generic_commands)
+    @tbl_cmd = Qt::TableWidget.new(@centralwidget)
     @tbl_cmd.objectName = "tbl_cmd"
     @font = Qt::Font.new
     @font.family = "Arial"
@@ -76,10 +96,16 @@ class Ui_Generic_commands
 
     @vl2.addWidget(@tbl_cmd)
 
+    @label = Qt::Label.new(@centralwidget)
+    @label.objectName = "label"
+
+    @vl2.addWidget(@label)
+
     @hl3 = Qt::HBoxLayout.new()
     @hl3.objectName = "hl3"
-    @check_result = Qt::CheckBox.new(generic_commands)
+    @check_result = Qt::CheckBox.new(@centralwidget)
     @check_result.objectName = "check_result"
+    @check_result.checked = true
 
     @hl3.addWidget(@check_result)
 
@@ -87,20 +113,10 @@ class Ui_Generic_commands
 
     @hl3.addItem(@hs2)
 
-    @btn_new_cmd = Qt::PushButton.new(generic_commands)
+    @btn_new_cmd = Qt::PushButton.new(@centralwidget)
     @btn_new_cmd.objectName = "btn_new_cmd"
 
     @hl3.addWidget(@btn_new_cmd)
-
-    @cbx_action = Qt::ComboBox.new(generic_commands)
-    @cbx_action.objectName = "cbx_action"
-
-    @hl3.addWidget(@cbx_action)
-
-    @btn_next = Qt::PushButton.new(generic_commands)
-    @btn_next.objectName = "btn_next"
-
-    @hl3.addWidget(@btn_next)
 
 
     @vl2.addLayout(@hl3)
@@ -111,11 +127,32 @@ class Ui_Generic_commands
 
     @gridLayout.addLayout(@vl, 0, 0, 1, 1)
 
+    generic_commands.centralWidget = @centralwidget
+    @menubar = Qt::MenuBar.new(generic_commands)
+    @menubar.objectName = "menubar"
+    @menubar.geometry = Qt::Rect.new(0, 0, 542, 21)
+    @menuCommandes = Qt::Menu.new(@menubar)
+    @menuCommandes.objectName = "menuCommandes"
+    generic_commands.setMenuBar(@menubar)
+    @statusbar = Qt::StatusBar.new(generic_commands)
+    @statusbar.objectName = "statusbar"
+    generic_commands.statusBar = @statusbar
+
+    @menubar.addAction(@menuCommandes.menuAction())
+    @menuCommandes.addAction(@actionExecute)
+    @menuCommandes.addAction(@actionEdit)
+    @menuCommandes.addAction(@actionTemplate)
+    @menuCommandes.addAction(@actionDelete)
+    @menuCommandes.addAction(@actionConcatenate)
 
     retranslateUi(generic_commands)
     Qt::Object.connect(@lie_search, SIGNAL('textChanged(QString)'), generic_commands, SLOT('feed_cmd_array()'))
-    Qt::Object.connect(@btn_new_cmd, SIGNAL('clicked()'), generic_commands, SLOT('open_cmd_form()'))
-    Qt::Object.connect(@btn_next, SIGNAL('clicked()'), generic_commands, SLOT('exec_action()'))
+    Qt::Object.connect(@btn_new_cmd, SIGNAL('clicked()'), generic_commands, SLOT('create()'))
+    Qt::Object.connect(@actionExecute, SIGNAL('triggered()'), generic_commands, SLOT('execute()'))
+    Qt::Object.connect(@actionEdit, SIGNAL('triggered()'), generic_commands, SLOT('edit()'))
+    Qt::Object.connect(@actionDelete, SIGNAL('triggered()'), generic_commands, SLOT('delete()'))
+    Qt::Object.connect(@actionTemplate, SIGNAL('triggered()'), generic_commands, SLOT('template()'))
+    Qt::Object.connect(@actionConcatenate, SIGNAL('triggered()'), generic_commands, SLOT('concatenate()'))
 
     Qt::MetaObject.connectSlotsByName(generic_commands)
     end # setupUi
@@ -126,6 +163,11 @@ class Ui_Generic_commands
 
     def retranslateUi(generic_commands)
     generic_commands.windowTitle = Qt::Application.translate("Generic_commands", "Hardsploit - Commands", nil, Qt::Application::UnicodeUTF8)
+    @actionExecute.text = Qt::Application.translate("Generic_commands", "Execute", nil, Qt::Application::UnicodeUTF8)
+    @actionEdit.text = Qt::Application.translate("Generic_commands", "Edit", nil, Qt::Application::UnicodeUTF8)
+    @actionTemplate.text = Qt::Application.translate("Generic_commands", "Template", nil, Qt::Application::UnicodeUTF8)
+    @actionDelete.text = Qt::Application.translate("Generic_commands", "Delete", nil, Qt::Application::UnicodeUTF8)
+    @actionConcatenate.text = Qt::Application.translate("Generic_commands", "Concatenate", nil, Qt::Application::UnicodeUTF8)
     @lbl_search.text = Qt::Application.translate("Generic_commands", "Search", nil, Qt::Application::UnicodeUTF8)
     @lie_search.inputMask = ''
     @lbl_current_chip.text = Qt::Application.translate("Generic_commands", "Current chip:", nil, Qt::Application::UnicodeUTF8)
@@ -141,14 +183,10 @@ class Ui_Generic_commands
     __colItem1 = Qt::TableWidgetItem.new
     __colItem1.setText(Qt::Application.translate("Generic_commands", "Description", nil, Qt::Application::UnicodeUTF8))
     @tbl_cmd.setHorizontalHeaderItem(1, __colItem1)
+    @label.text = Qt::Application.translate("Generic_commands", "Right click on a command to open the menu", nil, Qt::Application::UnicodeUTF8)
     @check_result.text = Qt::Application.translate("Generic_commands", "Show command result", nil, Qt::Application::UnicodeUTF8)
     @btn_new_cmd.text = Qt::Application.translate("Generic_commands", "New Command", nil, Qt::Application::UnicodeUTF8)
-    @cbx_action.insertItems(0, [Qt::Application.translate("Generic_commands", "Action...", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("Generic_commands", "Execute", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("Generic_commands", "Edit", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("Generic_commands", "Delete", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("Generic_commands", "Template", nil, Qt::Application::UnicodeUTF8)])
-    @btn_next.text = Qt::Application.translate("Generic_commands", "Next", nil, Qt::Application::UnicodeUTF8)
+    @menuCommandes.title = Qt::Application.translate("Generic_commands", "Commandes...", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 
     def retranslate_ui(generic_commands)

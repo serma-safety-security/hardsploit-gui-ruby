@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_chip_editor.ui'
 **
-** Created: mer. févr. 10 14:26:34 2016
+** Created: mar. mai 3 15:02:04 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -29,17 +29,17 @@ class Ui_Chip_editor
     attr_reader :lbl_manu
     attr_reader :hl4
     attr_reader :cbx_manufacturer
-    attr_reader :btn_manu_remove
+    attr_reader :btn_delete_manufacturer
     attr_reader :lie_manu_name
     attr_reader :lbl_type
     attr_reader :hl5
     attr_reader :cbx_type
-    attr_reader :btn_type_remove
+    attr_reader :btn_delete_type
     attr_reader :lie_type_name
     attr_reader :lbl_package
     attr_reader :hl1
     attr_reader :cbx_package
-    attr_reader :btn_pack_remove
+    attr_reader :btn_delete_package
     attr_reader :lbl_name
     attr_reader :lie_pack_name
     attr_reader :lbl_pack_pin
@@ -54,6 +54,7 @@ class Ui_Chip_editor
     if chip_editor.objectName.nil?
         chip_editor.objectName = "chip_editor"
     end
+    chip_editor.windowModality = Qt::ApplicationModal
     chip_editor.resize(414, 594)
     @gridLayout = Qt::GridLayout.new(chip_editor)
     @gridLayout.objectName = "gridLayout"
@@ -150,11 +151,11 @@ class Ui_Chip_editor
 
     @hl4.addWidget(@cbx_manufacturer)
 
-    @btn_manu_remove = Qt::PushButton.new(chip_editor)
-    @btn_manu_remove.objectName = "btn_manu_remove"
-    @btn_manu_remove.maximumSize = Qt::Size.new(30, 16777215)
+    @btn_delete_manufacturer = Qt::PushButton.new(chip_editor)
+    @btn_delete_manufacturer.objectName = "btn_delete_manufacturer"
+    @btn_delete_manufacturer.maximumSize = Qt::Size.new(30, 16777215)
 
-    @hl4.addWidget(@btn_manu_remove)
+    @hl4.addWidget(@btn_delete_manufacturer)
 
 
     @fl.setLayout(3, Qt::FormLayout::FieldRole, @hl4)
@@ -177,11 +178,11 @@ class Ui_Chip_editor
 
     @hl5.addWidget(@cbx_type)
 
-    @btn_type_remove = Qt::PushButton.new(chip_editor)
-    @btn_type_remove.objectName = "btn_type_remove"
-    @btn_type_remove.maximumSize = Qt::Size.new(30, 16777215)
+    @btn_delete_type = Qt::PushButton.new(chip_editor)
+    @btn_delete_type.objectName = "btn_delete_type"
+    @btn_delete_type.maximumSize = Qt::Size.new(30, 16777215)
 
-    @hl5.addWidget(@btn_type_remove)
+    @hl5.addWidget(@btn_delete_type)
 
 
     @fl.setLayout(5, Qt::FormLayout::FieldRole, @hl5)
@@ -204,11 +205,11 @@ class Ui_Chip_editor
 
     @hl1.addWidget(@cbx_package)
 
-    @btn_pack_remove = Qt::PushButton.new(chip_editor)
-    @btn_pack_remove.objectName = "btn_pack_remove"
-    @btn_pack_remove.maximumSize = Qt::Size.new(30, 16777215)
+    @btn_delete_package = Qt::PushButton.new(chip_editor)
+    @btn_delete_package.objectName = "btn_delete_package"
+    @btn_delete_package.maximumSize = Qt::Size.new(30, 16777215)
 
-    @hl1.addWidget(@btn_pack_remove)
+    @hl1.addWidget(@btn_delete_package)
 
 
     @fl.setLayout(7, Qt::FormLayout::FieldRole, @hl1)
@@ -269,9 +270,9 @@ class Ui_Chip_editor
 
     retranslateUi(chip_editor)
     Qt::Object.connect(@lie_pack_pin, SIGNAL('editingFinished()'), chip_editor, SLOT('fill_pin_table()'))
-    Qt::Object.connect(@btn_manu_remove, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
-    Qt::Object.connect(@btn_type_remove, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
-    Qt::Object.connect(@btn_pack_remove, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
+    Qt::Object.connect(@btn_delete_manufacturer, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
+    Qt::Object.connect(@btn_delete_type, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
+    Qt::Object.connect(@btn_delete_package, SIGNAL('clicked()'), chip_editor, SLOT('delete_cbx_element()'))
     Qt::Object.connect(@cbx_package, SIGNAL('currentIndexChanged(int)'), chip_editor, SLOT('select_package()'))
     Qt::Object.connect(@cbx_type, SIGNAL('currentIndexChanged(int)'), chip_editor, SLOT('select_type()'))
     Qt::Object.connect(@cbx_manufacturer, SIGNAL('currentIndexChanged(int)'), chip_editor, SLOT('select_manufacturer()'))
@@ -314,16 +315,16 @@ class Ui_Chip_editor
     @rbn_5v.text = Qt::Application.translate("Chip_editor", "5V", nil, Qt::Application::UnicodeUTF8)
     @lbl_manu.text = Qt::Application.translate("Chip_editor", "Manufacturer:", nil, Qt::Application::UnicodeUTF8)
     @cbx_manufacturer.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
-    @btn_manu_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
+    @btn_delete_manufacturer.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
     @lie_manu_name.placeholderText = Qt::Application.translate("Chip_editor", "Other...", nil, Qt::Application::UnicodeUTF8)
     @lbl_type.text = Qt::Application.translate("Chip_editor", "Type:", nil, Qt::Application::UnicodeUTF8)
     @cbx_type.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
-    @btn_type_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
+    @btn_delete_type.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
     @lie_type_name.text = ''
     @lie_type_name.placeholderText = Qt::Application.translate("Chip_editor", "Other...", nil, Qt::Application::UnicodeUTF8)
     @lbl_package.text = Qt::Application.translate("Chip_editor", "Package:", nil, Qt::Application::UnicodeUTF8)
     @cbx_package.insertItems(0, [Qt::Application.translate("Chip_editor", "Select...", nil, Qt::Application::UnicodeUTF8)])
-    @btn_pack_remove.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
+    @btn_delete_package.text = Qt::Application.translate("Chip_editor", "X", nil, Qt::Application::UnicodeUTF8)
     @lbl_name.text = Qt::Application.translate("Chip_editor", "Package name:", nil, Qt::Application::UnicodeUTF8)
     @lie_pack_name.placeholderText = Qt::Application.translate("Chip_editor", "30 chars max", nil, Qt::Application::UnicodeUTF8)
     @lbl_pack_pin.text = Qt::Application.translate("Chip_editor", "Package pin number:", nil, Qt::Application::UnicodeUTF8)

@@ -5,8 +5,6 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 require 'date'
-require_relative '../HardsploitAPI/HardsploitAPI'
-require_relative '../class/Command_table'
 require_relative '../gui/gui_command_editor'
 class Console < Qt::TableWidget
 

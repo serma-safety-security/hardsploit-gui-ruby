@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>Generic_export</class>
  <widget class="QWidget" name="Generic_export">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>254</width>
-    <height>168</height>
+    <height>203</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +91,26 @@
         <widget class="QPushButton" name="btn_file">
          <property name="text">
           <string>File...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_selected">
+         <property name="text">
+          <string>Selected file:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="lbl_selected_file">
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>None</string>
          </property>
         </widget>
        </item>

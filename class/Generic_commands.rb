@@ -5,64 +5,161 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../HardsploitAPI/HardsploitAPI'
 require_relative '../gui/gui_generic_commands'
 require_relative '../gui/gui_export_manager'
-require_relative '../class/I2C/I2c_command'
-require_relative '../class/Export_manager'
-require_relative '../class/Command_editor'
 
-
-class Generic_commands < Qt::Widget
+class Generic_commands < Qt::MainWindow
   slots 'feed_cmd_array()'
-  slots 'exec_action()'
-  slots 'open_cmd_form()'
+  slots 'execute()'
+  slots 'create()'
+  slots 'edit()'
+  slots 'delete()'
+  slots 'template()'
+  slots 'concatenate()'
 
-  def initialize(api, chip, bus_name)
+  def initialize(chip, bus_name)
     super()
-    @generic_command_gui = Ui_Generic_commands.new
+    @view = Ui_Generic_commands.new
     centerWindow(self)
-    @generic_command_gui.setupUi(self)
-    @generic_command_gui.lbl_chip.setText(chip.chip_reference)
-    @generic_command_gui.lbl_search.setPixmap(Qt::Pixmap.new('images/search.png'))
-    inputRestrict(@generic_command_gui.lie_search, 2)
-    @generic_command_gui.check_result.setChecked(true)
-    @api = api
+    @view.setupUi(self)
+    @view.lbl_chip.setText(chip.reference)
+    @view.lbl_search.setPixmap(Qt::Pixmap.new('images/search.png'))
+    inputRestrict(@view.lie_search, 2)
     @chip = chip
     @bus_name = bus_name
-    @bus_id = Bus.find_by(bus_name: bus_name).bus_id
+    @bus_id = Bus.find_by(name: bus_name).id
     select_chip_settings(bus_name)
     feed_cmd_array
   end
 
+  def contextMenuEvent(event)
+    if @view.tbl_cmd.currentItem.nil?
+      return false
+    else
+      return false if @view.tbl_cmd.currentItem.column == 1
+      menu = Qt::Menu.new(self)
+      menu.addAction(@view.actionExecute)
+      menu.addAction(@view.actionEdit)
+      menu.addAction(@view.actionTemplate)
+      menu.addAction(@view.actionDelete)
+      menu.addAction(@view.actionConcatenate)
+      menu.exec(event.globalPos())
+    end
+  end
+
+  def execute
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+    return ErrorMsg.new.no_cmd_selected if @view.tbl_cmd.currentItem.nil?
+    cmd_array = prepare_cmd
+    result = exec_cmd(@bus_name, cmd_array)
+    if @view.check_result.isChecked && result != false
+      export_manager = Export_manager.new(@bus_name, result, cmd_array)
+      export_manager.setWindowModality(Qt::ApplicationModal)
+      export_manager.show
+    end
+  end
+
+  def create
+    if @bus_name == 'I2C'
+      cmdBase = I2c_command.new(@chip, @bus_id, self)
+    else
+      cmdBase = Command_editor.new(0, nil, @chip, @bus_id, self)
+    end
+    cmdBase.show
+  end
+
+  def edit
+    return ErrorMsg.new.no_cmd_selected if @view.tbl_cmd.currentItem.nil?
+    cmdBase = Command_editor.new(2, @view.tbl_cmd.currentItem.text, @chip, @bus_id, self)
+    cmdBase.show
+  end
+
+  def template
+    return ErrorMsg.new.no_cmd_selected if @view.tbl_cmd.currentItem.nil?
+    cmdBase = Command_editor.new(1, @view.tbl_cmd.currentItem.text, @chip, @bus_id, self)
+    cmdBase.show
+  end
+
+  def delete
+    return ErrorMsg.new.no_cmd_selected if @view.tbl_cmd.currentItem.nil?
+    msg = Qt::MessageBox.new
+    msg.setWindowTitle('Delete command')
+    msg.setText('Confirm the delete command action ?')
+    msg.setIcon(Qt::MessageBox::Question)
+    msg.setStandardButtons(Qt::MessageBox::Cancel | Qt::MessageBox::Ok)
+    msg.setDefaultButton(Qt::MessageBox::Cancel)
+    if msg.exec == Qt::MessageBox::Ok
+      @chip.commands.find_by(name: @view.tbl_cmd.currentItem.text).destroy
+      feed_cmd_array
+    end
+  end
+
+  def concatenate
+    return ErrorMsg.new.concat_disallow unless @bus_name == "I2C"
+    return ErrorMsg.new.concat_nbr unless @view.tbl_cmd.selectedItems.count == 2
+    cmd1 = Command.find_by(name: @view.tbl_cmd.selectedItems[0].text)
+    cmd2 = Command.find_by(name: @view.tbl_cmd.selectedItems[1].text)
+    return false unless check_concatenation_size(cmd1.bytes, cmd2.bytes)
+
+    cmd_1 = @view.tbl_cmd.selectedItems[0].text
+    cmd_2 = @view.tbl_cmd.selectedItems[1].text
+    cmd = Command.create(
+      name:        'New concatenation',
+      description: "Concatenation of #{cmd1.name} and #{cmd2.name} commands",
+      bus_id:      @bus_id,
+      chip_id:     @chip.id
+    )
+    unless check_for_errors(cmd)
+      cmd1.bytes.each do |b1|
+        byte1 = Byte.create(
+          index:        b1.index,
+          value:        b1.value,
+          description:  b1.description,
+          iteration:    b1.iteration,
+          command_id:   Command.last.id
+        )
+        check_for_errors(byte1)
+      end
+      cmd2.bytes.each do |b2|
+        byte2 = Byte.create(
+          index:        Byte.last.index + 1,
+          value:        b2.value,
+          description:  b2.description,
+          iteration:    b2.iteration,
+          command_id:   Command.last.id
+        )
+        check_for_errors(byte2)
+      end
+      feed_cmd_array
+    end
+  end
+
   def feed_cmd_array
-    @generic_command_gui.tbl_cmd.clearContents
-    cmd = @chip.cmd.where(cmd_bus: @bus_id)
-    unless @generic_command_gui.lie_search.text.empty?
-      cmd = cmd.where('cmd_name LIKE ?', "%#{@generic_command_gui.lie_search.text}%")
+    @view.tbl_cmd.clearContents
+    cmd = @chip.commands.where(bus_id: @bus_id)
+    unless @view.lie_search.text.empty?
+      cmd = cmd.where('name LIKE ?', "%#{@view.lie_search.text}%")
     end
-    @generic_command_gui.tbl_cmd.setRowCount(cmd.count);
+    @view.tbl_cmd.setRowCount(cmd.count);
     cmd.to_enum.with_index(0).each do |c, i|
-      it1 = Qt::TableWidgetItem.new(c.cmd_name)
+      it1 = Qt::TableWidgetItem.new(c.name)
       it1.setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled)
-      it2 =  Qt::TableWidgetItem.new(c.cmd_desc)
+      it2 =  Qt::TableWidgetItem.new(c.description)
       it2.setFlags(Qt::ItemIsEnabled)
-      @generic_command_gui.tbl_cmd.setItem(i, 0, it1);
-      @generic_command_gui.tbl_cmd.setItem(i, 1, it2);
+      @view.tbl_cmd.setItem(i, 0, it1);
+      @view.tbl_cmd.setItem(i, 1, it2);
     end
-    @generic_command_gui.tbl_cmd.resizeColumnsToContents
-    @generic_command_gui.tbl_cmd.resizeRowsToContents
-    @generic_command_gui.tbl_cmd.horizontalHeader.stretchLastSection = true
+    @view.tbl_cmd.resizeColumnsToContents
+    @view.tbl_cmd.resizeRowsToContents
+    @view.tbl_cmd.horizontalHeader.stretchLastSection = true
   rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error while loading the command array. Consult the log for more details').exec
+    ErrorMsg.new.unknown(msg)
   end
 
   def select_chip_settings(bus)
     case bus
     when 'SPI'
-      @chip_settings = Spi.find_by(spi_chip: @chip.chip_id)
+      @chip_settings = SpiSetting.find_by(chip_id: @chip.id)
       @speeds = {
         '25.00' => 3,
         '18.75' => 4,
@@ -80,191 +177,84 @@ class Generic_commands < Qt::Widget
         '0.29' => 255
       }
     when 'I2C'
-      @chip_settings = I2C.find_by(i2c_chip: @chip.chip_id)
-      @generic_command_gui.cbx_action.insertItem(3, 'Concatenate')
+      @chip_settings = @chip.i2c_setting
     end
-  end
-
-  # Execute action
-  def exec_action
-    if @generic_command_gui.tbl_cmd.currentItem.nil?
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Missing command', 'Select a command in the array first').exec
-      return 0
-    end
-    case @generic_command_gui.cbx_action.currentText
-    when 'Execute'
-      cmd_array = prepare_cmd
-      result = exec_cmd(@bus_name, cmd_array)
-      if @generic_command_gui.check_result.isChecked
-        export_manager = Export_manager.new(@bus_name, result, cmd_array)
-        export_manager.setWindowModality(Qt::ApplicationModal)
-        export_manager.show
-      end
-    when 'Template'
-      open_cmd_form(:option_1 => 'temp')
-    when 'Edit'
-      open_cmd_form(:option_1 => 'edit')
-    when 'Concatenate'
-      concatenate_cmds
-    when 'Delete'
-      delete_cmd
-    else
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Wrong option', 'Please choose a correct action').exec
-    end
-  rescue Exception => msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured while executing the action. Consult the logs for more details').exec
-    logger = Logger.new($logFilePath)
-    logger.error msg
   end
 
   def prepare_cmd
-    byte_list = Byte.where(byte_cmd: Cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.currentItem.text))
-    array_sent = Array.new
+    byte_list = Byte.where(command_id: Command.find_by(name: @view.tbl_cmd.currentItem.text))
+    packet = []
     byte_list.each do |bl|
-      if bl.byte_iteration != 0 && !bl.byte_iteration.nil?
-        for i in 1..bl.byte_iteration.to_i do
-          array_sent.push(bl.byte_value.to_i(16))
-        end
+      unless bl.iteration == 0 && bl.iteration.nil?
+        packet.push(bl.value.to_i(16))
       else
-        array_sent.push(bl.byte_value.to_i(16))
+        for i in 1..bl.iteration.to_i do
+          packet.push(bl.value.to_i(16))
+        end
       end
     end
-    return array_sent
-  rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured when preparing the command. Consult the log for more details').exec
+    return packet
   end
 
   def exec_cmd(bus, array_sent)
-      Firmware.new(@api, @bus_name)
-      case bus
-      when 'SPI'
-        return check_send_and_received_data(@api.spi_Interact(@chip_settings.spi_mode, @speeds[@chip_settings.spi_frequency], array_sent))
-      when 'I2C'
-        return check_send_and_received_data(@api.i2c_Interact(@chip_settings.i2c_frequency, array_sent))
+    Firmware.new(bus)
+    case bus
+    when 'SPI'
+      spi = HardsploitAPI_SPI.new(
+        speed: @speeds[@chip.spi_setting.frequency],
+        mode:  @chip.spi_setting.mode
+      )
+      return spi.spi_Interact(payload: array_sent)
+    when 'I2C'
+      if [40, 100, 400, 1000].include?(@chip.i2c_setting.frequency)
+        speed = 0 if @chip.i2c_setting.frequency == 100
+        speed = 1 if @chip.i2c_setting.frequency == 400
+        speed = 2 if @chip.i2c_setting.frequency == 1000
+        speed = 3 if @chip.i2c_setting.frequency == 40
+        i2c = HardsploitAPI_I2C.new(speed: speed)
       end
+      return i2c.i2c_Interact(payload: array_sent)
+    end
+  rescue HardsploitAPI::ERROR::HARDSPLOIT_NOT_FOUND
+    ErrorMsg.new.hardsploit_not_found
+    return false
+  rescue HardsploitAPI::ERROR::USB_ERROR
+    ErrorMsg.new.usb_error
+    return false
   rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured when executing the command. Consult the log for more details').exec
+    ErrorMsg.new.unknown(msg)
+    return false
   end
 
-  def delete_cmd
-    msg = Qt::MessageBox.new
-    msg.setWindowTitle('Delete command')
-    msg.setText('Confirm the delete command action ?')
-    msg.setIcon(Qt::MessageBox::Question)
-    msg.setStandardButtons(Qt::MessageBox::Cancel | Qt::MessageBox::Ok)
-    msg.setDefaultButton(Qt::MessageBox::Cancel)
-    if msg.exec == Qt::MessageBox::Ok
-      @chip.cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.currentItem.text).destroy
-      feed_cmd_array
+  def check_concatenation_size(bytes_cmd_1, bytes_cmd_2)
+    check_size = []
+    bytes_cmd_1.each do |b1|
+      check_size.push(b1.value)
     end
-  rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured when deleting the command. Consult the log for more details').exec
-  end
-
-  def concatenate_cmds
-    if @generic_command_gui.tbl_cmd.selectedItems.count != 2
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Wrong selection', 'Select two commands in the table to concatenate them').exec
-      return 0
-    end
-    bytesCmd1 = Byte.where(byte_cmd: Cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.selectedItems[0].text).cmd_id)
-    bytesCmd2 = Byte.where(byte_cmd: Cmd.find_by(cmd_name: @generic_command_gui.tbl_cmd.selectedItems[1].text).cmd_id)
-    if check_concatenation_size(bytesCmd1, bytesCmd2)
-      # Save cmd
-      cmd = Cmd.new
-      cmd.cmd_name = 'New concatenation'
-      cmd.cmd_desc = "Concatenation of #{@generic_command_gui.tbl_cmd.selectedItems[0].text} and #{@generic_command_gui.tbl_cmd.selectedItems[1].text} commands"
-      cmd.cmd_bus = @bus_id
-      cmd.cmd_chip = @chip.chip_id
-      cmd.save
-      # Save cmd bytes
-      bytesCmd1.each do |b1|
-        byte = Byte.new
-        byte.byte_index = b1.byte_index
-        byte.byte_value = b1.byte_value
-        byte.byte_description = b1.byte_description
-        byte.byte_iteration = b1.byte_iteration
-        byte.byte_cmd = Cmd.ids.last
-        byte.save
-      end
-      bytesCmd2.each do |b2|
-        byte2 = Byte.new
-        byte2.byte_index = Byte.last.byte_index + 1
-        byte2.byte_value = b2.byte_value
-        byte2.byte_description = b2.byte_description
-        byte2.byte_iteration = b2.byte_iteration
-        byte2.byte_cmd = Cmd.ids.last
-        byte2.save
-      end
-      feed_cmd_array
-    end
-  rescue Exception => msg
-    logger = Logger.new($logFilePath)
-    logger.error msg
-    Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Error occured when concatenating the command. Consult the log for more details').exec
-  end
-
-  def check_concatenation_size(bytesCmd1, bytesCmd2)
-    checkSize = []
-    bytesCmd1.each do |b1|
-      checkSize.push(b1.byte_value)
-    end
-    bytesCmd2.each do |b2|
-      checkSize.push(b2.byte_value)
+    bytes_cmd_2.each do |b2|
+      check_size.push(b2.value)
     end
     count = 0
     i = 0
-    while i <= (checkSize.size) - 1 do
-      lowByte = checkSize[i]
-      highByte = checkSize[i + 1]
-      commandType = checkSize[i + 2]
-      count += (lowByte.to_i(16) + (highByte.to_i(16)<<8))
+    while i <= (check_size.size) - 1 do
+      lowByte = check_size[i]
+      highByte = check_size[i + 1]
+      commandType = check_size[i + 2]
+      count += (lowByte.to_i(16) + (highByte.to_i(16) << 8))
       if commandType.to_i(16) % 2 == 0 #WRITE
-        i += ((lowByte.to_i(16) + (highByte.to_i(16)<<8)) + 3)
+        i += ((lowByte.to_i(16) + (highByte.to_i(16) << 8)) + 3)
       else #READ
         i = (i + 3)
       end
     end
     if count > 2000
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'Command too big: unable to concatenate').exec
+      Qt::MessageBox.new(
+        Qt::MessageBox::Critical,
+        'Critical error',
+        'Command too big: unable to concatenate'
+      ).exec
       return false
     end
     return true
-  end
-
-  def open_cmd_form(options={})
-      if options[:option_1].nil?
-        if @bus_name == 'I2C'
-          cmdBase = I2c_command.new(@api, @chip, @bus_id, self)
-        else
-          cmdBase = Command_editor.new(0, nil, @chip, @bus_id, self, @api)
-        end
-      else
-        if options[:option_1] == 'temp'
-          cmdBase = Command_editor.new(1, @generic_command_gui.tbl_cmd.currentItem.text, @chip, @bus_id, self, @api)
-        else
-          cmdBase = Command_editor.new(2, @generic_command_gui.tbl_cmd.currentItem.text, @chip, @bus_id, self, @api)
-        end
-      end
-    cmdBase.setWindowModality(Qt::ApplicationModal)
-    cmdBase.show
-  end
-
-  def check_send_and_received_data(value)
-    case value
-    when HardsploitAPI::USB_STATE::PACKET_IS_TOO_LARGE
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', "PACKET_IS_TOO_LARGE max: #{HardsploitAPI::USB::USB_TRAME_SIZE}").exec
-    when HardsploitAPI::USB_STATE::ERROR_SEND
-      Qt::MessageBox.new(Qt::MessageBox::Critical, 'Critical error', 'ERROR_SEND').exec
-    when HardsploitAPI::USB_STATE::BUSY
-      Qt::MessageBox.new(Qt::MessageBox::Warning, 'BUSY', 'Device busy').exec
-    else
-      return value
-    end
   end
 end

@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_parallel_settings.ui'
 **
-** Created: mar. déc. 8 14:46:14 2015
+** Created: ven. avr. 29 14:38:25 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -104,6 +104,7 @@ class Ui_Parallel_settings
     @rbn_8b = Qt::RadioButton.new(@groupBox)
     @rbn_8b.objectName = "rbn_8b"
     @rbn_8b.geometry = Qt::Rect.new(0, 0, 71, 20)
+    @rbn_8b.checked = true
     @rbn_16b = Qt::RadioButton.new(@groupBox)
     @rbn_16b.objectName = "rbn_16b"
     @rbn_16b.geometry = Qt::Rect.new(80, 0, 81, 21)

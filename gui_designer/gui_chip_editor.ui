@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Chip_editor</class>
  <widget class="QWidget" name="Chip_editor">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -202,7 +205,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_manu_remove">
+          <widget class="QPushButton" name="btn_delete_manufacturer">
            <property name="maximumSize">
             <size>
              <width>30</width>
@@ -245,7 +248,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_type_remove">
+          <widget class="QPushButton" name="btn_delete_type">
            <property name="maximumSize">
             <size>
              <width>30</width>
@@ -291,7 +294,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_pack_remove">
+          <widget class="QPushButton" name="btn_delete_package">
            <property name="maximumSize">
             <size>
              <width>30</width>
@@ -423,7 +426,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btn_manu_remove</sender>
+   <sender>btn_delete_manufacturer</sender>
    <signal>clicked()</signal>
    <receiver>Chip_editor</receiver>
    <slot>delete_cbx_element()</slot>
@@ -439,7 +442,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btn_type_remove</sender>
+   <sender>btn_delete_type</sender>
    <signal>clicked()</signal>
    <receiver>Chip_editor</receiver>
    <slot>delete_cbx_element()</slot>
@@ -455,7 +458,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btn_pack_remove</sender>
+   <sender>btn_delete_package</sender>
    <signal>clicked()</signal>
    <receiver>Chip_editor</receiver>
    <slot>delete_cbx_element()</slot>

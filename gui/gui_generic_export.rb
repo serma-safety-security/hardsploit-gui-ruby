@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_generic_export.ui'
 **
-** Created: mar. déc. 8 10:22:41 2015
+** Created: mar. juil. 12 16:04:54 2016
 **      by: Qt User Interface Compiler version 4.8.6
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -21,6 +21,8 @@ class Ui_Generic_export
     attr_reader :lie_stop
     attr_reader :lbl_file
     attr_reader :btn_file
+    attr_reader :lbl_selected
+    attr_reader :lbl_selected_file
     attr_reader :hl
     attr_reader :btn_export
     attr_reader :btn_full_export
@@ -29,7 +31,8 @@ class Ui_Generic_export
     if generic_export.objectName.nil?
         generic_export.objectName = "generic_export"
     end
-    generic_export.resize(254, 168)
+    generic_export.windowModality = Qt::ApplicationModal
+    generic_export.resize(254, 203)
     @gridLayout = Qt::GridLayout.new(generic_export)
     @gridLayout.objectName = "gridLayout"
     @vl = Qt::VBoxLayout.new()
@@ -87,6 +90,17 @@ class Ui_Generic_export
 
     @fl.setWidget(4, Qt::FormLayout::FieldRole, @btn_file)
 
+    @lbl_selected = Qt::Label.new(generic_export)
+    @lbl_selected.objectName = "lbl_selected"
+
+    @fl.setWidget(5, Qt::FormLayout::LabelRole, @lbl_selected)
+
+    @lbl_selected_file = Qt::Label.new(generic_export)
+    @lbl_selected_file.objectName = "lbl_selected_file"
+    @lbl_selected_file.maximumSize = Qt::Size.new(250, 16777215)
+
+    @fl.setWidget(5, Qt::FormLayout::FieldRole, @lbl_selected_file)
+
 
     @vl.addLayout(@fl)
 
@@ -131,6 +145,8 @@ class Ui_Generic_export
     @lbl_stop.text = Qt::Application.translate("Generic_export", "Stop address:", nil, Qt::Application::UnicodeUTF8)
     @lbl_file.text = Qt::Application.translate("Generic_export", "File:", nil, Qt::Application::UnicodeUTF8)
     @btn_file.text = Qt::Application.translate("Generic_export", "File...", nil, Qt::Application::UnicodeUTF8)
+    @lbl_selected.text = Qt::Application.translate("Generic_export", "Selected file:", nil, Qt::Application::UnicodeUTF8)
+    @lbl_selected_file.text = Qt::Application.translate("Generic_export", "None", nil, Qt::Application::UnicodeUTF8)
     @btn_export.text = Qt::Application.translate("Generic_export", "Export", nil, Qt::Application::UnicodeUTF8)
     @btn_full_export.text = Qt::Application.translate("Generic_export", "Full export", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi

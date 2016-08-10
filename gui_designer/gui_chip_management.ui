@@ -31,7 +31,7 @@
        <widget class="QTreeWidget" name="tw_chip">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>200</width>
           <height>0</height>
          </size>
         </property>
@@ -264,6 +264,8 @@
      <addaction name="actionParallel"/>
      <addaction name="actionI2C"/>
      <addaction name="actionSPI"/>
+     <addaction name="actionSWD"/>
+     <addaction name="actionUART"/>
      <addaction name="separator"/>
      <addaction name="actionUC"/>
     </widget>
@@ -273,12 +275,15 @@
      </property>
      <addaction name="actionAdd"/>
      <addaction name="actionEdit"/>
-     <addaction name="actionDelete"/>
-     <addaction name="actionExport_current"/>
      <addaction name="actionWire"/>
+     <addaction name="actionDelete"/>
+     <addaction name="actionTemplate"/>
+     <addaction name="actionImport_2"/>
+     <addaction name="actionExport"/>
     </widget>
     <addaction name="menuUpload_firmware"/>
     <addaction name="menuComponent"/>
+    <addaction name="actionSignal_Mapper"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -295,17 +300,7 @@
     <addaction name="actionVersions"/>
     <addaction name="menuPath"/>
    </widget>
-   <widget class="QMenu" name="menuSWD">
-    <property name="title">
-     <string>SWD</string>
-    </property>
-    <addaction name="actionSWD_detect"/>
-    <addaction name="actionSWD_export"/>
-    <addaction name="actionSWD_import"/>
-    <addaction name="actionSWD_erase"/>
-   </widget>
    <addaction name="menuMenu"/>
-   <addaction name="menuSWD"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -351,7 +346,7 @@
   </action>
   <action name="actionAdd">
    <property name="text">
-    <string>Add new</string>
+    <string>New</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
@@ -373,11 +368,6 @@
     <string>Ctrl+D</string>
    </property>
   </action>
-  <action name="actionExport_current">
-   <property name="text">
-    <string>Export</string>
-   </property>
-  </action>
   <action name="actionDisplay_firmware">
    <property name="text">
     <string>Display current firmware</string>
@@ -394,24 +384,43 @@
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="actionSWD_detect">
+  <action name="actionSignal_Mapper">
    <property name="text">
-    <string>Detect</string>
+    <string>Signal Mapper</string>
    </property>
   </action>
-  <action name="actionSWD_export">
+  <action name="actionExport">
    <property name="text">
-    <string>Export (Dump)</string>
+    <string>Export</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="actionSWD_import">
+  <action name="actionImport_2">
    <property name="text">
-    <string>Import (Write)</string>
+    <string>Import</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionSWD_erase">
+  <action name="actionTemplate">
    <property name="text">
-    <string>Erase</string>
+    <string>Template</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionSWD">
+   <property name="text">
+    <string>Set SWD</string>
+   </property>
+  </action>
+  <action name="actionUART">
+   <property name="text">
+    <string>Set UART</string>
    </property>
   </action>
  </widget>
@@ -754,10 +763,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSWD_detect</sender>
+   <sender>actionSignal_Mapper</sender>
    <signal>triggered()</signal>
    <receiver>Chip_management</receiver>
-   <slot>swd_detect()</slot>
+   <slot>open_signal_mapper()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -770,10 +779,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSWD_export</sender>
+   <sender>actionExport</sender>
    <signal>triggered()</signal>
    <receiver>Chip_management</receiver>
-   <slot>swd_export()</slot>
+   <slot>export()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -786,10 +795,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSWD_import</sender>
+   <sender>actionImport_2</sender>
    <signal>triggered()</signal>
    <receiver>Chip_management</receiver>
-   <slot>swd_import()</slot>
+   <slot>import()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -802,10 +811,42 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSWD_erase</sender>
+   <sender>actionTemplate</sender>
    <signal>triggered()</signal>
    <receiver>Chip_management</receiver>
-   <slot>swd_erase()</slot>
+   <slot>add_chip()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSWD</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>set_firmware()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUART</sender>
+   <signal>triggered()</signal>
+   <receiver>Chip_management</receiver>
+   <slot>set_firmware()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -838,5 +879,8 @@
   <slot>swd_import()</slot>
   <slot>swd_export()</slot>
   <slot>swd_erase()</slot>
+  <slot>open_signal_mapper()</slot>
+  <slot>import()</slot>
+  <slot>export()</slot>
  </slots>
 </ui>
