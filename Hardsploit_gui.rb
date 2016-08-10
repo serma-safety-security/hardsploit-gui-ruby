@@ -18,7 +18,7 @@ include VersionFPGA::VERSION_FPGA
 include VersionUC::VERSION_UC
 
 class Hardsploit_gui
-  VERSION = "2.3"
+  VERSION = "2.3.2"
   def initialize
     HardsploitAPI.callbackInfo = method(:callbackInfo)
     HardsploitAPI.callbackData = method(:callbackData)
