@@ -40,7 +40,7 @@ class Firmware
         msg.setStandardButtons(Qt::MessageBox::Cancel | Qt::MessageBox::Ok)
         msg.setDefaultButton(Qt::MessageBox::Cancel)
         if msg.exec == Qt::MessageBox::Ok
-          system("dfu-util -D 0483:df11 -a 0 -s 0x08000000 -R --download #{File.expand_path(File.dirname(__FILE__))}'/../Firmware/UC/HARDSPLOIT_FIRMWARE_UC.bin'")
+          system("dfu-util -D 0483:df11 -a 0 -s 0x08000000 -R --download #{File.expand_path(File.dirname(__FILE__))}'/../Firmwares/UC/HARDSPLOIT_FIRMWARE_UC.bin'")
         end
       end
       $currentFirmware = firmware unless firmware == 'uC'
