@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_generic_export'
-require_relative '../../HardsploitAPI/Modules/NO_MUX_PARALLEL_MEMORY/HardsploitAPI_NO_MUX_PARALLEL_MEMORY'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/NO_MUX_PARALLEL_MEMORY/HardsploitAPI_NO_MUX_PARALLEL_MEMORY'
 
 class Parallel_export < Qt::Widget
   slots 'export()'

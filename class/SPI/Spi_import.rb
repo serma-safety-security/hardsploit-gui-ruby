@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_generic_import'
-require_relative '../../HardsploitAPI/Modules/SPI/HardsploitAPI_SPI'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/SPI/HardsploitAPI_SPI'
 
 class Spi_import < Qt::Widget
   slots 'import()'

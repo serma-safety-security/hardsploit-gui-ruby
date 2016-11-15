@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_generic_export'
-require_relative '../../HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
 class I2c_export < Qt::Widget
   slots 'export()'
   slots 'select_export_file()'
