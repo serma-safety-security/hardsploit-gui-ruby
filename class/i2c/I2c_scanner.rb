@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_signal_scanner'
-require_relative '../../HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
 
 class I2c_scanner < Qt::Widget
   slots 'scan()'

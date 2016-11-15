@@ -5,7 +5,7 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../HardsploitAPI/Modules/SWD/HardsploitAPI_SWD'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/SWD/HardsploitAPI_SWD'
 
 class Swd
 

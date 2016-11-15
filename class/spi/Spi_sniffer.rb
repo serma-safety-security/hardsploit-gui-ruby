@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_spi_sniffer'
-require_relative '../../HardsploitAPI/Modules/SPI_SNIFFER/HardsploitAPI_SPI_SNIFFER'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/SPI_SNIFFER/HardsploitAPI_SPI_SNIFFER'
 
 class Spi_sniffer < Qt::Widget
   slots 'start()'

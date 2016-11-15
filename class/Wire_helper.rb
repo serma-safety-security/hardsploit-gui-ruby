@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../gui/gui_wire_helper'
-require_relative '../HardsploitAPI/Core/HardsploitAPI'
+require_relative '../hardsploit-api/HardsploitAPI/Core/HardsploitAPI'
 
 class Wire_helper < Qt::Widget
   slots 'rotate_scene()'
