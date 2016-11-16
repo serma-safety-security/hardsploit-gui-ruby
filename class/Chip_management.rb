@@ -46,11 +46,24 @@ class Chip_management < Qt::MainWindow
 		feed_type_cbx
     @console = Console.new(@view.tbl_console)
     @versionGUI = versionGUI
+	@hardsploit_board_status = Qt::Label.new
+    statusBar.addWidget(@hardsploit_board_status);
     check_hardsploit_connection
   rescue Exception => msg
     ErrorMsg.new.unknown(msg)
     return false
   end
+
+	def set_hs_board_status(connected)
+		if connected
+			@hardsploit_board_status.setText("Hardsploit board: connected " + 
+        		"- version #{HardsploitAPI.instance.getVersionNumber} " +
+        		"- api V#{HardsploitAPI::VERSION::API}"
+			)
+		else
+			@hardsploit_board_status.setText("Hardsploit board: disconnected");
+		end
+	end
 
 	def feed_type_cbx
       Manufacturer.all.each do |m|
@@ -482,16 +495,18 @@ class Chip_management < Qt::MainWindow
         "BOARD : #{HardsploitAPI.instance.getVersionNumber}"
       )
       @console.print('Hardsploit ready to suck chip souls !')
-      statusBar.showMessage("Hardsploit board: connected " + 
-        "- version #{HardsploitAPI.instance.getVersionNumber} " +
-        "- api V#{HardsploitAPI::VERSION::API}"
-      )
+      #statusBar.showMessage("Hardsploit board: connected " + 
+      #  "- version #{HardsploitAPI.instance.getVersionNumber} " +
+      #  "- api V#{HardsploitAPI::VERSION::API}"
+      #)
+      set_hs_board_status(true)
     else
       @console.print(
         'Hardsploit board unconnected: '+
         'Wiring and command execution disabled'
       )
-      statusBar.showMessage("Hardsploit board: disconnected")
+      set_hs_board_status(false)
+      #statusBar.showMessage("Hardsploit board: disconnected")
     end
   end
 end
