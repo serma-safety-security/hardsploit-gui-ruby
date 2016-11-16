@@ -482,11 +482,16 @@ class Chip_management < Qt::MainWindow
         "BOARD : #{HardsploitAPI.instance.getVersionNumber}"
       )
       @console.print('Hardsploit ready to suck chip souls !')
+      statusBar.showMessage("Hardsploit board: connected " + 
+        "- version #{HardsploitAPI.instance.getVersionNumber} " +
+        "- api V#{HardsploitAPI::VERSION::API}"
+      )
     else
       @console.print(
         'Hardsploit board unconnected: '+
         'Wiring and command execution disabled'
       )
+      statusBar.showMessage("Hardsploit board: disconnected")
     end
   end
 end
