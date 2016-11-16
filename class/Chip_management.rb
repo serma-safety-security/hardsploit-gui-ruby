@@ -321,13 +321,9 @@ class Chip_management < Qt::MainWindow
   end
 
   def add_chip
-
     if sender.objectName == 'tw_chip' or sender.objectName == 'actionTemplate'
-      unless @chip_clicked.nil?
-        add_chip = Chip_editor.new(self, @chip_clicked, 'temp')
-      else
-        ErrorMsg.new.no_chip_loaded
-      end
+      return ErrorMsg.new.no_chip_loaded if @chip_clicked.nil?
+      add_chip = Chip_editor.new(self, @chip_clicked, 'temp')
     else
       add_chip = Chip_editor.new(self, 'none', 'new')
     end
