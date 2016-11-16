@@ -1,8 +1,8 @@
 =begin
 ** Form generated from reading ui file 'gui_i2c_command.ui'
 **
-** Created: jeu. mai 26 15:30:17 2016
-**      by: Qt User Interface Compiler version 4.8.6
+** Created: mer. nov. 16 20:48:14 2016
+**      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 =end

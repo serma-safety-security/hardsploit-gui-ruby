@@ -1,8 +1,8 @@
 =begin
 ** Form generated from reading ui file 'gui_chip_management.ui'
 **
-** Created: lun. juil. 25 09:23:04 2016
-**      by: Qt User Interface Compiler version 4.8.6
+** Created: mer. nov. 16 20:48:14 2016
+**      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 =end
@@ -45,9 +45,10 @@ class Ui_Chip_management
     attr_reader :btn_add
     attr_reader :tbl_console
     attr_reader :horizontalLayout
-    attr_reader :check_console
-    attr_reader :pushButton
+    attr_reader :btn_show_console
+    attr_reader :btn_clear_console
     attr_reader :horizontalSpacer_2
+    attr_reader :line
     attr_reader :menubar
     attr_reader :menuMenu
     attr_reader :menuUpload_firmware
@@ -191,16 +192,17 @@ class Ui_Chip_management
 
     @horizontalLayout = Qt::HBoxLayout.new()
     @horizontalLayout.objectName = "horizontalLayout"
-    @check_console = Qt::CheckBox.new(@cl_main)
-    @check_console.objectName = "check_console"
-    @check_console.checked = true
+    @btn_show_console = Qt::PushButton.new(@cl_main)
+    @btn_show_console.objectName = "btn_show_console"
+    @btn_show_console.checkable = true
+    @btn_show_console.checked = true
 
-    @horizontalLayout.addWidget(@check_console)
+    @horizontalLayout.addWidget(@btn_show_console)
 
-    @pushButton = Qt::PushButton.new(@cl_main)
-    @pushButton.objectName = "pushButton"
+    @btn_clear_console = Qt::PushButton.new(@cl_main)
+    @btn_clear_console.objectName = "btn_clear_console"
 
-    @horizontalLayout.addWidget(@pushButton)
+    @horizontalLayout.addWidget(@btn_clear_console)
 
     @horizontalSpacer_2 = Qt::SpacerItem.new(40, 20, Qt::SizePolicy::Expanding, Qt::SizePolicy::Minimum)
 
@@ -209,10 +211,17 @@ class Ui_Chip_management
 
     @gridLayout.addLayout(@horizontalLayout, 4, 0, 1, 1)
 
+    @line = Qt::Frame.new(@cl_main)
+    @line.objectName = "line"
+    @line.setFrameShape(Qt::Frame::HLine)
+    @line.setFrameShadow(Qt::Frame::Sunken)
+
+    @gridLayout.addWidget(@line, 3, 0, 1, 1)
+
     chip_management.centralWidget = @cl_main
     @menubar = Qt::MenuBar.new(chip_management)
     @menubar.objectName = "menubar"
-    @menubar.geometry = Qt::Rect.new(0, 0, 710, 21)
+    @menubar.geometry = Qt::Rect.new(0, 0, 710, 25)
     @menuMenu = Qt::Menu.new(@menubar)
     @menuMenu.objectName = "menuMenu"
     @menuUpload_firmware = Qt::Menu.new(@menuMenu)
@@ -267,7 +276,6 @@ class Ui_Chip_management
     Qt::Object.connect(@actionUC, SIGNAL('triggered()'), chip_management, SLOT('update_uc_firmware()'))
     Qt::Object.connect(@actionVersions, SIGNAL('triggered()'), chip_management, SLOT('get_hardsploit_versions()'))
     Qt::Object.connect(@actionDatabase_file, SIGNAL('triggered()'), chip_management, SLOT('get_db_path()'))
-    Qt::Object.connect(@check_console, SIGNAL('toggled(bool)'), chip_management, SLOT('console_view()'))
     Qt::Object.connect(@btn_add, SIGNAL('clicked()'), chip_management, SLOT('add_chip()'))
     Qt::Object.connect(@tw_chip, SIGNAL('itemDoubleClicked(QTreeWidgetItem*,int)'), chip_management, SLOT('load_chip_action(QTreeWidgetItem*,int)'))
     Qt::Object.connect(@actionDisplay_firmware, SIGNAL('triggered()'), chip_management, SLOT('display_current_firmware()'))
@@ -275,13 +283,14 @@ class Ui_Chip_management
     Qt::Object.connect(@actionDelete, SIGNAL('triggered()'), chip_management, SLOT('delete_chip()'))
     Qt::Object.connect(@actionEdit, SIGNAL('triggered()'), chip_management, SLOT('edit_chip()'))
     Qt::Object.connect(@actionWire, SIGNAL('triggered()'), chip_management, SLOT('wire_chip()'))
-    Qt::Object.connect(@pushButton, SIGNAL('clicked()'), @tbl_console, SLOT('clearContents()'))
+    Qt::Object.connect(@btn_clear_console, SIGNAL('clicked()'), @tbl_console, SLOT('clearContents()'))
     Qt::Object.connect(@actionSignal_Mapper, SIGNAL('triggered()'), chip_management, SLOT('open_signal_mapper()'))
     Qt::Object.connect(@actionExport, SIGNAL('triggered()'), chip_management, SLOT('export()'))
     Qt::Object.connect(@actionImport_2, SIGNAL('triggered()'), chip_management, SLOT('import()'))
     Qt::Object.connect(@actionTemplate, SIGNAL('triggered()'), chip_management, SLOT('add_chip()'))
     Qt::Object.connect(@actionSWD, SIGNAL('triggered()'), chip_management, SLOT('set_firmware()'))
     Qt::Object.connect(@actionUART, SIGNAL('triggered()'), chip_management, SLOT('set_firmware()'))
+    Qt::Object.connect(@btn_show_console, SIGNAL('toggled(bool)'), chip_management, SLOT('console_view()'))
 
     Qt::MetaObject.connectSlotsByName(chip_management)
     end # setupUi
@@ -355,8 +364,8 @@ class Ui_Chip_management
     __colItem5 = Qt::TableWidgetItem.new
     __colItem5.setText(Qt::Application.translate("Chip_management", "Message", nil, Qt::Application::UnicodeUTF8))
     @tbl_console.setHorizontalHeaderItem(1, __colItem5)
-    @check_console.text = Qt::Application.translate("Chip_management", "Console:", nil, Qt::Application::UnicodeUTF8)
-    @pushButton.text = Qt::Application.translate("Chip_management", "Clear", nil, Qt::Application::UnicodeUTF8)
+    @btn_show_console.text = Qt::Application.translate("Chip_management", "Console", nil, Qt::Application::UnicodeUTF8)
+    @btn_clear_console.text = Qt::Application.translate("Chip_management", "Clear", nil, Qt::Application::UnicodeUTF8)
     @menuMenu.title = Qt::Application.translate("Chip_management", "Menu", nil, Qt::Application::UnicodeUTF8)
     @menuUpload_firmware.title = Qt::Application.translate("Chip_management", "Firmware...", nil, Qt::Application::UnicodeUTF8)
     @menuComponent.title = Qt::Application.translate("Chip_management", "Component...", nil, Qt::Application::UnicodeUTF8)

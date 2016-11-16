@@ -1,8 +1,8 @@
 =begin
 ** Form generated from reading ui file 'gui_parallel_settings.ui'
 **
-** Created: ven. avr. 29 14:38:25 2016
-**      by: Qt User Interface Compiler version 4.8.6
+** Created: mer. nov. 16 20:48:14 2016
+**      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 =end
@@ -170,7 +170,7 @@ class Ui_Parallel_settings
     @lie_read_latency.placeholderText = Qt::Application.translate("Parallel_settings", " 0 to 1600 nanosecondes", nil, Qt::Application::UnicodeUTF8)
     @lbl_write_latency.text = Qt::Application.translate("Parallel_settings", "Write latency", nil, Qt::Application::UnicodeUTF8)
     @lie_write_latency.text = ''
-    @lie_write_latency.placeholderText = Qt::Application.translate("Parallel_settings", "in nanosecondes", nil, Qt::Application::UnicodeUTF8)
+    @lie_write_latency.placeholderText = Qt::Application.translate("Parallel_settings", "in nanosecondes (7 to 1965)", nil, Qt::Application::UnicodeUTF8)
     @lbl_word_size.text = Qt::Application.translate("Parallel_settings", "Word size:", nil, Qt::Application::UnicodeUTF8)
     @groupBox.title = ''
     @rbn_8b.text = Qt::Application.translate("Parallel_settings", "8 bits", nil, Qt::Application::UnicodeUTF8)
