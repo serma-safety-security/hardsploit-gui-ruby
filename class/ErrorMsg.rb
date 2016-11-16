@@ -302,6 +302,7 @@ class ErrorMsg
 
 # Unknown
 	def unknown(msg)
+		Dir.mkdir('logs') unless File.exists?('logs')
 		Logger.new($logFilePath).error(msg)
 		Qt::MessageBox.new(
 			Qt::MessageBox::Critical,
