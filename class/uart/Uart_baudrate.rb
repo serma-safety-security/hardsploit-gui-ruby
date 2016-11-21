@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_uart_baudrate'
-require_relative '../../HardsploitAPI/Modules/UART/HardsploitAPI_UART'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/UART/HardsploitAPI_UART'
 
 class Uart_baudrate < Qt::Widget
   slots 'start_detect()'

@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_signal_scanner'
-require_relative '../../HardsploitAPI/Modules/SWD/HardsploitAPI_SWD'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/SWD/HardsploitAPI_SWD'
 
 class Swd_scanner < Qt::Widget
   slots 'scan()'

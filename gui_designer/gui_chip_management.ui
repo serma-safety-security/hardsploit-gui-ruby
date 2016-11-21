@@ -210,9 +210,12 @@
     <item row="4" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QCheckBox" name="check_console">
+       <widget class="QPushButton" name="btn_show_console">
         <property name="text">
-         <string>Console:</string>
+         <string>Console</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -220,7 +223,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="btn_clear_console">
         <property name="text">
          <string>Clear</string>
         </property>
@@ -241,6 +244,13 @@
       </item>
      </layout>
     </item>
+    <item row="3" column="0">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -249,7 +259,7 @@
      <x>0</x>
      <y>0</y>
      <width>710</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -619,22 +629,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>check_console</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>Chip_management</receiver>
-   <slot>console_view()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>43</x>
-     <y>449</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>7</x>
-     <y>319</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btn_add</sender>
    <signal>clicked()</signal>
    <receiver>Chip_management</receiver>
@@ -747,7 +741,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>btn_clear_console</sender>
    <signal>clicked()</signal>
    <receiver>tbl_console</receiver>
    <slot>clearContents()</slot>
@@ -851,6 +845,22 @@
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_show_console</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>Chip_management</receiver>
+   <slot>console_view()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>52</x>
+     <y>437</y>
     </hint>
     <hint type="destinationlabel">
      <x>354</x>

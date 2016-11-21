@@ -6,7 +6,7 @@
 #===================================================
 
 require_relative '../../gui/gui_generic_import'
-require_relative '../../HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
 class I2c_import < Qt::Widget
   slots 'import()'
   slots 'select_import_file()'

@@ -1,8 +1,8 @@
 =begin
 ** Form generated from reading ui file 'gui_export.ui'
 **
-** Created: mer. févr. 17 15:04:42 2016
-**      by: Qt User Interface Compiler version 4.8.6
+** Created: mer. nov. 16 20:48:14 2016
+**      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 =end
@@ -110,7 +110,7 @@ class Ui_Export
 
     def retranslateUi(export)
     export.windowTitle = Qt::Application.translate("Export", "Export", nil, Qt::Application::UnicodeUTF8)
-    @lbl_export.text = Qt::Application.translate("Export", "Exporting:", nil, Qt::Application::UnicodeUTF8)
+    @lbl_export.text = Qt::Application.translate("Export", "Export:", nil, Qt::Application::UnicodeUTF8)
     @rbn_comp.text = Qt::Application.translate("Export", "Component", nil, Qt::Application::UnicodeUTF8)
     @rbn_cmds.text = Qt::Application.translate("Export", "Commands", nil, Qt::Application::UnicodeUTF8)
     @rbn_both.text = Qt::Application.translate("Export", "Both", nil, Qt::Application::UnicodeUTF8)

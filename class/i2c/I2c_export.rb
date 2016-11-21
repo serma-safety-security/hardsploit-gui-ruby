@@ -6,9 +6,8 @@
 #===================================================
 
 require_relative '../../gui/gui_generic_export'
-require_relative '../../HardsploitAPI/Modules/SPI/HardsploitAPI_SPI'
-
-class Spi_export < Qt::Widget
+require_relative '../../hardsploit-api/HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
+class I2c_export < Qt::Widget
   slots 'export()'
   slots 'select_export_file()'
 
@@ -21,22 +20,6 @@ class Spi_export < Qt::Widget
     inputRestrict(@view.lie_start, 0)
     inputRestrict(@view.lie_stop, 0)
     @chip = chip
-    @speeds = {
-      '25.00' => 3,
-      '18.75' => 4,
-      '15.00' => 5,
-      '12.50' => 6,
-      '10.71' => 7,
-      '9.38'  => 8,
-      '7.50'  => 10,
-      '5.00'  => 15,
-      '3.95'  => 19,
-      '3.00'  => 25,
-      '2.03'  => 37,
-      '1.00'  => 75,
-      '0.50'  => 150,
-      '0.29'  => 255
-    }
   end
 
   def select_export_file
@@ -55,27 +38,31 @@ class Spi_export < Qt::Widget
     if sender.objectName == 'btn_full_export'
       return false unless control_export_settings('full')
       start   = 0
-      stop    = @chip.spi_setting.total_size - 1
-      control = @chip.spi_setting.total_size
+      stop    = @chip.i2c_setting.total_size - 1
+      control = @chip.i2c_setting.total_size
     else
       return false unless control_export_settings('partial')
-      start   = @view.lie_start.text.to_i
-      stop    = @view.lie_stop.text.to_i
+      start   =  @view.lie_start.text.to_i
+      stop    =  @view.lie_stop.text.to_i
       control = (stop - start) + 1
     end
-    Firmware.new('SPI')
-    $pgb = Progress_bar.new("SPI: Exporting...")
+    Firmware.new('I2C')
+    $pgb = Progress_bar.new("I²C: Exporting...")
     $pgb.show
-    spi = HardsploitAPI_SPI.new(
-      speed: @speeds[@chip.spi_setting.frequency],
-      mode:  @chip.spi_setting.mode
-    )
-    spi.spi_Generic_Dump(
-      readSpiCommand: @chip.spi_setting.command_read,
-      startAddress:   start,
-      stopAddress:    stop,
-      sizeMax:        @chip.spi_setting.total_size.to_i
-    )
+
+    if [40, 100, 400, 1000].include?(@chip.i2c_setting.frequency)
+      speed = 0 if @chip.i2c_setting.frequency == 100
+      speed = 1 if @chip.i2c_setting.frequency == 400
+      speed = 2 if @chip.i2c_setting.frequency == 1000
+      speed = 3 if @chip.i2c_setting.frequency == 40
+      i2c = HardsploitAPI_I2C.new(speed: speed)
+      i2c.i2c_Generic_Dump(
+        i2cBaseAddress: @chip.i2c_setting.address_w.to_i(16),
+        startAddress:   start,
+        stopAddress:    stop,
+        sizeMax:        @chip.i2c_setting.total_size
+      )
+    end
     $file.close unless $file.nil?
     ErrorMsg.new.filesize_error unless control == File.size(@filepath)
   rescue HardsploitAPI::ERROR::HARDSPLOIT_NOT_FOUND
@@ -87,17 +74,17 @@ class Spi_export < Qt::Widget
   end
 
   def control_export_settings(type)
-    return ErrorMsg.new.settings_missing   if @chip.spi_setting.nil?
-    return ErrorMsg.new.frequency_missing  if @chip.spi_setting.frequency.nil?
-    return ErrorMsg.new.mode_missing       if @chip.spi_setting.command_read.nil?
-    return ErrorMsg.new.full_size_error    if @chip.spi_setting.total_size.nil?
-    return ErrorMsg.new.full_size_error    if @chip.spi_setting.total_size.zero?
+    return ErrorMsg.new.settings_missing   if @chip.i2c_setting.nil?
+    return ErrorMsg.new.frequency_missing  if @chip.i2c_setting.frequency.nil?
+    return ErrorMsg.new.mode_missing       if @chip.i2c_setting.address_w.nil?
+    return ErrorMsg.new.full_size_error    if @chip.i2c_setting.total_size.nil?
+    return ErrorMsg.new.full_size_error    if @chip.i2c_setting.total_size.zero?
     if type == 'partial'
       return ErrorMsg.new.start_stop_missing if @view.lie_start.text.empty?
       return ErrorMsg.new.start_stop_missing if @view.lie_stop.text.empty?
       start = @view.lie_start.text.to_i
       stop = @view.lie_stop.text.to_i
-      total_size = @chip.spi_setting.total_size
+      total_size = @chip.i2c_setting.total_size
       return ErrorMsg.new.start_neq_stop    if start == stop
       return ErrorMsg.new.start_inf_to_stop if start > stop
       return ErrorMsg.new.inf_to_total_size if start > (total_size - 1)

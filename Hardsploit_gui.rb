@@ -11,9 +11,9 @@ require 'active_record'
 require_relative 'db/database.rb'
 require_relative 'gui/gui_chip_management'
 require_relative 'class/Chip_management'
-require_relative 'HardsploitAPI/Core/HardsploitAPI'
-require_relative 'Firmwares/UC/VersionUC'
-require_relative 'Firmwares/FPGA/VersionFPGA'
+require_relative 'hardsploit-api/HardsploitAPI/Core/HardsploitAPI'
+require_relative 'hardsploit-api/Firmwares/UC/VersionUC'
+require_relative 'hardsploit-api/Firmwares/FPGA/VersionFPGA'
 include VersionFPGA::VERSION_FPGA
 include VersionUC::VERSION_UC
 

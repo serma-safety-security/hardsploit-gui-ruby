@@ -1,0 +1,3 @@
+[submodule "hardsploit-api"]
+	path = hardsploit-api
+	url = https://github.com/OPALESECURITY/hardsploit-api.git
