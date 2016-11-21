@@ -158,7 +158,10 @@ class CustomItem < Qt::GraphicsTextItem
       pin.setColor
       pin.instance_variable_get('@signalTxt').clearFocus
       pin.instance_variable_get('@nbrTxt').clearFocus
-      return false if @api_value == 'NA'
+      if @api_value.name == 'NA'
+        HardsploitAPI.instance.setWiringLeds(value: 0x0000000000000000)
+        return false
+      end
       pin_group = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
       hardsploit_pin_number = pin_group.index(@api_value.pin[0]) * 8 + @api_value.pin[1].to_i
       HardsploitAPI.instance.setWiringLeds(value: 2**hardsploit_pin_number)
@@ -196,7 +199,7 @@ class UniqPin
 
     @nbrTxt = CustomItem.new(pinNum.to_s)
     @nbrTxt.cursor = Qt::Cursor.new(Qt::PointingHandCursor)
-    @nbrTxt.setPin(self, pinNum.to_s)
+    @nbrTxt.setPin(self, signal_name)
     @nbrTxt.setTextInteractionFlags(Qt::TextSelectableByMouse)
     @nbrTxt.setX(xNum)
     @nbrTxt.setY(yNum)
