@@ -95,6 +95,7 @@ class Uart_settings < Qt::Widget
   end
 
   def autodetect
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
     baudUART = Uart_baudrate.new(@view)
     baudUART.setWindowModality(Qt::ApplicationModal)
     baudUART.show

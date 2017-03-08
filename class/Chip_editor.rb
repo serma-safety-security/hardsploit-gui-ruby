@@ -23,6 +23,7 @@ class Chip_editor < Qt::Widget
     @view.setupUi(self)
     @parent = parent
     @chip = chip
+    @action = action
 
     inputRestrict(@view.lie_pack_name,   2)
     inputRestrict(@view.lie_pack_pin,    0)

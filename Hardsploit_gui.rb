@@ -18,7 +18,7 @@ include VersionFPGA::VERSION_FPGA
 include VersionUC::VERSION_UC
 
 class Hardsploit_gui
-  VERSION = "2.4.0"
+  VERSION = "2.5.0"
   def initialize
     HardsploitAPI.callbackInfo = method(:callbackInfo)
     HardsploitAPI.callbackData = method(:callbackData)
@@ -28,7 +28,6 @@ class Hardsploit_gui
     $currentFirmware = nil
     $logFilePath = File.expand_path(File.dirname(__FILE__)) + "/logs/error.log"
     $dbFilePath = File.expand_path(File.dirname(__FILE__)) + "/db/hs.db"
-    # Launch GUI
     Qt::Application.new(ARGV) do
       $app = self
       w = Chip_management.new(VERSION)

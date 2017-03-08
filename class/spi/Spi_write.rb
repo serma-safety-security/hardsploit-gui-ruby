@@ -5,16 +5,16 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../gui/gui_generic_import'
+require_relative '../../gui/gui_generic_write'
 require_relative '../../hardsploit-api/HardsploitAPI/Modules/SPI/HardsploitAPI_SPI'
 
-class Spi_import < Qt::Widget
-  slots 'import()'
-  slots 'select_import_file()'
+class Spi_write < Qt::Widget
+  slots 'write()'
+  slots 'select_write_file()'
 
   def initialize(chip)
     super()
-    @view = Ui_Generic_import.new
+    @view = Ui_Generic_write.new
     centerWindow(self)
     @view.setupUi(self)
     @view.lbl_chip.setText(chip.reference)
@@ -38,24 +38,25 @@ class Spi_import < Qt::Widget
     }
   end
 
-  def select_import_file
+  def select_write_file
     @filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/', tr('*.*'))
     unless @filepath.nil?
-      @view.btn_import.setEnabled(true)
+      @view.btn_write.setEnabled(true)
       @view.lbl_selected_file.setText("#{@filepath.split("/").last}")
     end
   rescue Exception => msg
     ErrorMsg.new.unknown(msg)
   end
 
-  def import
-    return 0 if control_import_settings.zero?
+  def write
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+    return 0 if control_write_settings.zero?
     spi = HardsploitAPI_SPI.new(
       speed: @speeds[@chip.spi_setting.frequency],
       mode:  @chip.spi_setting.mode
     )
     Firmware.new('SPI')
-    $pgb = Progress_bar.new("SPI: Importing...")
+    $pgb = Progress_bar.new("SPI: Writing...")
     $pgb.show
     @chip.spi_setting.is_flash.zero? ? flash = false : flash = true
     spi.spi_Generic_Import(
@@ -78,7 +79,7 @@ class Spi_import < Qt::Widget
     ErrorMsg.new.unknown(msg)
   end
 
-  def control_import_settings
+  def control_write_settings
     if @chip.spi_setting.nil?
       Qt::MessageBox.new(
         Qt::MessageBox::Warning,

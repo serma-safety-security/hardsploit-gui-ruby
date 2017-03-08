@@ -12,7 +12,7 @@ class Firmware
         $pgb = Progress_bar.new("Upload firmware :")
         $pgb.show
       end
-      base_path = File.expand_path(File.dirname(__FILE__)) + '/../Firmwares/FPGA/'
+      base_path = File.expand_path(File.dirname(__FILE__)) + '/../hardsploit-api/Firmwares/FPGA/'
       case firmware
       when 'I2C'
         firmware_path = base_path + 'I2C/I2C_INTERACT/HARDSPLOIT_FIRMWARE_FPGA_I2C_INTERACT.rpd'

@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_chip_management.ui'
 **
-** Created: mer. nov. 16 20:48:14 2016
+** Created: mer. mars 8 11:15:02 2017
 **      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -48,7 +48,6 @@ class Ui_Chip_management
     attr_reader :btn_show_console
     attr_reader :btn_clear_console
     attr_reader :horizontalSpacer_2
-    attr_reader :line
     attr_reader :menubar
     attr_reader :menuMenu
     attr_reader :menuUpload_firmware
@@ -133,14 +132,14 @@ class Ui_Chip_management
 
     @cbx_manufacturer = Qt::ComboBox.new(@cl_main)
     @cbx_manufacturer.objectName = "cbx_manufacturer"
-    @cbx_manufacturer.minimumSize = Qt::Size.new(200, 0)
+    @cbx_manufacturer.minimumSize = Qt::Size.new(87, 0)
     @cbx_manufacturer.maximumSize = Qt::Size.new(16777215, 16777215)
 
     @hl_filters.addWidget(@cbx_manufacturer)
 
     @cbx_type = Qt::ComboBox.new(@cl_main)
     @cbx_type.objectName = "cbx_type"
-    @cbx_type.minimumSize = Qt::Size.new(100, 0)
+    @cbx_type.minimumSize = Qt::Size.new(87, 0)
     @cbx_type.maximumSize = Qt::Size.new(100, 16777215)
 
     @hl_filters.addWidget(@cbx_type)
@@ -211,17 +210,10 @@ class Ui_Chip_management
 
     @gridLayout.addLayout(@horizontalLayout, 4, 0, 1, 1)
 
-    @line = Qt::Frame.new(@cl_main)
-    @line.objectName = "line"
-    @line.setFrameShape(Qt::Frame::HLine)
-    @line.setFrameShadow(Qt::Frame::Sunken)
-
-    @gridLayout.addWidget(@line, 3, 0, 1, 1)
-
     chip_management.centralWidget = @cl_main
     @menubar = Qt::MenuBar.new(chip_management)
     @menubar.objectName = "menubar"
-    @menubar.geometry = Qt::Rect.new(0, 0, 710, 25)
+    @menubar.geometry = Qt::Rect.new(0, 0, 710, 21)
     @menuMenu = Qt::Menu.new(@menubar)
     @menuMenu.objectName = "menuMenu"
     @menuUpload_firmware = Qt::Menu.new(@menuMenu)

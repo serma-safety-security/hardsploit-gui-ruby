@@ -43,11 +43,11 @@ class Swd
     case action
     when 'detect'
       return api.obtainCodes
-    when 'export'
+    when 'read'
       $pgb = Progress_bar.new("SWD: #{action}...")
       $pgb.show
       api.dumpFlash(option)
-    when 'import'
+    when 'write'
       $pgb = Progress_bar.new("SWD: #{action}...")
       $pgb.show
       api.writeFlash(option)
@@ -83,23 +83,23 @@ class Swd
     end
   end
 
-  def export(filepath)
-    unless do_swd_action('export', filepath) == false
+  def read(filepath)
+    unless do_swd_action('read', filepath) == false
       Qt::MessageBox.new(
         Qt::MessageBox::Information,
-        "SWD Export Action",
+        "SWD Read action",
         "Dump finished"
       ).exec
       $pgb.close
     end
   end
 
-  def import(filepath)
-    unless do_swd_action('import', filepath) == false
+  def write(filepath)
+    unless do_swd_action('write', filepath) == false
       Qt::MessageBox.new(
         Qt::MessageBox::Information,
-        "SWD Import Action",
-        "Import finished"
+        "SWD Write Action",
+        "Write finished"
       ).exec
       $pgb.close
     end

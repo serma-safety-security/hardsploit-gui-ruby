@@ -66,7 +66,7 @@
            <widget class="QComboBox" name="cbx_manufacturer">
             <property name="minimumSize">
              <size>
-              <width>200</width>
+              <width>87</width>
               <height>0</height>
              </size>
             </property>
@@ -87,7 +87,7 @@
            <widget class="QComboBox" name="cbx_type">
             <property name="minimumSize">
              <size>
-              <width>100</width>
+              <width>87</width>
               <height>0</height>
              </size>
             </property>
@@ -244,13 +244,6 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="0">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -259,7 +252,7 @@
      <x>0</x>
      <y>0</y>
      <width>710</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -859,12 +852,12 @@
    <slot>console_view()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>52</x>
-     <y>437</y>
+     <x>27</x>
+     <y>439</y>
     </hint>
     <hint type="destinationlabel">
-     <x>354</x>
-     <y>294</y>
+     <x>6</x>
+     <y>428</y>
     </hint>
    </hints>
   </connection>

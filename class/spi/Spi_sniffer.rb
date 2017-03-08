@@ -23,6 +23,7 @@ class Spi_sniffer < Qt::Widget
   end
 
   def start
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
     @view.btn_stop.setEnabled(true)
     @view.btn_start.setEnabled(false)
     @view.cbx_type.setEnabled(false)

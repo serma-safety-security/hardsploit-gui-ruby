@@ -23,6 +23,7 @@ class Swd_scanner < Qt::Widget
   end
 
   def scan
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
     @view.cbx_start.setEnabled(false)
     @view.cbx_stop.setEnabled(false)
     @view.btn_scan.setEnabled(false)

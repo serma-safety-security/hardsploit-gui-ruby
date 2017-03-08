@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_import.ui'
 **
-** Created: mer. nov. 16 20:48:14 2016
+** Created: mer. mars 8 11:15:06 2017
 **      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

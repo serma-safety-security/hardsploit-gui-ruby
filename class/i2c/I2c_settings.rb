@@ -88,6 +88,7 @@ class I2c_settings < Qt::Widget
   end
 
   def bus_scan
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
     @view.tbl_bus_scan.setRowCount(0)
     Firmware.new('I2C')
     speed = 0

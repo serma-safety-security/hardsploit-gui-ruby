@@ -5,26 +5,26 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../gui/gui_generic_import'
+require_relative '../../gui/gui_generic_write'
 
-class Parallel_import < Qt::Widget
-  slots 'import()'
-  slots 'select_import_file()'
+class Parallel_write < Qt::Widget
+  slots 'write()'
+  slots 'select_write_file()'
 
   def initialize(chip)
     super()
-    @view = Ui_Generic_import.new
+    @view = Ui_Generic_write.new
     centerWindow(self)
     @view.setupUi(self)
     @view.lbl_chip.setText(chip.reference)
     inputRestrict(@view.lie_start, 0)
   end
 
-  def select_import_file
+  def select_write_file
     @filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/', tr('Bin file (*.bin)'))
     unless @filepath.nil?
       $file = File.open("#{@filepath}", 'w')
-      @view.btn_import.setEnabled(true)
+      @view.btn_write.setEnabled(true)
     end
   rescue Exception => msg
     ErrorMsg.new.unknow(msg)
@@ -38,8 +38,9 @@ class Parallel_import < Qt::Widget
     ErrorMsg.new.unknow(msg)
   end
 
-  def import
-    return 0 if control_import_settings.zero?
+  def write
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+    return 0 if control_write_settings.zero?
     start = @view.lie_start.text.to_i
     Firmware.new('PARALLEL')
     time = Time.new
@@ -58,7 +59,7 @@ class Parallel_import < Qt::Widget
     return false
   end
 
-  def control_import_settings
+  def control_write_settings
     file_size = File.size("#{@filepath}")
     if @chip.parallel_setting.nil?
       Qt::MessageBox.new(

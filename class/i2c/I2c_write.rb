@@ -5,15 +5,15 @@
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
 
-require_relative '../../gui/gui_generic_import'
+require_relative '../../gui/gui_generic_write'
 require_relative '../../hardsploit-api/HardsploitAPI/Modules/I2C/HardsploitAPI_I2C'
-class I2c_import < Qt::Widget
-  slots 'import()'
-  slots 'select_import_file()'
+class I2c_write < Qt::Widget
+  slots 'write()'
+  slots 'select_write_file()'
 
   def initialize(chip)
     super()
-    @view = Ui_Generic_import.new
+    @view = Ui_Generic_write.new
     centerWindow(self)
     @view.setupUi(self)
     @view.lbl_chip.setText(chip.reference)
@@ -21,20 +21,21 @@ class I2c_import < Qt::Widget
     @chip = chip
   end
 
-  def select_import_file
+  def select_write_file
     @filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/', tr('*.*'))
     unless @filepath.nil?
-      @view.btn_import.setEnabled(true)
+      @view.btn_write.setEnabled(true)
       @view.lbl_selected_file.setText("#{@filepath.split("/").last}")
     end
   rescue Exception => msg
     ErrorMsg.new.unknown(msg)
   end
 
-  def import
-    return 0 if control_import_settings.zero?
+  def write
+    return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+    return 0 if control_write_settings.zero?
     Firmware.new('I2C')
-    $pgb = Progress_bar.new("I²C: Exporting...")
+    $pgb = Progress_bar.new("I²C: Writing...")
     $pgb.show
     if [40, 100, 400, 1000].include?(@chip.i2c_setting.frequency)
       speed = 0 if @chip.i2c_setting.frequency == 100
@@ -61,7 +62,7 @@ class I2c_import < Qt::Widget
     ErrorMsg.new.unknown(msg)
   end
 
-  def control_import_settings
+  def control_write_settings
     if @chip.i2c_setting.nil?
       Qt::MessageBox.new(
         Qt::MessageBox::Warning,

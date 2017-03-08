@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'gui_i2c_settings.ui'
 **
-** Created: mer. nov. 16 20:48:14 2016
+** Created: mer. mars 8 11:15:05 2017
 **      by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -14,22 +14,24 @@ class Ui_I2c_settings
     attr_reader :lbl_chip
     attr_reader :lbl_parameters
     attr_reader :hs2
-    attr_reader :fl
+    attr_reader :formLayout_2
     attr_reader :lbl_address_w
     attr_reader :lie_address_w
     attr_reader :lbl_address_r
     attr_reader :lie_address_r
+    attr_reader :horizontalLayout
+    attr_reader :label
+    attr_reader :btn_bus_scan
+    attr_reader :tbl_bus_scan
+    attr_reader :formLayout
     attr_reader :lbl_frequency
     attr_reader :cbx_frequency
-    attr_reader :lbl_full_size
-    attr_reader :lie_total_size
-    attr_reader :lbl_bus_scan
-    attr_reader :btn_bus_scan
-    attr_reader :lie_page_size
-    attr_reader :lbl_page_size
     attr_reader :lbl_write_page_latency
     attr_reader :lie_write_page_latency
-    attr_reader :tbl_bus_scan
+    attr_reader :lbl_page_size
+    attr_reader :lbl_full_size
+    attr_reader :lie_page_size
+    attr_reader :lie_total_size
     attr_reader :hl
     attr_reader :hs
     attr_reader :btn_cancel
@@ -39,7 +41,7 @@ class Ui_I2c_settings
     if i2c_settings.objectName.nil?
         i2c_settings.objectName = "i2c_settings"
     end
-    i2c_settings.resize(358, 396)
+    i2c_settings.resize(339, 504)
     @gridLayout = Qt::GridLayout.new(i2c_settings)
     @gridLayout.objectName = "gridLayout"
     @vl = Qt::VBoxLayout.new()
@@ -63,87 +65,97 @@ class Ui_I2c_settings
 
     @vl.addLayout(@hl2)
 
-    @fl = Qt::FormLayout.new()
-    @fl.objectName = "fl"
+    @formLayout_2 = Qt::FormLayout.new()
+    @formLayout_2.objectName = "formLayout_2"
     @lbl_address_w = Qt::Label.new(i2c_settings)
     @lbl_address_w.objectName = "lbl_address_w"
 
-    @fl.setWidget(1, Qt::FormLayout::LabelRole, @lbl_address_w)
+    @formLayout_2.setWidget(0, Qt::FormLayout::LabelRole, @lbl_address_w)
 
     @lie_address_w = Qt::LineEdit.new(i2c_settings)
     @lie_address_w.objectName = "lie_address_w"
     @lie_address_w.maxLength = 2
 
-    @fl.setWidget(1, Qt::FormLayout::FieldRole, @lie_address_w)
+    @formLayout_2.setWidget(0, Qt::FormLayout::FieldRole, @lie_address_w)
 
     @lbl_address_r = Qt::Label.new(i2c_settings)
     @lbl_address_r.objectName = "lbl_address_r"
 
-    @fl.setWidget(2, Qt::FormLayout::LabelRole, @lbl_address_r)
+    @formLayout_2.setWidget(1, Qt::FormLayout::LabelRole, @lbl_address_r)
 
     @lie_address_r = Qt::LineEdit.new(i2c_settings)
     @lie_address_r.objectName = "lie_address_r"
     @lie_address_r.maxLength = 2
 
-    @fl.setWidget(2, Qt::FormLayout::FieldRole, @lie_address_r)
+    @formLayout_2.setWidget(1, Qt::FormLayout::FieldRole, @lie_address_r)
 
-    @lbl_frequency = Qt::Label.new(i2c_settings)
-    @lbl_frequency.objectName = "lbl_frequency"
 
-    @fl.setWidget(3, Qt::FormLayout::LabelRole, @lbl_frequency)
+    @vl.addLayout(@formLayout_2)
 
-    @cbx_frequency = Qt::ComboBox.new(i2c_settings)
-    @cbx_frequency.objectName = "cbx_frequency"
+    @horizontalLayout = Qt::HBoxLayout.new()
+    @horizontalLayout.objectName = "horizontalLayout"
+    @label = Qt::Label.new(i2c_settings)
+    @label.objectName = "label"
 
-    @fl.setWidget(3, Qt::FormLayout::FieldRole, @cbx_frequency)
-
-    @lbl_full_size = Qt::Label.new(i2c_settings)
-    @lbl_full_size.objectName = "lbl_full_size"
-
-    @fl.setWidget(6, Qt::FormLayout::LabelRole, @lbl_full_size)
-
-    @lie_total_size = Qt::LineEdit.new(i2c_settings)
-    @lie_total_size.objectName = "lie_total_size"
-
-    @fl.setWidget(6, Qt::FormLayout::FieldRole, @lie_total_size)
-
-    @lbl_bus_scan = Qt::Label.new(i2c_settings)
-    @lbl_bus_scan.objectName = "lbl_bus_scan"
-
-    @fl.setWidget(7, Qt::FormLayout::LabelRole, @lbl_bus_scan)
+    @horizontalLayout.addWidget(@label)
 
     @btn_bus_scan = Qt::PushButton.new(i2c_settings)
     @btn_bus_scan.objectName = "btn_bus_scan"
 
-    @fl.setWidget(7, Qt::FormLayout::FieldRole, @btn_bus_scan)
-
-    @lie_page_size = Qt::LineEdit.new(i2c_settings)
-    @lie_page_size.objectName = "lie_page_size"
-
-    @fl.setWidget(5, Qt::FormLayout::FieldRole, @lie_page_size)
-
-    @lbl_page_size = Qt::Label.new(i2c_settings)
-    @lbl_page_size.objectName = "lbl_page_size"
-
-    @fl.setWidget(5, Qt::FormLayout::LabelRole, @lbl_page_size)
-
-    @lbl_write_page_latency = Qt::Label.new(i2c_settings)
-    @lbl_write_page_latency.objectName = "lbl_write_page_latency"
-
-    @fl.setWidget(4, Qt::FormLayout::LabelRole, @lbl_write_page_latency)
-
-    @lie_write_page_latency = Qt::LineEdit.new(i2c_settings)
-    @lie_write_page_latency.objectName = "lie_write_page_latency"
-
-    @fl.setWidget(4, Qt::FormLayout::FieldRole, @lie_write_page_latency)
+    @horizontalLayout.addWidget(@btn_bus_scan)
 
 
-    @vl.addLayout(@fl)
+    @vl.addLayout(@horizontalLayout)
 
     @tbl_bus_scan = Qt::TableWidget.new(i2c_settings)
     @tbl_bus_scan.objectName = "tbl_bus_scan"
 
     @vl.addWidget(@tbl_bus_scan)
+
+    @formLayout = Qt::FormLayout.new()
+    @formLayout.objectName = "formLayout"
+    @lbl_frequency = Qt::Label.new(i2c_settings)
+    @lbl_frequency.objectName = "lbl_frequency"
+
+    @formLayout.setWidget(3, Qt::FormLayout::LabelRole, @lbl_frequency)
+
+    @cbx_frequency = Qt::ComboBox.new(i2c_settings)
+    @cbx_frequency.objectName = "cbx_frequency"
+
+    @formLayout.setWidget(3, Qt::FormLayout::FieldRole, @cbx_frequency)
+
+    @lbl_write_page_latency = Qt::Label.new(i2c_settings)
+    @lbl_write_page_latency.objectName = "lbl_write_page_latency"
+
+    @formLayout.setWidget(2, Qt::FormLayout::LabelRole, @lbl_write_page_latency)
+
+    @lie_write_page_latency = Qt::LineEdit.new(i2c_settings)
+    @lie_write_page_latency.objectName = "lie_write_page_latency"
+
+    @formLayout.setWidget(2, Qt::FormLayout::FieldRole, @lie_write_page_latency)
+
+    @lbl_page_size = Qt::Label.new(i2c_settings)
+    @lbl_page_size.objectName = "lbl_page_size"
+
+    @formLayout.setWidget(1, Qt::FormLayout::LabelRole, @lbl_page_size)
+
+    @lbl_full_size = Qt::Label.new(i2c_settings)
+    @lbl_full_size.objectName = "lbl_full_size"
+
+    @formLayout.setWidget(0, Qt::FormLayout::LabelRole, @lbl_full_size)
+
+    @lie_page_size = Qt::LineEdit.new(i2c_settings)
+    @lie_page_size.objectName = "lie_page_size"
+
+    @formLayout.setWidget(1, Qt::FormLayout::FieldRole, @lie_page_size)
+
+    @lie_total_size = Qt::LineEdit.new(i2c_settings)
+    @lie_total_size.objectName = "lie_total_size"
+
+    @formLayout.setWidget(0, Qt::FormLayout::FieldRole, @lie_total_size)
+
+
+    @vl.addLayout(@formLayout)
 
     @hl = Qt::HBoxLayout.new()
     @hl.objectName = "hl"
@@ -189,19 +201,8 @@ class Ui_I2c_settings
     @lie_address_w.placeholderText = Qt::Application.translate("I2c_settings", "in hexadecimal", nil, Qt::Application::UnicodeUTF8)
     @lbl_address_r.text = Qt::Application.translate("I2c_settings", "Base address (R):", nil, Qt::Application::UnicodeUTF8)
     @lie_address_r.placeholderText = Qt::Application.translate("I2c_settings", "in hexadecimal", nil, Qt::Application::UnicodeUTF8)
-    @lbl_frequency.text = Qt::Application.translate("I2c_settings", "Frequency (Khz):", nil, Qt::Application::UnicodeUTF8)
-    @cbx_frequency.insertItems(0, [Qt::Application.translate("I2c_settings", "100", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("I2c_settings", "400", nil, Qt::Application::UnicodeUTF8),
-        Qt::Application.translate("I2c_settings", "1000", nil, Qt::Application::UnicodeUTF8)])
-    @lbl_full_size.text = Qt::Application.translate("I2c_settings", "Total size:", nil, Qt::Application::UnicodeUTF8)
-    @lie_total_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte, to a maximum of 4Go", nil, Qt::Application::UnicodeUTF8)
-    @lbl_bus_scan.text = Qt::Application.translate("I2c_settings", "Bus scan:", nil, Qt::Application::UnicodeUTF8)
+    @label.text = Qt::Application.translate("I2c_settings", "You don't know the addresses? Try a scan:", nil, Qt::Application::UnicodeUTF8)
     @btn_bus_scan.text = Qt::Application.translate("I2c_settings", "Launch", nil, Qt::Application::UnicodeUTF8)
-    @lie_page_size.text = ''
-    @lie_page_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte", nil, Qt::Application::UnicodeUTF8)
-    @lbl_page_size.text = Qt::Application.translate("I2c_settings", "Page size:", nil, Qt::Application::UnicodeUTF8)
-    @lbl_write_page_latency.text = Qt::Application.translate("I2c_settings", "Write page latency:", nil, Qt::Application::UnicodeUTF8)
-    @lie_write_page_latency.placeholderText = Qt::Application.translate("I2c_settings", "in miliseconds", nil, Qt::Application::UnicodeUTF8)
     if @tbl_bus_scan.columnCount < 2
         @tbl_bus_scan.columnCount = 2
     end
@@ -213,6 +214,17 @@ class Ui_I2c_settings
     __colItem1 = Qt::TableWidgetItem.new
     __colItem1.setText(Qt::Application.translate("I2c_settings", "R/W", nil, Qt::Application::UnicodeUTF8))
     @tbl_bus_scan.setHorizontalHeaderItem(1, __colItem1)
+    @lbl_frequency.text = Qt::Application.translate("I2c_settings", "Frequency (Khz):", nil, Qt::Application::UnicodeUTF8)
+    @cbx_frequency.insertItems(0, [Qt::Application.translate("I2c_settings", "100", nil, Qt::Application::UnicodeUTF8),
+        Qt::Application.translate("I2c_settings", "400", nil, Qt::Application::UnicodeUTF8),
+        Qt::Application.translate("I2c_settings", "1000", nil, Qt::Application::UnicodeUTF8)])
+    @lbl_write_page_latency.text = Qt::Application.translate("I2c_settings", "Write page latency:", nil, Qt::Application::UnicodeUTF8)
+    @lie_write_page_latency.placeholderText = Qt::Application.translate("I2c_settings", "in miliseconds", nil, Qt::Application::UnicodeUTF8)
+    @lbl_page_size.text = Qt::Application.translate("I2c_settings", "Page size:", nil, Qt::Application::UnicodeUTF8)
+    @lbl_full_size.text = Qt::Application.translate("I2c_settings", "Total size:", nil, Qt::Application::UnicodeUTF8)
+    @lie_page_size.text = ''
+    @lie_page_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte", nil, Qt::Application::UnicodeUTF8)
+    @lie_total_size.placeholderText = Qt::Application.translate("I2c_settings", "in byte, to a maximum of 4Go", nil, Qt::Application::UnicodeUTF8)
     @btn_cancel.text = Qt::Application.translate("I2c_settings", "Close", nil, Qt::Application::UnicodeUTF8)
     @btn_save.text = Qt::Application.translate("I2c_settings", "Save", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi

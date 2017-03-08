@@ -46,7 +46,7 @@ class Chip_management < Qt::MainWindow
 		feed_type_cbx
     @console = Console.new(@view.tbl_console)
     @versionGUI = versionGUI
-	@hardsploit_board_status = Qt::Label.new
+    @hardsploit_board_status = Qt::Label.new
     statusBar.addWidget(@hardsploit_board_status);
     check_hardsploit_connection
   rescue Exception => msg
@@ -54,16 +54,16 @@ class Chip_management < Qt::MainWindow
     return false
   end
 
-	def set_hs_board_status(connected)
-		if connected
-			@hardsploit_board_status.setText("Hardsploit board: connected " + 
+  def set_hs_board_status(connected)
+  	if connected
+  		@hardsploit_board_status.setText("Hardsploit board: connected " +
         		"- version #{HardsploitAPI.instance.getVersionNumber} " +
         		"- api V#{HardsploitAPI::VERSION::API}"
-			)
-		else
-			@hardsploit_board_status.setText("Hardsploit board: disconnected");
-		end
-	end
+  		)
+  	else
+  		@hardsploit_board_status.setText("Hardsploit board: disconnected");
+  	end
+  end
 
 	def feed_type_cbx
       Manufacturer.all.each do |m|
@@ -122,9 +122,9 @@ class Chip_management < Qt::MainWindow
     edit_lvl = Qt::TreeWidgetItem.new
     edit_lvl.setText(0, "Edit")
     parent_node.addChild(edit_lvl)
-    template_lvl = Qt::TreeWidgetItem.new
-    template_lvl.setText(0, "Template")
-    parent_node.addChild(template_lvl)
+    clone_lvl = Qt::TreeWidgetItem.new
+    clone_lvl.setText(0, "Clone")
+    parent_node.addChild(clone_lvl)
     delete_lvl = Qt::TreeWidgetItem.new
     delete_lvl.setText(0, "Delete")
     parent_node.addChild(delete_lvl)
@@ -150,12 +150,12 @@ class Chip_management < Qt::MainWindow
       detect_lvl = Qt::TreeWidgetItem.new
       detect_lvl.setText(0, "Detect")
       parent_node.addChild(detect_lvl)
-      import_lvl = Qt::TreeWidgetItem.new
-      import_lvl.setText(0, "Import")
-      parent_node.addChild(import_lvl)
-      export_lvl = Qt::TreeWidgetItem.new
-      export_lvl.setText(0, "Dump")
-      parent_node.addChild(export_lvl)
+      write_lvl = Qt::TreeWidgetItem.new
+      write_lvl.setText(0, "Write")
+      parent_node.addChild(write_lvl)
+      read_lvl = Qt::TreeWidgetItem.new
+      read_lvl.setText(0, "Read")
+      parent_node.addChild(read_lvl)
       erase_lvl = Qt::TreeWidgetItem.new
       erase_lvl.setText(0, "Erase")
       parent_node.addChild(erase_lvl)
@@ -166,12 +166,12 @@ class Chip_management < Qt::MainWindow
       cmd_lvl = Qt::TreeWidgetItem.new
       cmd_lvl.setText(0, "Commands")
       parent_node.addChild(cmd_lvl)
-      import_lvl = Qt::TreeWidgetItem.new
-      import_lvl.setText(0, "Import")
-      parent_node.addChild(import_lvl)
-      export_lvl = Qt::TreeWidgetItem.new
-      export_lvl.setText(0, "Export")
-      parent_node.addChild(export_lvl)
+      write_lvl = Qt::TreeWidgetItem.new
+      write_lvl.setText(0, "Write")
+      parent_node.addChild(write_lvl)
+      read_lvl = Qt::TreeWidgetItem.new
+      read_lvl.setText(0, "Read")
+      parent_node.addChild(read_lvl)
       sniffer_lvl = Qt::TreeWidgetItem.new
       sniffer_lvl.setText(0, "Sniffer")
       parent_node.addChild(sniffer_lvl)
@@ -185,23 +185,23 @@ class Chip_management < Qt::MainWindow
       cmd_lvl = Qt::TreeWidgetItem.new
       cmd_lvl.setText(0, "Commands")
       parent_node.addChild(cmd_lvl)
-      import_lvl = Qt::TreeWidgetItem.new
-      import_lvl.setText(0, "Import")
-      parent_node.addChild(import_lvl)
-      export_lvl = Qt::TreeWidgetItem.new
-      export_lvl.setText(0, "Export")
-      parent_node.addChild(export_lvl)
+      write_lvl = Qt::TreeWidgetItem.new
+      write_lvl.setText(0, "Write")
+      parent_node.addChild(write_lvl)
+      read_lvl = Qt::TreeWidgetItem.new
+      read_lvl.setText(0, "Read")
+      parent_node.addChild(read_lvl)
     when 'PARALLEL'
       settings_lvl = Qt::TreeWidgetItem.new
       settings_lvl.setText(0, "Settings")
       parent_node.addChild(settings_lvl)
       # Not implemented yet
-      #import_lvl = Qt::TreeWidgetItem.new
-      #import_lvl.setText(0, "Import")
-      #parent_node.addChild(import_lvl)
-      export_lvl = Qt::TreeWidgetItem.new
-      export_lvl.setText(0, "Export")
-      parent_node.addChild(export_lvl)
+      #write_lvl = Qt::TreeWidgetItem.new
+      #write_lvl.setText(0, "write")
+      #parent_node.addChild(write_lvl)
+      read_lvl = Qt::TreeWidgetItem.new
+      read_lvl.setText(0, "Read")
+      parent_node.addChild(read_lvl)
     end
     return parent_node
   end
@@ -263,7 +263,7 @@ class Chip_management < Qt::MainWindow
       case item.text(0)
       when 'Wiring'   ; wire_chip
       when 'Edit'     ; edit_chip
-      when 'Template' ; add_chip
+      when 'Clone'    ; clone_chip
       when 'Delete'   ; delete_chip
       end
     else
@@ -281,8 +281,8 @@ class Chip_management < Qt::MainWindow
     case spi_module
     when 'Settings' ; Spi_settings.new(@chip_clicked).show
     when 'Commands' ; Generic_commands.new(@chip_clicked, 'SPI').show
-    when 'Import'   ; Spi_import.new(@chip_clicked).show
-    when 'Export'   ; Spi_export.new(@chip_clicked).show
+    when 'Write'    ; Spi_write.new(@chip_clicked).show
+    when 'Read'     ; Spi_read.new(@chip_clicked).show
     when 'Sniffer'  ; Spi_sniffer.new(@chip_clicked).show
     end
   end
@@ -292,31 +292,39 @@ class Chip_management < Qt::MainWindow
     when 'Settings'    ; I2c_settings.new(@chip_clicked).show
     when 'PIN Scanner' ; I2c_scanner.new.show
     when 'Commands'    ; Generic_commands.new(@chip_clicked, 'I2C').show
-    when 'Import'      ; I2c_import.new(@chip_clicked).show
-    when 'Export'      ; I2c_export.new(@chip_clicked).show
+    when 'Write'       ; I2c_write.new(@chip_clicked).show
+    when 'Read'        ; I2c_read.new(@chip_clicked).show
     end
   end
 
   def load_parallel_module(parallel_module)
     case parallel_module
     when 'Settings' ; Parallel_settings.new(@chip_clicked).show
-    when 'Import'   ; Parallel_import.new(@chip_clicked).show
-    when 'Export'   ; Parallel_export.new(@chip_clicked).show
+    when 'Write'    ; Parallel_write.new(@chip_clicked).show
+    when 'Read'     ; Parallel_read.new(@chip_clicked).show
     end
   end
 
   def load_swd_module(swd_module)
     case swd_module
-    when 'Settings'     ; Swd_settings.new(@chip_clicked).show
-    when 'PIN Scanner'  ; Swd_scanner.new.show
-    when 'Detect'       ; Swd.new(@chip_clicked, @console).detect
-    when 'Import'
+    when 'Settings'; Swd_settings.new(@chip_clicked).show
+    when 'PIN Scanner'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+      Swd_scanner.new.show
+    when 'Detect'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+      Swd.new(@chip_clicked, @console).detect
+    when 'Write'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
       filepath = Qt::FileDialog.getOpenFileName(self, tr('Select a file'), '/')
-      Swd.new(@chip_clicked, @console).import(filepath) unless filepath.nil?
-    when 'Dump'
+      Swd.new(@chip_clicked, @console).write(filepath) unless filepath.nil?
+    when 'Read'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
       filepath = Qt::FileDialog.getSaveFileName(self, tr('Select a file'), '/')
-      Swd.new(@chip_clicked, @console).export(filepath) unless filepath.nil?
-    when 'Erase'    ; Swd.new(@chip_clicked, @console).erase
+      Swd.new(@chip_clicked, @console).read(filepath) unless filepath.nil?
+    when 'Erase'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
+      Swd.new(@chip_clicked, @console).erase
     end
   end
 
@@ -327,6 +335,7 @@ class Chip_management < Qt::MainWindow
       settingsUart.setWindowModality(Qt::ApplicationModal)
       settingsUart.show
     when 'Console'
+      return ErrorMsg.new.hardsploit_not_found unless HardsploitAPI.getNumberOfBoardAvailable > 0
       consoleUart = Uart_console.new(@chip_clicked)
       consoleUart.setWindowModality(Qt::ApplicationModal)
       consoleUart.show
@@ -334,12 +343,7 @@ class Chip_management < Qt::MainWindow
   end
 
   def add_chip
-    if sender.objectName == 'tw_chip' or sender.objectName == 'actionTemplate'
-      return ErrorMsg.new.no_chip_loaded if @chip_clicked.nil?
-      add_chip = Chip_editor.new(self, @chip_clicked, 'temp')
-    else
-      add_chip = Chip_editor.new(self, 'none', 'new')
-    end
+    add_chip = Chip_editor.new(self, 'none', 'new')
     add_chip.show
   end
 
@@ -347,6 +351,12 @@ class Chip_management < Qt::MainWindow
     return ErrorMsg.new.no_chip_loaded if @chip_clicked.nil?
     edit_chip = Chip_editor.new(self, @chip_clicked, 'edit')
     edit_chip.show
+  end
+
+  def clone_chip
+    return ErrorMsg.new.no_chip_loaded if @chip_clicked.nil?
+    clone_chip = Chip_clone.new(self, @chip_clicked)
+    clone_chip.show
   end
 
   def delete_chip
@@ -495,10 +505,6 @@ class Chip_management < Qt::MainWindow
         "BOARD : #{HardsploitAPI.instance.getVersionNumber}"
       )
       @console.print('Hardsploit ready to suck chip souls !')
-      #statusBar.showMessage("Hardsploit board: connected " + 
-      #  "- version #{HardsploitAPI.instance.getVersionNumber} " +
-      #  "- api V#{HardsploitAPI::VERSION::API}"
-      #)
       set_hs_board_status(true)
     else
       @console.print(
@@ -506,7 +512,6 @@ class Chip_management < Qt::MainWindow
         'Wiring and command execution disabled'
       )
       set_hs_board_status(false)
-      #statusBar.showMessage("Hardsploit board: disconnected")
     end
   end
 end

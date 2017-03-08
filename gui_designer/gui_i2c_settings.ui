@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>358</width>
-    <height>396</height>
+    <width>339</width>
+    <height>504</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,15 +48,15 @@
       </layout>
      </item>
      <item>
-      <layout class="QFormLayout" name="fl">
-       <item row="1" column="0">
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
         <widget class="QLabel" name="lbl_address_w">
          <property name="text">
           <string>Base address (W):</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="0" column="1">
         <widget class="QLineEdit" name="lie_address_w">
          <property name="maxLength">
           <number>2</number>
@@ -66,14 +66,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="lbl_address_r">
          <property name="text">
           <string>Base address (R):</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="1" column="1">
         <widget class="QLineEdit" name="lie_address_r">
          <property name="maxLength">
           <number>2</number>
@@ -83,88 +83,21 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="lbl_frequency">
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Frequency (Khz):</string>
+          <string>You don't know the addresses? Try a scan:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="cbx_frequency">
-         <item>
-          <property name="text">
-           <string>100</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>400</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="lbl_full_size">
-         <property name="text">
-          <string>Total size:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="lie_total_size">
-         <property name="placeholderText">
-          <string>in byte, to a maximum of 4Go</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="lbl_bus_scan">
-         <property name="text">
-          <string>Bus scan:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
+       <item>
         <widget class="QPushButton" name="btn_bus_scan">
          <property name="text">
           <string>Launch</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="lie_page_size">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="placeholderText">
-          <string>in byte</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="lbl_page_size">
-         <property name="text">
-          <string>Page size:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="lbl_write_page_latency">
-         <property name="text">
-          <string>Write page latency:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="lie_write_page_latency">
-         <property name="placeholderText">
-          <string>in miliseconds</string>
          </property>
         </widget>
        </item>
@@ -192,6 +125,81 @@
         </property>
        </column>
       </widget>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="3" column="0">
+        <widget class="QLabel" name="lbl_frequency">
+         <property name="text">
+          <string>Frequency (Khz):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="cbx_frequency">
+         <item>
+          <property name="text">
+           <string>100</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>400</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1000</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lbl_write_page_latency">
+         <property name="text">
+          <string>Write page latency:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lie_write_page_latency">
+         <property name="placeholderText">
+          <string>in miliseconds</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lbl_page_size">
+         <property name="text">
+          <string>Page size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="lbl_full_size">
+         <property name="text">
+          <string>Total size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lie_page_size">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>in byte</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lie_total_size">
+         <property name="placeholderText">
+          <string>in byte, to a maximum of 4Go</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="hl">
