@@ -1,6 +1,7 @@
 #===================================================
 #  Hardsploit GUI - By Opale Security
 #  www.opale-security.com || www.hardsploit.io
+#  Updated by Konstantinos Xynos (2017)
 #  License: GNU General Public License v3
 #  License URI: http://www.gnu.org/licenses/gpl.txt
 #===================================================
@@ -45,6 +46,14 @@ class Spi_sniffer < Qt::Widget
     @timer.start(1000)
   end
 
+  def add_ascii_when_in_range(i, cell_id, elem=0)
+    if elem.between?(32, 126)
+      @view.tbl_result.setItem(i, cell_id, Qt::TableWidgetItem.new("0x#{elem.to_s(16).rjust(2, "0").upcase}(#{elem.chr})"))
+    elsif 
+      @view.tbl_result.setItem(i, cell_id, Qt::TableWidgetItem.new("0x#{elem.to_s(16).rjust(2, "0").upcase}"))
+    end 
+  end
+
   def update
     result = @spi.spi_receive_available_data
     unless result.empty?
@@ -52,24 +61,24 @@ class Spi_sniffer < Qt::Widget
         result[0].each_with_index do |elem, i|
           @view.tbl_result.insertRow(i)
           @view.tbl_result.setItem(i, 0, Qt::TableWidgetItem.new(i.next.to_s))
-          @view.tbl_result.setItem(i, 1, Qt::TableWidgetItem.new("0x#{elem.to_s(16).rjust(2, "0").upcase}"))
-          @view.tbl_result.setItem(i, 2, Qt::TableWidgetItem.new("0x#{result[1][i].to_s(16).rjust(2, "0").upcase}"))
+	  add_ascii_when_in_range(i, 1, elem)
+          add_ascii_when_in_range(i, 2, result[1][i])
         end
       else # MOSI OR MISO
         if @spi.sniff == HardsploitAPI::SPISniffer::MISO
-        result.each_with_index do |elem, i|
-          @view.tbl_result.insertRow(i)
-          @view.tbl_result.setItem(i, 0, Qt::TableWidgetItem.new(@view.tbl_result.rowCount.next.to_s))
-          @view.tbl_result.setItem(i, 1, Qt::TableWidgetItem.new('-'))
-          @view.tbl_result.setItem(i, 2, Qt::TableWidgetItem.new("0x#{elem.to_s(16).rjust(2, "0").upcase}"))
-        end
+          result.each_with_index do |elem, i|
+            @view.tbl_result.insertRow(i)
+            @view.tbl_result.setItem(i, 0, Qt::TableWidgetItem.new(@view.tbl_result.rowCount.next.to_s))          
+            @view.tbl_result.setItem(i, 1, Qt::TableWidgetItem.new('-'))
+            add_ascii_when_in_range(i, 2, elem)
+	  end
         else
           result.each_with_index do |elem, i|
             @view.tbl_result.insertRow(i)
             @view.tbl_result.setItem(i, 0, Qt::TableWidgetItem.new(@view.tbl_result.rowCount.next.to_s))
-            @view.tbl_result.setItem(i, 1, Qt::TableWidgetItem.new("0x#{elem.to_s(16).rjust(2, "0").upcase}"))
+            add_ascii_when_in_range(i, 1, elem)
             @view.tbl_result.setItem(i, 2, Qt::TableWidgetItem.new('-'))
-          end
+  	  end
         end
         resize_to_content
       end
